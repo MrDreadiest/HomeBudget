@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:HomeBudget.App.ViewModels"
+             x:Class="HomeBudget.App.Views.LoginPageAndroidView"
+             x:DataType="viewmodel:LoginPageViewModel"
+             Title="LoginPageAndroidView">
+
+    <ContentPage.Background>
+        <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+            <GradientStop Color="{StaticResource MyPrimaryLight}" Offset="0.5"/>
+            <GradientStop Color="{StaticResource MyPrimaryDark}" Offset="0.5"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Frame Background="{StaticResource MySecondaryDark}" BorderColor="Transparent" HorizontalOptions="Center" VerticalOptions="Center">
+        
+        <VerticalStackLayout>
+            <Label Text="Logowanie" Style="{StaticResource LoginViewH1Label}"/>
+            <Label Text="Zaloguj się do konta użytkownika" Style="{StaticResource LoginViewH2Label}" />
+
+            <Entry Text="" Placeholder="Email" Style="{StaticResource DarkMediumEntry}" Margin="0,40,0,5"/>
+            <Entry Text="" IsPassword="True" Placeholder="Hasło" Style="{StaticResource DarkMediumEntry}" Margin="0,5,0,40"/>
+
+            <Button Text="Zaloguj" Style="{StaticResource FlexButton}"/>
+            <HorizontalStackLayout HorizontalOptions="Start" >
+                <CheckBox 
+                    x:Name="RememberUserCheckBox"
+                    IsChecked="False"
+                    CheckedChanged="RememberUserCheckBox_CheckedChanged"/>
+                <Label 
+                    Style="{StaticResource SmallLabel}"
+                    Text="Bez wylogowania"
+                    VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+
+        </VerticalStackLayout>
+    </Frame>
+</ContentPage>

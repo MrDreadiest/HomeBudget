@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:HomeBudget.App.Models"
+             xmlns:views="clr-namespace:HomeBudget.App.Views"
+             xmlns:viewModels="clr-namespace:HomeBudget.App.ViewModels"
+             x:Class="HomeBudget.App.MainPage"
+             x:DataType="viewModels:MainPageViewModel">
+
+    <VerticalStackLayout Margin="30">
+        <Button Text="Logout" IsEnabled="{Binding IsAuthenticated}" Command="{Binding LogoutCommand}"/>
+        <Label Text="{Binding UserName}"/>
+        <Entry Text="{Binding RegisterModel.Email}" Placeholder="Email"/>
+        <Entry Text="{Binding RegisterModel.Password}" Placeholder="Password" IsPassword="True"/>
+        <Button Text="Register" Command="{Binding RegisterCommand}"/>
+        
+        <Entry Text="{Binding LoginModel.Email}" Placeholder="Email"/>
+        <Entry Text="{Binding LoginModel.Password}" Placeholder="Password" IsPassword="True"/>
+        <Button Text="Login" Command="{Binding LoginCommand}"/>
+    </VerticalStackLayout>
+
+</ContentPage>

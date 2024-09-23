@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="HomeBudget.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:HomeBudget.App.Views"
+    Title="HomeBudget.App"
+    Shell.FlyoutBehavior="Disabled">
+
+    <!--<ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" 
+        Shell.FlyoutBehavior="Flyout"/>-->
+
+    <ShellContent
+        Title="LoginPageAndroidView"
+        ContentTemplate="{DataTemplate local:LoginPageAndroidView}"
+        Route="LoginPageView"/>
+
+    <ShellContent
+        Title="RegisterPageAndroidView"
+        ContentTemplate="{DataTemplate local:RegisterPageAndroidView}"
+        Route="RegisterPageAndroidView"/>
+
+    <ShellContent
+        Title="DashboardPageAndroidView"
+        ContentTemplate="{DataTemplate local:DashboardPageAndroidView}"
+        Route="DashboardPageAndroidView"/>
+
+</Shell>
