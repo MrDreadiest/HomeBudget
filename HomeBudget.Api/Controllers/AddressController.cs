@@ -1,29 +1,27 @@
-﻿using HomeBudget.Api.Data;
-using HomeBudget.Api.Entities;
+﻿using HomeBudget.Api.Entities;
+using HomeBudget.Api.Services.Interfaces;
+using HomeBudget.Common.EntityDTOs.Address;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using HomeBudget.Common.EntityDTOs.User;
-using HomeBudget.Api.Services.Interfaces;
 
 namespace HomeBudget.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/User/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AddressController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
         private readonly UserManager<User> _userManager;
 
-        public UserController(IUserService userService, UserManager<User> userManager)
+        public AddressController(IAddressService addressService, UserManager<User> userManager)
         {
-            _userService = userService;
+            _addressService = addressService;
             _userManager = userManager;
         }
 
-        [HttpGet, Authorize]
-        public async Task<ActionResult<UserGetResponseModel>> GetUser()
+        [HttpGet("{addressId}"), Authorize]
+        public async Task<ActionResult<AddressGetResponseModel>> GetAddressById(string addressId)
         {
             var authorization = await IsAuthorizedUser();
 
@@ -34,10 +32,10 @@ namespace HomeBudget.Api.Controllers
 
             try
             {
-                var user = await _userService.GetUserByIdAsync(authorization.User!.Id);
-                return user == null ? NotFound() : Ok(user);
+                var address = await _addressService.GetAddressByIdsAsync(authorization.User!.Id, addressId);
+                return address == null ? NotFound() : Ok(address);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 if (ex is UnauthorizedAccessException)
                 {
@@ -50,8 +48,8 @@ namespace HomeBudget.Api.Controllers
             }
         }
 
-        [HttpPut, Authorize]
-        public async Task<ActionResult<UserUpdateResponseModel>> UpdateUser([FromBody] UserUpdateRequestModel requestModel)
+        [HttpPut("{addressId}"), Authorize]
+        public async Task<ActionResult<AddressUpdateResponseModel>> UpdateAddress(string addressId, [FromBody] AddressUpdateRequestModel requestModel)
         {
             var authorization = await IsAuthorizedUser();
 
@@ -62,8 +60,8 @@ namespace HomeBudget.Api.Controllers
 
             try
             {
-                var response = await _userService.UpdateUserAsync(authorization.User!.Id, requestModel);
-                return response == null ? NotFound() : CreatedAtAction(nameof(UpdateUser), new { authorization.User!.Id }, response);
+                var response = await _addressService.UpdateAddressAsync(authorization.User!.Id, addressId, requestModel);
+                return response == null ? NotFound() : CreatedAtAction(nameof(UpdateAddress), new { authorization.User!.Id, addressId}, response);
             }
             catch (Exception ex)
             {
