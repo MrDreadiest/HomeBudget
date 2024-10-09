@@ -1,14 +1,23 @@
-using HomeBudget.Api.Data;
+﻿using HomeBudget.Api.Data;
 using HomeBudget.Api.Entities;
+using HomeBudget.Api.Services.Interfaces;
+using HomeBudget.Api.Services;
+using HomeBudget.Api.UnitOfWork;
+using HomeBudget.Api.UnitOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // Dodaj obsługę cyklicznych odniesień
+    });
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -29,6 +38,13 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<IExpenseCategoryService, ExpenseCategoryService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 builder.Services.AddAuthorization();
 
