@@ -1,9 +1,6 @@
-﻿using Azure;
-using HomeBudget.Api.Entities;
+﻿using HomeBudget.Api.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Reflection.Emit;
 
 namespace HomeBudget.Api.Data
 {
@@ -11,13 +8,14 @@ namespace HomeBudget.Api.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+
         }
 
         //Tablica reprezentująca usera powstaje sama poprzez IdentityDbContext
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Budget> Budgets { get; set; }
-        public DbSet<Expense> Expenses { get; set; }
-        public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionCategory> TransactionCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,28 +28,28 @@ namespace HomeBudget.Api.Data
                 .HasForeignKey<Address>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // 1:N Budget -> ExpenseCategory
-            builder.Entity<ExpenseCategory>()
+            // 1:N Budget -> TransactionCategory
+            builder.Entity<TransactionCategory>()
                 .HasOne(ec => ec.Budget)
-                .WithMany(b => b.ExpenseCategories)
+                .WithMany(b => b.TransactionCategories)
                 .HasForeignKey(ec => ec.BudgetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // 1:N Budget -> Expense
-            builder.Entity<Expense>()
+            // 1:N Budget -> Transaction
+            builder.Entity<Transaction>()
                 .HasOne(e => e.Budget)
-                .WithMany(b => b.Expenses)
+                .WithMany(b => b.Transactions)
                 .HasForeignKey(e => e.BudgetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // N:1 Expense -> ExpenseCategory
-            builder.Entity<Expense>()
-                .HasOne(e => e.ExpenseCategory)
-                .WithMany(ec => ec.Expenses)
-                .HasForeignKey(e => e.ExpenseCategoryId)
+            // N:1 Transaction -> TransactionCategory
+            builder.Entity<Transaction>()
+                .HasOne(e => e.TransactionCategory)
+                .WithMany(ec => ec.Transactions)
+                .HasForeignKey(e => e.TransactionCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Expense>()
+            builder.Entity<Transaction>()
                 .Property(e => e.TotalAmount)
                 .HasColumnType("decimal(18,2)");
 

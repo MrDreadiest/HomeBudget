@@ -3,5 +3,6 @@
     public sealed class BudgetCreateResponseModel : BudgetBaseDTO
     {
         public required string Id { get; set; }
+        public required string OwnerId { get; set; }
     }
 }

@@ -43,8 +43,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
-builder.Services.AddScoped<IExpenseCategoryService, ExpenseCategoryService>();
-builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<ITransactionCategoryService, TransactionCategoryService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddAuthorization();
 

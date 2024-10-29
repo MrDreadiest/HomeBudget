@@ -1,4 +1,5 @@
-﻿using HomeBudget.Api.Services.Interfaces;
+﻿using HomeBudget.Api.Extensions;
+using HomeBudget.Api.Services.Interfaces;
 using HomeBudget.Api.UnitOfWork.Interfaces;
 using HomeBudget.Common.EntityDTOs.Address;
 
@@ -19,17 +20,7 @@ namespace HomeBudget.Api.Services
             {
                 var address = await _unitOfWork.Addresses.GetAddressByIdAsync(addressId);
 
-                return address == null ? null : new AddressGetResponseModel() 
-                {
-                    Id = address.Id,
-                    Street = address.Street,
-                    HouseNumber = address.HouseNumber,
-                    ApartmentNumber = address.ApartmentNumber,
-                    City = address.City,
-                    Country = address.Country,
-                    PostalCode = address.PostalCode,
-                    Region = address.Region
-                };
+                return address == null ? null : address.ToGetResponse();
             }
             else
             {
@@ -47,27 +38,11 @@ namespace HomeBudget.Api.Services
                 {
                     if (address.IsAddressValid())
                     {
-                        address.Street = requestModel.Street;
-                        address.HouseNumber = requestModel.HouseNumber;
-                        address.ApartmentNumber = requestModel.ApartmentNumber;
-                        address.City = requestModel.City;
-                        address.Country = requestModel.Country;
-                        address.PostalCode = requestModel.PostalCode;
-                        address.Region = requestModel.Region;
+                        address.FromUpdateRequest(requestModel);
 
                         await _unitOfWork.SaveChangesAsync();
 
-                        return new AddressUpdateResponseModel()
-                        {
-                            Id = address.Id,
-                            Street = address.Street,
-                            HouseNumber = address.HouseNumber,
-                            ApartmentNumber = address.ApartmentNumber,
-                            City = address.City,
-                            Country = address.Country,
-                            PostalCode = address.PostalCode,
-                            Region = address.Region
-                        };
+                        return address.ToUpdateResponse();  
                     }
                 }
                 return null;

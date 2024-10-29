@@ -7,8 +7,8 @@ namespace HomeBudget.Api.UnitOfWork.Interfaces
         IUserRepository Users { get; }
         IAddressRepository Addresses { get; }
         IBudgetRepository Budgets { get; }
-        IExpenseCategoryRepository ExpenseCategories { get; }
-        IExpenseRepository Expenses { get; }
+        ITransactionCategoryRepository TransactionCategories { get; }
+        ITransactionRepository Transactions { get; }
 
         Task<int> SaveChangesAsync();
     }

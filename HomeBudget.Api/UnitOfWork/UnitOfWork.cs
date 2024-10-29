@@ -12,8 +12,8 @@ namespace HomeBudget.Api.UnitOfWork
         public IUserRepository Users { get; }
         public IAddressRepository Addresses { get; }
         public IBudgetRepository Budgets { get; }
-        public IExpenseCategoryRepository ExpenseCategories { get; }
-        public IExpenseRepository Expenses { get; }
+        public ITransactionCategoryRepository TransactionCategories { get; }
+        public ITransactionRepository Transactions { get; }
 
         public UnitOfWork(DataContext context)
         {
@@ -22,8 +22,8 @@ namespace HomeBudget.Api.UnitOfWork
             Users = new UserRepository(_context);
             Addresses = new AddressRepository(_context);
             Budgets = new BudgetRepository(_context);
-            ExpenseCategories = new ExpenseCategoryRepository(_context);
-            Expenses = new ExpenseRepository(_context);
+            TransactionCategories = new TransactionCategoryRepository(_context);
+            Transactions = new TransactionRepository(_context);
         }
 
         public void Dispose()
