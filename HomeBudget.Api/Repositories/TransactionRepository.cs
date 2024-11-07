@@ -28,6 +28,29 @@ namespace HomeBudget.Api.Repositories
             return await _context.Transactions.FindAsync(transactionId);
         }
 
+        public async Task<IEnumerable<Transaction>> GetTransactionsByBudgetIdInDateRangeAsync(
+            string budgetId,
+            DateTime? startDate,
+            DateTime? endDate)
+        {
+            var query = _context.Transactions
+                .Include(e => e.Budget)
+                .Include(e => e.TransactionCategory)
+                .Where(e => e.Budget.Id.Equals(budgetId));
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(e => e.Date >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(e => e.Date <= endDate.Value);
+            }
+
+            return await query.ToListAsync();
+        }
+
         public async Task AddAsync(Transaction transaction)
         {
             await _context.Transactions.AddAsync(transaction);

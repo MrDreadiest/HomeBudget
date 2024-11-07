@@ -1,5 +1,4 @@
-﻿using Azure;
-using HomeBudget.Api.Entities;
+﻿using HomeBudget.Api.Entities;
 using HomeBudget.Api.Services.Interfaces;
 using HomeBudget.Common.EntityDTOs.TransactionCategory;
 using Microsoft.AspNetCore.Authorization;

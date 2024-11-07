@@ -27,6 +27,21 @@ namespace HomeBudget.Api.Services
             }
         }
 
+        public async Task<IEnumerable<TransactionGetResponseModel>> GetTransactionsByBudgetIdInDateRangeAsync(string userId, string budgetId, DateTime? startDate, DateTime? endDate)
+        {
+            if (await HasAccessToBudgetAsync(userId, budgetId))
+            {
+                var transactions = await _unitOfWork.Transactions.GetTransactionsByBudgetIdInDateRangeAsync(
+                    budgetId, startDate, endDate);
+
+                return transactions.Select(t => t.ToGetResponse());
+            }
+            else
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+
         public async Task<TransactionGetResponseModel?> GetTransactionByIdsAsync(string userId, string budgetId, string transactionId)
         {
             if (await HasAccessToBudgetAsync(userId, budgetId))
@@ -39,6 +54,7 @@ namespace HomeBudget.Api.Services
                 throw new UnauthorizedAccessException();
             }
         }
+
 
         public async Task<TransactionCreateResponseModel?> CreateTransactionAsync(string userId, string budgetId, TransactionCreateRequestModel requestModel)
         {
@@ -80,6 +96,7 @@ namespace HomeBudget.Api.Services
                         if (requestModel != null && transactionCategory != null)
                         {
                             var transaction = requestModel.ToTransaction(budget, transactionCategory, userId);
+                            response.Add(transaction.ToCreateResponse());
                             await _unitOfWork.Transactions.AddAsync(transaction);
                         }
                     }
@@ -135,8 +152,6 @@ namespace HomeBudget.Api.Services
 
                 if (transaction != null)
                 {
-                    transaction.Budget.Transactions.Remove(transaction);
-                    transaction.TransactionCategory.Transactions.Remove(transaction);
                     _unitOfWork.Transactions.Delete(transaction);
 
                     await _unitOfWork.SaveChangesAsync();
@@ -156,7 +171,5 @@ namespace HomeBudget.Api.Services
             var budget = await _unitOfWork.Budgets.GetBudgetByIdAsync(budgetId);
             return budget != null && budget.Users.Any(u => u.Id.Equals(userId));
         }
-
-
     }
 }

@@ -6,5 +6,6 @@ namespace HomeBudget.Api.Repositories.Interfaces
     {
         Task<Transaction?> GetTransactionByIdAsync(string transactionId);
         Task<IEnumerable<Transaction>> GetTransactionsByBudgetIdAsync(string budgetId);
+        Task<IEnumerable<Transaction>> GetTransactionsByBudgetIdInDateRangeAsync(string budgetId, DateTime? startDate, DateTime? endDate);
     }
 }

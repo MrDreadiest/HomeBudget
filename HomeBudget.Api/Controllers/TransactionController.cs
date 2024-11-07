@@ -76,6 +76,39 @@ namespace HomeBudget.Api.Controllers
             }
         }
 
+        [HttpGet("DateRange"), Authorize]
+        public async Task<ActionResult<IEnumerable<TransactionGetResponseModel>>> GetTransactionsInDateRange(
+            string budgetId,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate)
+        {
+            var authorization = await IsAuthorizedUser();
+
+            if (!authorization.Result)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                var transactions = await _transactionService.GetTransactionsByBudgetIdInDateRangeAsync(
+                    authorization.User!.Id, budgetId, startDate, endDate);
+
+                return Ok(transactions);
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                {
+                    return Unauthorized(ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
         [HttpPost, Authorize]
         public async Task<ActionResult<IEnumerable<TransactionCreateResponseModel>>> CreateTransactions(string budgetId, [FromBody] List<TransactionCreateRequestModel> requestModels)
         {
