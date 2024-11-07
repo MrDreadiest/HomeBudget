@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.Reports.AddReportGraphContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:reportModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Reports"
+    x:DataType="reportModels:AddReportGraphContentViewModel">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <Border
+            x:Name="Header"
+            BackgroundColor="{StaticResource Primary}"
+            Stroke="{StaticResource Primary}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10,10,0,0" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,*">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="15"
+                    Style="{StaticResource H2Label}"
+                    Text="{Binding Title}"
+                    TextColor="{StaticResource White}" />
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="0"
+                    Command="{Binding ToggleIsCollapsedCommand}"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{x:Static icons:Icons.Menu}"
+                    TextColor="{StaticResource White}" />
+            </Grid>
+        </Border>
+
+        <Border
+            x:Name="Body"
+            Grid.Row="1"
+            Padding="15"
+            BackgroundColor="White"
+            Stroke="White">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,10,10" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout>
+
+                <CarouselView
+                    CurrentItem="{Binding SelectedImage}"
+                    HeightRequest="200"
+                    HorizontalOptions="FillAndExpand"
+                    IndicatorView="{x:Reference CarouselGraphIndicator}"
+                    ItemsSource="{Binding Images}"
+                    Position="{Binding CarouselPosition}">
+
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate x:DataType="reportModels:CarouselGraphImage">
+                            <Image Aspect="AspectFit" Source="{Binding ImageSource}" />
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Button
+                        Grid.Column="0"
+                        Margin="0"
+                        Command="{Binding BackCommand}"
+                        Style="{StaticResource NavigationIconButton}"
+                        Text="{x:Static icons:Icons.ArrowBackward}" />
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+                        <Label Style="{StaticResource H3Label}" Text="{Binding SelectedImage.Description}" />
+
+                        <IndicatorView
+                            x:Name="CarouselGraphIndicator"
+                            IndicatorColor="Gray"
+                            SelectedIndicatorColor="{StaticResource Primary}" />
+                    </VerticalStackLayout>
+
+
+                    <Button
+                        Grid.Column="2"
+                        Margin="0"
+                        Command="{Binding NextCommand}"
+                        Style="{StaticResource NavigationIconButton}"
+                        Text="{x:Static icons:Icons.ArrowForward}" />
+                </Grid>
+
+
+
+
+
+
+                <Frame Style="{StaticResource SecondaryEntryFrame}">
+                    <Entry
+                        Placeholder="Nazwa"
+                        Style="{StaticResource DarkMediumEntry}"
+                        Text="{Binding Name}" />
+                </Frame>
+
+                <Frame Style="{StaticResource SecondaryEntryFrame}">
+                    <Entry
+                        Placeholder="Opis dodatkowy"
+                        Style="{StaticResource DarkMediumEntry}"
+                        Text="{Binding Description}" />
+                </Frame>
+
+                <Button
+                    Command="{Binding AddCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="Wykonaj" />
+
+            </VerticalStackLayout>
+
+        </Border>
+
+    </Grid>
+
+</ContentView>

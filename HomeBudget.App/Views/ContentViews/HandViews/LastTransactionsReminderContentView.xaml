@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.HandViews.LastTransactionsReminderContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
+    xmlns:handViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.HandViews"
+    xmlns:handViews="clr-namespace:HomeBudget.App.Views.ContentViews.HandViews"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="handViewModels:LastTransactionsReminderContentViewModel">
+
+    <Frame
+        Padding="0"
+        BorderColor="Transparent"
+        CornerRadius="10">
+        <Grid
+            BackgroundColor="{StaticResource Primary}"
+            ColumnDefinitions="*,Auto"
+            RowDefinitions="Auto,*">
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="15"
+                Style="{StaticResource H2Label}"
+                Text="{Binding Title}"
+                TextColor="{StaticResource White}" />
+            <Grid
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Padding="15"
+                BackgroundColor="White">
+
+                <CollectionView
+                    Grid.Row="9"
+                    ItemsSource="{Binding Transactions}"
+                    VerticalOptions="StartAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="contentViewModels:TransactionGroupItem">
+                            <Grid
+                                BackgroundColor="{StaticResource White}"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="5"
+                                RowDefinitions="*,Auto,Auto">
+                                <Label
+                                    Grid.RowSpan="3"
+                                    Margin="10"
+                                    FontSize="{StaticResource ExtraLargePlusFontSize}"
+                                    HorizontalOptions="Center"
+                                    Style="{StaticResource SeletedInnerIcon}"
+                                    Text="{Binding TransactionCategory.IconUnicode}"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Style="{StaticResource H2Label}"
+                                    Text="{Binding Transaction.Name}"
+                                    VerticalOptions="End" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Style="{StaticResource H2Label}"
+                                    Text="{Binding Transaction.TotalAmount, StringFormat='{0:C}'}"
+                                    TextColor="Green"
+                                    VerticalOptions="End" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    HorizontalOptions="End"
+                                    Style="{StaticResource H3Label}"
+                                    Text="{Binding Transaction.Date, StringFormat='{0:dd.MM.yyyy HH:mm}'}"
+                                    VerticalOptions="End" />
+
+                                <BoxView
+                                    Grid.Row="2"
+                                    Grid.ColumnSpan="2"
+                                    HeightRequest="1"
+                                    Color="{StaticResource Gray300}" />
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </Grid>
+    </Frame>
+</ContentView>

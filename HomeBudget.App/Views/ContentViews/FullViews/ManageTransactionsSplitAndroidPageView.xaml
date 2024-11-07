@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HomeBudget.App.Views.ContentViews.FullViews.ManageTransactionsSplitAndroidPageView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:andriod="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:fullViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.FullViews"
+    xmlns:fullViews="clr-namespace:HomeBudget.App.Views.ContentViews.FullViews"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="fullViewModels:ManageTransactionsSplitPageViewModel">
+
+    <Grid BackgroundColor="{StaticResource Gray200}" RowDefinitions="Auto,*">
+
+        <Border
+            Grid.Row="0"
+            Padding="20,20,20,20"
+            BackgroundColor="White"
+            StrokeThickness="0">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,15,15" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <Button
+                    Margin="0"
+                    Padding="0"
+                    Command="{Binding BackCommand}"
+                    FontSize="{StaticResource ExtraLargeFontSize}"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{x:Static icons:Icons.ArrowBackward}"
+                    TextColor="{StaticResource Secondary}" />
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource H1Label}"
+                    Text="{Binding Title}" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Frame
+                Margin="15"
+                Padding="15"
+                BackgroundColor="{StaticResource White}"
+                BorderColor="{StaticResource Gray100}"
+                HasShadow="True">
+
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*,Auto" RowSpacing="5">
+                    <Grid
+                        Grid.Row="0"
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="5">
+                        <Frame Grid.Column="0" Style="{StaticResource SecondaryEntryFrame}">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Label
+                                    Margin="10,0,0,0"
+                                    Style="{StaticResource SeletedInnerIcon}"
+                                    Text="{x:Static icons:Icons.CalendarStart}" />
+                                <DatePicker Grid.Column="1" Date="{Binding SelectedDate, Mode=TwoWay}" />
+                            </Grid>
+                        </Frame>
+
+                        <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Label
+                                    Margin="10,0,0,0"
+                                    Style="{StaticResource SeletedInnerIcon}"
+                                    Text="{x:Static icons:Icons.Clock}" />
+                                <TimePicker Grid.Column="1" Time="{Binding SelectedTime, Mode=TwoWay}" />
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                    <Label
+                        Grid.Row="1"
+                        Style="{StaticResource H2Label}"
+                        Text="Kwota całkowita do podziału" />
+
+                    <Grid
+                        Grid.Row="2"
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="5">
+
+                        <Frame
+                            Grid.Column="0"
+                            Margin="0"
+                            Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                FontSize="{StaticResource LargePlusFontSize}"
+                                Keyboard="Numeric"
+                                Placeholder="00,00"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding AmountToSplit, Mode=TwoWay, StringFormat='{}{0:c}'}" />
+                        </Frame>
+
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding PushRestCommand}"
+                            FontSize="{StaticResource LargeFontSize}"
+                            Style="{StaticResource IconFramedFlexButton}"
+                            Text="{x:Static icons:Icons.ArrowDown}" />
+                    </Grid>
+
+                    <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center">
+                        <Label Style="{StaticResource SeletedInnerIcon}" Text="{x:Static icons:Icons.ArrowDown}" />
+                        <Label Style="{StaticResource SeletedInnerIcon}" Text="{x:Static icons:Icons.ArrowDown}" />
+                        <Label Style="{StaticResource SeletedInnerIcon}" Text="{x:Static icons:Icons.ArrowDown}" />
+                    </HorizontalStackLayout>
+
+                    <controls:DropdownPickerTransactionCategoryContentView Grid.Row="4" BindingContext="{Binding CategorySelectVM}" />
+
+
+
+                    <Frame Grid.Row="5" Style="{StaticResource SecondaryEntryFrame}">
+                        <Entry
+                            Placeholder="Nazwa"
+                            Style="{StaticResource DarkMediumEntry}"
+                            Text="{Binding TemporaryTransaction.Name}" />
+                    </Frame>
+
+                    <Frame Grid.Row="6" Style="{StaticResource SecondaryEntryFrame}">
+                        <Entry
+                            Placeholder="Opis dodatkowy"
+                            Style="{StaticResource DarkMediumEntry}"
+                            Text="{Binding TemporaryTransaction.Description}" />
+                    </Frame>
+
+                    <Grid
+                        Grid.Row="7"
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="5">
+
+                        <Frame
+                            Grid.Column="0"
+                            Margin="0"
+                            Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                FontSize="{StaticResource LargePlusFontSize}"
+                                Keyboard="Numeric"
+                                Placeholder="00,00"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryTransaction.TotalAmount, Mode=TwoWay, StringFormat='{}{0:C}'}" />
+                        </Frame>
+
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding CalculatorPopupContentVM.ToggleVisibilityCommand}"
+                            FontSize="{StaticResource LargeFontSize}"
+                            Style="{StaticResource IconFramedFlexButton}"
+                            Text="{x:Static icons:Icons.Calculate}" />
+                    </Grid>
+
+                    <Button
+                        Grid.Row="8"
+                        Command="{Binding SplitCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Wydziel"
+                        VerticalOptions="End" />
+
+                    <CollectionView
+                        Grid.Row="9"
+                        ItemsSource="{Binding Transactions}"
+                        VerticalOptions="StartAndExpand">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="contentViewModels:TransactionGroupItem">
+                                <SwipeView SwipeStarted="SwipeView_SwipeStarted">
+
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+                                            <SwipeItemView>
+                                                <Grid>
+                                                    <Button
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type fullViewModels:ManageTransactionsSplitPageViewModel}}, Path=RemoveTransactionCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        FontSize="{StaticResource LargeFontSize}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        Style="{StaticResource IconFlexButton}"
+                                                        Text="{x:Static icons:Icons.Close}"
+                                                        VerticalOptions="FillAndExpand" />
+                                                </Grid>
+                                            </SwipeItemView>
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+
+                                    <Grid
+                                        BackgroundColor="{StaticResource White}"
+                                        ColumnDefinitions="Auto,*,Auto"
+                                        ColumnSpacing="5"
+                                        RowDefinitions="*,Auto,Auto">
+                                        <Label
+                                            Grid.RowSpan="3"
+                                            Margin="10"
+                                            FontSize="{StaticResource ExtraLargePlusFontSize}"
+                                            HorizontalOptions="Center"
+                                            Style="{StaticResource SeletedInnerIcon}"
+                                            Text="{Binding TransactionCategory.IconUnicode}"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Style="{StaticResource H2Label}"
+                                            Text="{Binding Transaction.Name}"
+                                            VerticalOptions="End" />
+
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            LineBreakMode="TailTruncation"
+                                            Style="{StaticResource H3Label}"
+                                            Text="{Binding Transaction.Description}"
+                                            VerticalOptions="Start" />
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Style="{StaticResource H2Label}"
+                                            Text="{Binding Transaction.TotalAmount, StringFormat='{0:C}'}"
+                                            TextColor="Green"
+                                            VerticalOptions="End" />
+
+                                        <BoxView
+                                            Grid.Row="2"
+                                            Grid.ColumnSpan="3"
+                                            HeightRequest="1"
+                                            Color="{StaticResource Gray300}" />
+                                    </Grid>
+
+                                </SwipeView>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Button
+                        Grid.Row="10"
+                        Command="{Binding AddCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Zatwierdź"
+                        VerticalOptions="End" />
+                </Grid>
+            </Frame>
+        </Grid>
+
+
+        <controls:CalculatorPopupContentView Grid.RowSpan="2" BindingContext="{Binding CalculatorPopupContentVM}" />
+        <controls:DropdownSelectTransactionCategoryContentView Grid.RowSpan="2" BindingContext="{Binding CategorySelectVM}" />
+        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+    </Grid>
+
+</ContentPage>

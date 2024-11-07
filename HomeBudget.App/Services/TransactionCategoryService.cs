@@ -1,0 +1,124 @@
+﻿using HomeBudget.App.Extensions;
+using HomeBudget.App.Models;
+using HomeBudget.App.Services.Common;
+using HomeBudget.App.Services.Interfaces;
+using HomeBudget.Common.EntityDTOs.TransactionCategory;
+
+namespace HomeBudget.App.Services
+{
+    public class TransactionCategoryService : ITransactionCategoryService
+    {
+        private readonly IApiClient _apiClient;
+
+        public TransactionCategoryService(IApiClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
+
+        public async Task<bool> GetAllTransactionCategoriesAsync(Budget budget)
+        {
+            string url = $"" +
+                $"{ApiEndpoints.BaseAddress}" +
+                $"{ApiEndpoints.Api}" +
+                $"{ApiEndpoints.User}" +
+                $"{ApiEndpoints.Budget}" +
+                $"/{budget.Id}" +
+                $"{ApiEndpoints.TransactionCategory}";
+
+            var response = await _apiClient.GetAsync<List<TransactionCategoryGetResponseModel>>(url);
+            if (response != null)
+            {
+                budget.TransactionCategories.Clear();
+                foreach (var item in response)
+                {
+                    budget.TransactionCategories.Add(item.FromGetResponse());
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public Task<TransactionCategory> GetTransactionCategoryByIdsAsync(string budgetId, string categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> CreateTransactionCategoriesAsync(Budget budget, List<TransactionCategory> transactionCategories)
+        {
+            string url = $"" +
+                $"{ApiEndpoints.BaseAddress}" +
+                $"{ApiEndpoints.Api}" +
+                $"{ApiEndpoints.User}" +
+                $"{ApiEndpoints.Budget}" +
+                $"/{budget.Id}" +
+                $"{ApiEndpoints.TransactionCategory}";
+
+            var response = await _apiClient.PostAsync<List<TransactionCategoryCreateRequestModel>, List<TransactionCategoryCreateResponseModel>>(url, transactionCategories.Select(e => e.ToCreateRequest()).ToList());
+            if (response != null)
+            {
+                foreach (var item in response)
+                {
+                    budget.TransactionCategories.Add(item.FromCreateResponse());
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> CreateTransactionCategoryAsync(Budget budget, TransactionCategory transactionCategory)
+        {
+            return await CreateTransactionCategoriesAsync(budget, new List<TransactionCategory>() { transactionCategory });
+        }
+
+        public async Task<bool> UpdateTransactionCategoryAsync(Budget budget, TransactionCategory transactionCategory)
+        {
+            var categoryToUpdate = budget.TransactionCategories.Find(e => e.Id.Equals(transactionCategory.Id));
+
+            if (categoryToUpdate != null)
+            {
+                string url = $"" +
+                    $"{ApiEndpoints.BaseAddress}" +
+                    $"{ApiEndpoints.Api}" +
+                    $"{ApiEndpoints.User}" +
+                    $"{ApiEndpoints.Budget}" +
+                    $"/{transactionCategory.BudgetId}" +
+                    $"{ApiEndpoints.TransactionCategory}" +
+                    $"/{transactionCategory.Id}";
+
+                var response = await _apiClient.PutAsync<TransactionCategoryUpdateRequestModel, TransactionCategoryUpdateResponseModel>(url, transactionCategory.ToUpdateRequest());
+                if (response != null)
+                {
+                    categoryToUpdate.FromUpdateResponse(response);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteTransactionCategoryAsync(Budget budget, TransactionCategory transactionCategory)
+        {
+            var categoryToDelete = budget.TransactionCategories.Find(e => e.Id.Equals(transactionCategory.Id));
+
+            if (categoryToDelete != null)
+            {
+                string url = $"" +
+                    $"{ApiEndpoints.BaseAddress}" +
+                    $"{ApiEndpoints.Api}" +
+                    $"{ApiEndpoints.User}" +
+                    $"{ApiEndpoints.Budget}" +
+                    $"/{budget.Id}" +
+                    $"{ApiEndpoints.TransactionCategory}" +
+                    $"/{transactionCategory.Id}";
+
+                bool result = await _apiClient.DeleteAsync(url);
+
+                if (result)
+                {
+                    budget.TransactionCategories.Remove(categoryToDelete);
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}

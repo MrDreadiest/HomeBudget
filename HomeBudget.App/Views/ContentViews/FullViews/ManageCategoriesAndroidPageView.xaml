@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HomeBudget.App.Views.ContentViews.FullViews.ManageCategoriesAndroidPageView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:andriod="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:fullViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.FullViews"
+    xmlns:fullViews="clr-namespace:HomeBudget.App.Views.ContentViews.FullViews"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="RootPage"
+    x:DataType="fullViewModels:ManageTransactionCategoriesPageViewModel">
+
+    <Grid BackgroundColor="{StaticResource Gray200}" RowDefinitions="Auto,*">
+
+        <Border
+            Grid.Row="0"
+            Padding="20,20,20,20"
+            BackgroundColor="White"
+            StrokeThickness="0">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,15,15" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <Button
+                    Margin="0"
+                    Padding="0"
+                    Command="{Binding BackCommand}"
+                    FontSize="{StaticResource ExtraLargeFontSize}"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{x:Static icons:Icons.ArrowBackward}"
+                    TextColor="{StaticResource Secondary}" />
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource H1Label}"
+                    Text="{Binding Title}" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Frame
+                Grid.Row="0"
+                Padding="15"
+                BorderColor="{StaticResource Gray100}"
+                HasShadow="True">
+
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="5">
+
+                    <controls:SelectableButtonGroupView Grid.Row="0" BindingContext="{Binding SelectableButtonGroupVM}" />
+
+                    <Grid
+                        Grid.Row="1"
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="5">
+                        <Button
+                            Grid.Column="0"
+                            Command="{Binding ToggleIconSelectCommand}"
+                            HeightRequest="50"
+                            Style="{StaticResource IconFramedFlexButton}"
+                            Text="{Binding TemporaryCategory.IconUnicode}" />
+
+                        <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Nazwa kategorii"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryCategory.Name}" />
+                        </Frame>
+                    </Grid>
+
+                    <Label
+                        Grid.Row="2"
+                        Style="{StaticResource H3Label}"
+                        Text="Kliknij w ikonę aby zmienić" />
+
+                    <Button
+                        Grid.Row="3"
+                        Margin="0"
+                        Command="{Binding ProcessActionCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Wykonaj" />
+                </Grid>
+            </Frame>
+
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
+                <BoxView
+                    Grid.Column="0"
+                    HeightRequest="1"
+                    Color="{StaticResource Gray300}" />
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource LoginViewH2Label}"
+                    Text="Akualnie dodane kategorie w budżecie" />
+                <BoxView
+                    Grid.Column="2"
+                    HeightRequest="1"
+                    Color="{StaticResource Gray300}" />
+            </Grid>
+
+            <Frame
+                Grid.Row="2"
+                Padding="15"
+                BorderColor="{StaticResource Gray100}"
+                HasShadow="True">
+                <RefreshView
+                    Command="{Binding ReloadCommand}"
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    IsVisible="{Binding IsNotBusy}">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Categories}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:TransactionCategory">
+
+                                    <SwipeView SwipeStarted="SwipeView_SwipeStarted">
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
+                                                <SwipeItemView>
+                                                    <Button
+                                                        Grid.Row="0"
+                                                        Grid.Column="2"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type fullViewModels:ManageTransactionCategoriesPageViewModel}}, Path=RemoveCategoryCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        Style="{StaticResource IconFlexButton}"
+                                                        Text="{x:Static icons:Icons.Close}"
+                                                        VerticalOptions="FillAndExpand" />
+                                                </SwipeItemView>
+                                            </SwipeItems>
+                                        </SwipeView.LeftItems>
+
+                                        <SwipeView.RightItems>
+                                            <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
+                                                <SwipeItemView>
+                                                    <Button
+                                                        Grid.Row="0"
+                                                        Grid.Column="2"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type fullViewModels:ManageTransactionCategoriesPageViewModel}}, Path=SelectCategoryCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        Style="{StaticResource TransparentButton}"
+                                                        Text="Wybierz"
+                                                        VerticalOptions="FillAndExpand" />
+                                                </SwipeItemView>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+
+                                        <Grid
+                                            Margin="0,2,10,2"
+                                            ColumnDefinitions="Auto,*"
+                                            RowDefinitions="*,Auto">
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Margin="10"
+                                                Style="{StaticResource MaterialIcon}"
+                                                Text="{Binding IconUnicode}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Style="{StaticResource H2Label}"
+                                                Text="{Binding Name}"
+                                                VerticalOptions="Center" />
+
+                                            <BoxView
+                                                Grid.Row="1"
+                                                Grid.ColumnSpan="3"
+                                                HeightRequest="1"
+                                                Color="{StaticResource Gray200}" />
+
+
+                                        </Grid>
+                                    </SwipeView>
+
+
+                                </DataTemplate>
+
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </RefreshView>
+
+            </Frame>
+
+        </Grid>
+
+        <contentViews:IconSelectContentView
+            Grid.Row="1"
+            Margin="30,15,30,30"
+            BindingContext="{Binding IconSelectVM}" />
+        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+    </Grid>
+</ContentPage>

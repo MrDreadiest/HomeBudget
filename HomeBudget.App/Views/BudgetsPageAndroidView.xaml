@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HomeBudget.App.Views.BudgetsPageAndroidView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:models="clr-namespace:HomeBudget.App.Models"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="viewmodels:BudgetsPageViewModel">
+
+    <Grid BackgroundColor="{StaticResource White}" RowDefinitions="Auto,*,Auto">
+
+        <Grid
+            Padding="20,20,20,20"
+            RowDefinitions="Auto,*"
+            RowSpacing="5">
+
+            <Label
+                Grid.Row="0"
+                Style="{StaticResource H1Label}"
+                Text="Budżety"
+                TextColor="{StaticResource Gray600}" />
+
+            <controls:SelectableButtonGroupView Grid.Row="1" BindingContext="{Binding SelectableButtonGroupVM}" />
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            BackgroundColor="{StaticResource Gray200}"
+            Stroke="{StaticResource Gray200}"
+            StrokeThickness="1">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15,15,0,0" />
+            </Border.StrokeShape>
+
+            <Grid
+                Margin="15"
+                RowDefinitions="Auto,*"
+                RowSpacing="10">
+
+                <Frame
+                    Padding="0"
+                    BorderColor="Transparent"
+                    CornerRadius="10">
+
+                    <Grid
+                        BackgroundColor="{StaticResource Primary}"
+                        ColumnDefinitions="*,Auto"
+                        RowDefinitions="Auto,*">
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="15"
+                            Style="{StaticResource H2Label}"
+                            Text="Utwórz nowy budżet"
+                            TextColor="{StaticResource White}" />
+
+                        <Button
+                            Grid.Column="1"
+                            Margin="10"
+                            Command="{Binding AddBudgetCommand}"
+                            Style="{StaticResource SecondaryButton}"
+                            Text="Dodaj" />
+
+                        <Grid
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Padding="15"
+                            BackgroundColor="White"
+                            RowDefinitions="Auto,Auto,Auto,Auto">
+                            <Button
+                                Grid.Row="0"
+                                Command="{Binding ToggleBudgetIconSelectCommand}"
+                                HeightRequest="50"
+                                Style="{StaticResource IconFramedFlexButton}"
+                                Text="{Binding TemporaryBudget.IconUnicode}" />
+                            <Label
+                                Grid.Row="1"
+                                Style="{StaticResource H3Label}"
+                                Text="Kliknij by wybrać przypisaną ikonę" />
+                            <Frame Grid.Row="2" Style="{StaticResource SecondaryEntryFrame}">
+                                <Entry
+                                    Placeholder="Nazwa budżetu"
+                                    Style="{StaticResource DarkMediumEntry}"
+                                    Text="{Binding TemporaryBudget.Name}" />
+                            </Frame>
+                            <Frame Grid.Row="3" Style="{StaticResource SecondaryEntryFrame}">
+                                <Entry
+                                    Placeholder="Dodatkowy opis"
+                                    Style="{StaticResource DarkMediumEntry}"
+                                    Text="{Binding TemporaryBudget.Description}" />
+                            </Frame>
+                        </Grid>
+
+
+
+                    </Grid>
+                </Frame>
+
+                <ScrollView Grid.Row="1">
+                    <CollectionView ItemsSource="{Binding SelectBudgetVMs}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:SelectBudgetContentView BindingContext="{Binding}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+            </Grid>
+
+        </Border>
+
+        <contentViews:IconSelectContentView Grid.RowSpan="2" BindingContext="{Binding BudgetIconSelectVM}" />
+        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+
+    </Grid>
+
+</ContentPage>
