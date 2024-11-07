@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.Shortcuts.ShortcutButtonContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Shortcuts"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews.Shortcuts"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="contentViewModels:ShortcutButtonContentViewModel">
+    <VerticalStackLayout HorizontalOptions="Center">
+        <Button
+            Command="{Binding GoToCommand}"
+            FontSize="{StaticResource LargeFontSize}"
+            HeightRequest="60"
+            Style="{StaticResource IconFramedFlexButton}"
+            Text="{Binding IconUnicode}"
+            WidthRequest="60" />
+        <Label
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            LineBreakMode="WordWrap"
+            Style="{StaticResource H3Label}"
+            Text="{Binding Title}"
+            VerticalOptions="Center"
+            VerticalTextAlignment="Start" />
+    </VerticalStackLayout>
+</ContentView>

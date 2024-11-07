@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.SelectableButtonGroupView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.UniversalControls"
+    xmlns:views="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    x:DataType="viewmodels:SelectableButtonGroupViewModel">
+
+    <Frame
+        Padding="2"
+        BackgroundColor="{StaticResource Gray200}"
+        BorderColor="Transparent"
+        HorizontalOptions="FillAndExpand"
+        VerticalOptions="FillAndExpand">
+        <CollectionView
+            x:Name="ButtonCollection"
+            HorizontalOptions="Center"
+            ItemsSource="{Binding Options}"
+            VerticalOptions="Center">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="{Binding Options.Count}" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:OptionItem">
+                    <Button
+                        x:Name="OptionButton"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SelectableButtonGroupViewModel}}, Path=SelectOptionCommand}"
+                        CommandParameter="{Binding}"
+                        HorizontalOptions="FillAndExpand"
+                        Text="{Binding Text}"
+                        VerticalOptions="FillAndExpand">
+
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="LineBreakMode" Value="WordWrap" />
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsSelected}"
+                                        TargetType="Button"
+                                        Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+                                        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                        <Setter Property="FontAttributes" Value="Bold" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsSelected}"
+                                        TargetType="Button"
+                                        Value="False">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource Gray200}" />
+                                        <Setter Property="TextColor" Value="{StaticResource Gray500}" />
+                                        <Setter Property="FontAttributes" Value="None" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Frame>
+
+
+
+</ContentView>

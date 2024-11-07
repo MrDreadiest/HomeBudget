@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.Filters.TransactionDateFilterContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Filters"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews.Filters"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="contentViewModels:TransactionDateFilterContentViewModel">
+
+    <ContentView.BindingContext>
+        <contentViewModels:TransactionDateFilterContentViewModel />
+    </ContentView.BindingContext>
+
+    <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0">
+
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="15,15,0,0" />
+        </Border.StrokeShape>
+
+        <Grid
+            Margin="15,15,15,15"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="5"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,77"
+            RowSpacing="5">
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource H1Label}"
+                Text="{Binding Title}"
+                TextColor="{StaticResource White}" />
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource H3Label}"
+                Text="Skróty"
+                TextColor="{StaticResource White}" />
+
+            <controls:SelectableButtonGroupView
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                BindingContext="{Binding SelectableButtonGroupVM}" />
+
+            <Label
+                Grid.Row="3"
+                Grid.Column="0"
+                Style="{StaticResource H3Label}"
+                Text="Od"
+                TextColor="{StaticResource White}" />
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Style="{StaticResource H3Label}"
+                Text="Do"
+                TextColor="{StaticResource White}" />
+
+            <Frame
+                Grid.Row="4"
+                Grid.Column="0"
+                BackgroundColor="White"
+                
+                Padding="-2">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label
+                        Margin="10,0,0,0"
+                        Style="{StaticResource SeletedInnerIcon}"
+                        Text="{x:Static icons:Icons.CalendarStart}" />
+                    <DatePicker
+                        Grid.Column="1"
+                        BackgroundColor="{StaticResource White}"
+                        Date="{Binding DateFrom}" />
+                </Grid>
+            </Frame>
+
+            <Frame
+                Grid.Row="4"
+                Grid.Column="1"
+                Padding="-2">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label
+                        Margin="10,0,0,0"
+                        Style="{StaticResource SeletedInnerIcon}"
+                        Text="{x:Static icons:Icons.CalendarEnds}" />
+                    <DatePicker
+                        Grid.Column="1"
+                        BackgroundColor="{StaticResource White}"
+                        Date="{Binding DateTo}" />
+                </Grid>
+            </Frame>
+
+            <Button
+                Grid.Row="5"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Command="{Binding FilterCommand}"
+                Style="{StaticResource SecondaryButton}"
+                Text="{Binding ActionName}" />
+
+        </Grid>
+    </Border>
+
+</ContentView>

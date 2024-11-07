@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodel="clr-namespace:HomeBudget.App.ViewModels"
-             x:Class="HomeBudget.App.Views.DashboardPageAndroidView"
-             x:DataType="viewmodel:DashboardPageViewModel"
-             Title="DashboardPageAndroidView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Dashboard"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="HomeBudget.App.Views.DashboardPageAndroidView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:handViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.HandViews"
+    xmlns:handViews="clr-namespace:HomeBudget.App.Views.ContentViews.HandViews"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="viewmodels:DashboardPageViewModel">
+
+    <Grid BackgroundColor="{StaticResource White}" RowDefinitions="Auto,*,Auto">
+
+        <Grid Padding="20,20,20,20">
+            <handViews:CurrentBudgetContentView BindingContext="{Binding CurrentBudgetVM}" />
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            BackgroundColor="{StaticResource Gray200}"
+            Stroke="{StaticResource Gray200}"
+            StrokeThickness="1">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15,15,0,0" />
+            </Border.StrokeShape>
+
+            <ScrollView
+                Grid.Row="0"
+                Padding="15">
+                <VerticalStackLayout Spacing="15">
+                    <handViews:CurrentBudgetBalanceContentView BindingContext="{Binding CurrentBudgetBalanceVM}" />
+                    <handViews:ShortcutsContentView BindingContext="{Binding ShortcutsVM}" />
+                    <!--<handViews:RegularTransactionsReminderContentView BindingContext="{Binding RegularTransactionsReminderVM}" />-->
+                    <handViews:LastTransactionsReminderContentView BindingContext="{Binding LastTransactionsReminderVM}" />
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </Border>
+
+        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+
+    </Grid>
 </ContentPage>

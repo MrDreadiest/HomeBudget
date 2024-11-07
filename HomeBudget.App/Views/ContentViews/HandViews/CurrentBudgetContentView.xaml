@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.HandViews.CurrentBudgetContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:handViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.HandViews"
+    xmlns:handViews="clr-namespace:HomeBudget.App.Views.ContentViews.HandViews"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="handViewModels:CurrentBudgetContentViewModel">
+
+    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,*">
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Style="{StaticResource H1Label}"
+            Text="{Binding Title}"
+            TextColor="{StaticResource Gray600}" />
+        <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Command="{Binding GoToFullViewCommand}"
+            FontSize="{StaticResource MediumFontSize}"
+            Style="{StaticResource TransparentButton}"
+            Text="Edytuj"
+            TextColor="{StaticResource Primary}" />
+        <Frame
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Padding="0"
+            BackgroundColor="{StaticResource White}"
+            BorderColor="Transparent"
+            HasShadow="True">
+            <Grid ColumnDefinitions="Auto,*,*" RowDefinitions="Auto,*">
+                <Frame
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="{StaticResource Primary}"
+                    BorderColor="{StaticResource Gray200}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                    <Label
+                        Margin="10"
+                        FontSize="{StaticResource ExtraLargePlusFontSize}"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource SeletedInnerIcon}"
+                        Text="{Binding Budget.IconUnicode}"
+                        TextColor="{StaticResource White}"
+                        VerticalOptions="Center" />
+                </Frame>
+
+                <VerticalStackLayout
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2">
+                    <Label
+                        Margin="10,0,0,0"
+                        Style="{StaticResource H2Label}"
+                        Text="{Binding Budget.Name}"
+                        TextColor="{StaticResource Gray600}" />
+
+                    <Label
+                        Margin="10,0,0,0"
+                        Style="{StaticResource H3Label}"
+                        Text="{Binding Budget.Description}" />
+                </VerticalStackLayout>
+
+            </Grid>
+
+        </Frame>
+    </Grid>
+
+</ContentView>

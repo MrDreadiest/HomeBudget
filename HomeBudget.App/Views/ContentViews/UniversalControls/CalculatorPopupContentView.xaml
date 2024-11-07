@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.CalculatorPopupContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.UniversalControls"
+    x:DataType="viewmodels:CalculatorPopupContentViewModel">
+
+    <ContentView.Resources>
+
+        <Style
+            x:Key="CalculatorButton"
+            BasedOn="{StaticResource TransparentButton}"
+            TargetType="Button">
+            <Setter Property="FontSize" Value="{StaticResource LargePlusFontSize}" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="FillAndExpand" />
+        </Style>
+
+    </ContentView.Resources>
+
+    <Frame
+        Padding="0"
+        BackgroundColor="{StaticResource GrayT100}"
+        BorderColor="Transparent"
+        IsVisible="{Binding IsVisible}">
+        <Frame
+            BackgroundColor="{StaticResource White}"
+            BorderColor="{StaticResource Gray100}"
+            HasShadow="True"
+            Margin="40"
+            Padding="5"
+            VerticalOptions="Center">
+            <VerticalStackLayout Spacing="5">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="5">
+                    <Button
+                        Grid.Column="0"
+                        Margin="0"
+                        Command="{Binding ToggleVisibilityCommand}"
+                        Style="{StaticResource NavigationIconButton}"
+                        Text="{x:Static icons:Icons.Back}" />
+                    <Label
+                        Grid.Column="1"
+                        Style="{StaticResource H1Label}"
+                        Text="{Binding Title}" />
+                </Grid>
+
+                <Frame Margin="5" Padding="10" BorderColor="{StaticResource Gray100}" BackgroundColor="{StaticResource White}">
+                    <VerticalStackLayout>
+                        <ScrollView HorizontalOptions="End" Orientation="Horizontal">
+                            <Label
+                                HorizontalOptions="End"
+                                LineBreakMode="NoWrap"
+                                Style="{StaticResource H1Label}"
+                                Text="{Binding ResultDisplay}"
+                                VerticalOptions="End" />
+                        </ScrollView>
+                        <ScrollView HorizontalOptions="End" Orientation="Horizontal">
+                            <Label
+                                HorizontalOptions="End"
+                                LineBreakMode="NoWrap"
+                                Style="{StaticResource H2Label}"
+                                Text="{Binding FormulaDisplay}"
+                                TextColor="{StaticResource Gray400}"
+                                VerticalOptions="Start" />
+                        </ScrollView>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Command="{Binding ClearFormulaCommand}"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="C" />
+                    <Button
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        Command="{Binding DeleteLastCharacterCommand}"
+                        Style="{StaticResource IconFlexButton}"
+                        Text="{x:Static icons:Icons.Backspace}" />
+
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="7"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="7" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="8"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="8" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="9"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="9" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="/"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="/" />
+
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="4"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="4" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="5"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="5" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="6"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="6" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="*"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="*" />
+
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="1"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="1" />
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="2"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="2" />
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="3"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="3" />
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="-"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="-" />
+
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="0"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="0" />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter=","
+                        Style="{StaticResource CalculatorButton}"
+                        Text="," />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        Command="{Binding AppendToFormulaCommand}"
+                        CommandParameter="+"
+                        Style="{StaticResource CalculatorButton}"
+                        Text="+" />
+                </Grid>
+
+                <Button
+                    Margin="10"
+                    Command="{Binding AcceptCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="Zatwierdź" />
+            </VerticalStackLayout>
+        </Frame>
+    </Frame>
+
+</ContentView>

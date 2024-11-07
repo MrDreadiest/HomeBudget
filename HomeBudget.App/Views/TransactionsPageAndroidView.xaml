@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HomeBudget.App.Views.TransactionsPageAndroidView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:filtersContentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Filters"
+    xmlns:filtetrsContentViews="clr-namespace:HomeBudget.App.Views.ContentViews.Filters"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:models="clr-namespace:HomeBudget.App.Models"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="viewmodels:TransactionsPageViewModel">
+
+    <Grid BackgroundColor="{StaticResource White}" RowDefinitions="Auto,*,Auto">
+
+        <Grid
+            Margin="20,20,20,20"
+            RowDefinitions="Auto,Auto,*"
+            RowSpacing="10">
+
+            <Label
+                Grid.Row="0"
+                Style="{StaticResource H1Label}"
+                Text="Historia transakcji"
+                TextColor="{StaticResource Gray600}" />
+            <Frame
+                Grid.Row="1"
+                Padding="-2"
+                BackgroundColor="{StaticResource Gray100}"
+                BorderColor="{StaticResource Gray200}">
+                <SearchBar
+                    BackgroundColor="Transparent"
+                    Placeholder="Szukanie"
+                    Text="{Binding SearchQuery}" />
+            </Frame>
+            <Grid
+                Grid.Row="2"
+                ColumnDefinitions="Auto,*,Auto,Auto"
+                ColumnSpacing="5">
+
+                <Frame
+                    Grid.Column="0"
+                    Padding="0"
+                    CornerRadius="10"
+                    IsEnabled="False">
+                    <Frame.Style>
+                        <Style TargetType="Frame">
+                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}" />
+                            <Setter Property="BorderColor" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding TransactionTypeFilterVM.IsActive}"
+                                    TargetType="Frame"
+                                    Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Frame.Style>
+                    <Button
+                        Margin="-3,-3,3,3"
+                        Command="{Binding ToggleFilterVisibilityCommand}"
+                        CommandParameter="{Binding TransactionTypeFilterVM}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Rodzaj" />
+                </Frame>
+
+                <Frame Grid.Column="1" Padding="0">
+                    <Frame.Style>
+                        <Style TargetType="Frame">
+                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}" />
+                            <Setter Property="BorderColor" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding TransactionCategoryFilterVM.IsActive}"
+                                    TargetType="Frame"
+                                    Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Frame.Style>
+                    <Button
+                        Grid.Column="1"
+                        Margin="-3,-3,3,3"
+                        Command="{Binding ToggleFilterVisibilityCommand}"
+                        CommandParameter="{Binding TransactionCategoryFilterVM}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Kategoria" />
+
+                </Frame>
+
+                <Frame Grid.Column="2" Padding="0">
+                    <Frame.Style>
+                        <Style TargetType="Frame">
+                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}" />
+                            <Setter Property="BorderColor" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding TransactionPriceFilterVM.IsActive}"
+                                    TargetType="Frame"
+                                    Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Frame.Style>
+                    <Button
+                        Grid.Column="2"
+                        Margin="-3,-3,3,3"
+                        Command="{Binding ToggleFilterVisibilityCommand}"
+                        CommandParameter="{Binding TransactionPriceFilterVM}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Kwota" />
+                </Frame>
+
+                <Frame Grid.Column="3" Padding="0">
+                    <Frame.Style>
+                        <Style TargetType="Frame">
+                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}" />
+                            <Setter Property="BorderColor" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding TransactionDateFilterVM.IsActive}"
+                                    TargetType="Frame"
+                                    Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Frame.Style>
+                    <Button
+                        Grid.Column="3"
+                        Margin="-3,-3,3,3"
+                        Command="{Binding ToggleFilterVisibilityCommand}"
+                        CommandParameter="{Binding TransactionDateFilterVM}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Data" />
+                </Frame>
+            </Grid>
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Padding="0"
+            BackgroundColor="{StaticResource Gray100}"
+            Stroke="{StaticResource Gray200}"
+            StrokeThickness="1">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15,15,0,0" />
+            </Border.StrokeShape>
+
+            <contentViews:TransactionListContentView BindingContext="{Binding TransactionListVM}" />
+
+        </Border>
+
+        <Grid
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Padding="0"
+            VerticalOptions="End">
+            <filtetrsContentViews:TransactionTypeFilterContentView BindingContext="{Binding TransactionTypeFilterVM}" />
+            <filtetrsContentViews:TransactionCategoryFilterContentView BindingContext="{Binding TransactionCategoryFilterVM}" />
+            <filtetrsContentViews:TransactionPriceFilterContentView BindingContext="{Binding TransactionPriceFilterVM}" />
+            <filtetrsContentViews:TransactionDateFilterContentView BindingContext="{Binding TransactionDateFilterVM}" />
+        </Grid>
+
+        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+
+    </Grid>
+
+</ContentPage>

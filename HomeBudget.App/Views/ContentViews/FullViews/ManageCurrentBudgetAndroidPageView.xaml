@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HomeBudget.App.Views.ContentViews.FullViews.ManageCurrentBudgetAndroidPageView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:fullViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.FullViews"
+    xmlns:fullViews="clr-namespace:HomeBudget.App.Views.ContentViews.FullViews"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    x:DataType="fullViewModels:ManageCurrentBudgetPageViewModel">
+
+    <Grid BackgroundColor="{StaticResource Gray100}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Grid.Row="0"
+            Padding="15,15,30,15"
+            BackgroundColor="{StaticResource White}"
+            StrokeThickness="0">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,15,15" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*">
+                <Button
+                    Margin="0"
+                    Padding="0"
+                    Command="{Binding BackCommand}"
+                    FontSize="{StaticResource ExtraLargeFontSize}"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{x:Static icons:Icons.ArrowBackward}"
+                    TextColor="{StaticResource Primary}" />
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource H1Label}"
+                    Text="{Binding Title}"
+                    TextColor="{StaticResource Gray500}" />
+            </Grid>
+
+        </Border>
+
+        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+    </Grid>
+
+</ContentPage>

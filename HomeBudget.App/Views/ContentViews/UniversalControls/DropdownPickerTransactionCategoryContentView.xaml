@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.DropdownPickerTransactionCategoryContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controlModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.UniversalControls"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="controlModels:DropdownTransactionCategoryContentViewModel">
+
+    <Frame Style="{StaticResource SecondaryEntryFrame}">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding ToggleViewCommand}" />
+        </Frame.GestureRecognizers>
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <Label
+                Grid.Column="0"
+                Margin="10"
+                Style="{StaticResource MaterialIcon}"
+                Text="{Binding SelectedCategory.IconUnicode}"
+                VerticalOptions="Center" />
+            <Label
+                Grid.Column="1"
+                Style="{StaticResource H2Label}"
+                Text="{Binding SelectedCategory.Name}"
+                VerticalOptions="Center" />
+            <Label
+                Grid.Column="2"
+                Margin="10"
+                Style="{StaticResource MaterialIcon}"
+                Text="{x:Static icons:Icons.ArrowDown}"
+                VerticalOptions="Center" />
+        </Grid>
+    </Frame>
+
+
+</ContentView>

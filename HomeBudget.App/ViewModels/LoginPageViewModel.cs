@@ -1,19 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HomeBudget.App.Models;
-using HomeBudget.App.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HomeBudget.App.Extensions;
+using HomeBudget.App.Resources.Icons;
+using HomeBudget.App.Services.Interfaces;
+using HomeBudget.App.Views;
+using HomeBudget.Common.EntityDTOs.Account;
 
 namespace HomeBudget.App.ViewModels
 {
     public partial class LoginPageViewModel : BaseViewModel
     {
         [RelayCommand]
-        public async Task Register()
+        public async Task GoToRegister()
         {
             if (IsBusy)
                 return;
@@ -21,7 +19,7 @@ namespace HomeBudget.App.ViewModels
             try
             {
                 IsBusy = true;
-                await clientService.Register(RegisterModel);
+                await Shell.Current.GoToAsync($"//{nameof(RegisterPageAndroidView)}");
             }
             catch
             {
@@ -43,7 +41,78 @@ namespace HomeBudget.App.ViewModels
             try
             {
                 IsBusy = true;
-                await clientService.Login(LoginModel);
+                var result = await _authenticationService.LoginAsync(new LoginRequestModel() { Email = Email, Password = Password });
+                if (result)
+                {
+                    if (IsRemembered)
+                    {
+                        await _appSettingsService.SetRememberedUserEmailAsync(Email);
+                        await _appSettingsService.SetRememberedUserPasswordAsync(Password);
+                    }
+
+                    if (_userService.CurrentUser.IsAccountSetup)
+                    {
+
+                        if (_budgetService.CurrentBudget.IsNullOrEmpty())
+                        {
+                            await Shell.Current.GoToAsync($"//{nameof(BudgetsPageAndroidView)}");
+                        }
+                        else
+                        {
+                            await Shell.Current.GoToAsync($"//{nameof(DashboardPageAndroidView)}");
+                        }
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync($"//{nameof(UserAccountSetupPageAndroidView)}");
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        public async Task GoToPasswordReminder()
+        {
+            if (IsBusy)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync($"//{nameof(PasswordReminderPageAndroidView)}");
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        public async Task TogglePasswordVisibility()
+        {
+            if (IsBusy)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                IsPasswordVisible = !IsPasswordVisible;
             }
             catch
             {
@@ -57,34 +126,68 @@ namespace HomeBudget.App.ViewModels
         }
 
         [ObservableProperty]
-        private RegisterModel registerModel;
+        private string _password;
 
         [ObservableProperty]
-        private LoginModel loginModel;
+        private string _email;
 
         [ObservableProperty]
-        private string email;
+        private bool isPasswordVisible;
+
         [ObservableProperty]
-        private bool isAuthenticated;
+        private string passwordVisibleIcon;
 
-        private readonly ClientService clientService;
+        [ObservableProperty]
+        private bool isRemembered;
 
-        public LoginPageViewModel(ClientService clientService)
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
+        private readonly IAppSettingsService _appSettingsService;
+        private readonly IBudgetService _budgetService;
+
+        public LoginPageViewModel(IAuthenticationService authenticationService, IUserService userService, IAppSettingsService appSettingsService, IBudgetService budgetService)
         {
-            this.clientService = clientService;
-            RegisterModel = new RegisterModel();
-            LoginModel = new LoginModel();
+            _authenticationService = authenticationService;
+            _userService = userService;
+            _appSettingsService = appSettingsService;
+            _budgetService = budgetService;
 
+            IsPasswordVisible = true;
         }
 
-        public override Task OnAppearingAsync()
+        public async override Task OnAppearingAsync()
         {
-            return Task.CompletedTask;
+            IsVisible = true;
+
+            IsRemembered = await _appSettingsService.GetIsRememberedSwitchOnAsync();
+
+            if (IsRemembered)
+            {
+                string rememberedPassword = await _appSettingsService.GetRememberedUserPasswordAsync();
+                string rememberedEmail = await _appSettingsService.GetRememberedUserEmailAsync();
+
+                if (!string.IsNullOrEmpty(rememberedEmail) && !string.IsNullOrEmpty(rememberedPassword))
+                {
+                    Password = rememberedPassword;
+                    Email = rememberedEmail;
+                }
+            }
         }
 
-        public override Task OnDisappearingAsync()
+        public async override Task OnDisappearingAsync()
         {
-            return Task.CompletedTask;
+            IsVisible = false;
+            await Task.CompletedTask;
+        }
+
+        partial void OnIsRememberedChanged(bool oldValue, bool newValue)
+        {
+            Task.Run(async () => { await _appSettingsService.SetIsRememberedSwitchOnAsync(newValue); });
+        }
+
+        partial void OnIsPasswordVisibleChanged(bool value)
+        {
+            PasswordVisibleIcon = value == true ? Icons.Visibility : Icons.VisibilityOff;
         }
     }
 }

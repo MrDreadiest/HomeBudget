@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.SelectBudgetContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
+    xmlns:controlModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.UniversalControls"
+    xmlns:controlViews="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:models="clr-namespace:HomeBudget.App.Models"
+    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:views="clr-namespace:HomeBudget.App.Views"
+    x:DataType="controlModels:SelectBudgetContentViewModel">
+
+    <Frame
+        Margin="0,2,0,3"
+        Padding="0"
+        BorderColor="Transparent"
+        CornerRadius="10">
+
+        <Grid
+            Padding="10"
+            BackgroundColor="White"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="10"
+            RowDefinitions="Auto">
+
+            <Frame
+                x:Name="IconFrame"
+                Grid.Column="0"
+                Padding="15"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <Label
+                    x:Name="BudgetIcon"
+                    FontSize="{StaticResource ExtraLargeFontSize}"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource SeletedInnerIcon}"
+                    Text="{Binding Budget.IconUnicode}"
+                    VerticalOptions="Center" />
+            </Frame>
+
+            <VerticalStackLayout Grid.Column="1">
+                <Label
+                    Margin="0"
+                    Style="{StaticResource H2Label}"
+                    Text="{Binding Budget.Name}" />
+                <Label
+                    Margin="0"
+                    Style="{StaticResource H3Label}"
+                    Text="{Binding Budget.Description}" />
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="2"
+                Margin="0"
+                Command="{Binding SelectBudgetCommand}"
+                Style="{StaticResource NavigationIconButton}"
+                Text="{x:Static icons:Icons.ArrowForward}" />
+
+        </Grid>
+    </Frame>
+
+</ContentView>
