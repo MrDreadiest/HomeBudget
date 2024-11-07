@@ -1,5 +1,4 @@
-﻿using HomeBudget.Common.EntityDTOs.Budget;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace HomeBudget.Api.Entities
 {
@@ -8,12 +7,13 @@ namespace HomeBudget.Api.Entities
         public string Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string IconUnicode { get; set; } = string.Empty;
 
         public string OwnerId { get; private set; }
 
-        #region ExpenseRelation
+        #region TransactionRelation
         [JsonIgnore]
-        public ICollection<Expense> Expenses { get; private set; } = new List<Expense>();
+        public ICollection<Transaction> Transactions { get; private set; } = new List<Transaction>();
         #endregion
 
         #region UserRelation
@@ -21,9 +21,9 @@ namespace HomeBudget.Api.Entities
         public List<User> Users { get; private set; } = new List<User>();
         #endregion
 
-        #region ExpenseCategories
+        #region TransactionCategories
         [JsonIgnore]
-        public List<ExpenseCategory> ExpenseCategories { get; private set; } = new List<ExpenseCategory>();
+        public List<TransactionCategory> TransactionCategories { get; private set; } = new List<TransactionCategory>();
         #endregion
 
         private Budget()
@@ -31,24 +31,18 @@ namespace HomeBudget.Api.Entities
             Id = Guid.NewGuid().ToString();
         }
 
-        public Budget(User user, string name, string description) : this()
+        public Budget(User user) : this() 
         {
             OwnerId = user.Id;
             Users.Add(user);
             user.Budgets.Add(this);
-
-            Name = name;
-            Description = description;
         }
 
-        public BudgetCreateResponseModel ToBudgetCreateResponseModel()
+        public Budget(User user, string name, string description, string iconUnicode) : this(user)
         {
-            return new BudgetCreateResponseModel()
-            {
-                Id = Id,
-                Name = Name,
-                Description = Description
-            };
+            Name = name;
+            Description = description;
+            IconUnicode = iconUnicode;
         }
     }
 }

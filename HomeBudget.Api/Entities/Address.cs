@@ -49,6 +49,9 @@ namespace HomeBudget.Api.Entities
             if (string.IsNullOrWhiteSpace(Country))
                 return false;
 
+            if (string.IsNullOrWhiteSpace(Region))
+                return false;
+
             return true;
         }
     }

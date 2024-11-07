@@ -1,4 +1,5 @@
 ﻿using HomeBudget.Api.Entities;
+using HomeBudget.Api.Extensions;
 using HomeBudget.Api.Services.Interfaces;
 using HomeBudget.Api.UnitOfWork.Interfaces;
 using HomeBudget.Common.EntityDTOs.User;
@@ -19,15 +20,7 @@ namespace HomeBudget.Api.Services
         {
             var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
 
-            return user == null ? null : new UserGetResponseModel()
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                IsAccountConfirmed = user.IsAccountConfirmed,
-                IsAccountSetup = user.IsAccountSetup,
-                Email = string.IsNullOrEmpty(user.Email) ? string.Empty : user.Email,
-                PhoneNumber = string.IsNullOrEmpty(user.PhoneNumber) ? string.Empty : user.PhoneNumber
-            };
+            return user == null ? null : user.ToGetResponse();
         }
 
         public async Task<UserUpdateResponseModel?> UpdateUserAsync(string userId, UserUpdateRequestModel requestModel)
@@ -48,15 +41,7 @@ namespace HomeBudget.Api.Services
                 _unitOfWork.Users.Update(user);
                 await _unitOfWork.SaveChangesAsync();
 
-                return new UserUpdateResponseModel()
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    IsAccountConfirmed = user.IsAccountConfirmed,
-                    IsAccountSetup = user.IsAccountSetup,
-                    Email = string.IsNullOrEmpty(user.Email) ? string.Empty : user.Email,
-                    PhoneNumber = string.IsNullOrEmpty(user.PhoneNumber) ? string.Empty : user.PhoneNumber
-                };
+                return user.ToUpdateResponse();
             }
             return null;
         }

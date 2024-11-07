@@ -2,5 +2,6 @@
 {
     public sealed class UserGetResponseModel : UserBaseDTO
     {
+        public required string Id { get; set; }
     }
 }
