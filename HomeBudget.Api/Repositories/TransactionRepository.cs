@@ -51,6 +51,35 @@ namespace HomeBudget.Api.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<IEnumerable<Transaction>> GetTransactionsByBudgetIdAndCategoriesInDataRangeAsync(
+            string budgetId,
+            DateTime? startDate,
+            DateTime? endDate,
+            List<string> categoryIds)
+        {
+            var query = _context.Transactions
+                .Include(t => t.Budget)
+                .Include(t => t.TransactionCategory)
+                .Where(t => t.Budget.Id.Equals(budgetId));
+
+            if (categoryIds.Any())
+            {
+                query = query.Where(t => categoryIds.Contains(t.TransactionCategory.Id));
+            }
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(e => e.Date >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(e => e.Date <= endDate.Value);
+            }
+
+            return await query.ToListAsync();
+        }
+
         public async Task AddAsync(Transaction transaction)
         {
             await _context.Transactions.AddAsync(transaction);
@@ -65,5 +94,7 @@ namespace HomeBudget.Api.Repositories
         {
             _context.Transactions.Remove(transaction);
         }
+
+
     }
 }

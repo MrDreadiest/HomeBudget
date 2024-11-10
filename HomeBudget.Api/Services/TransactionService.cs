@@ -42,6 +42,21 @@ namespace HomeBudget.Api.Services
             }
         }
 
+        public async Task<IEnumerable<TransactionGetResponseModel>> GetTransactionsByBudgetIdAndCategoriesInDataRangeAsync(string userId, string budgetId, DateTime? startDate, DateTime? endDate, List<string> categoryIds)
+        {
+            if (await HasAccessToBudgetAsync(userId, budgetId))
+            {
+                var transactions = await _unitOfWork.Transactions.GetTransactionsByBudgetIdAndCategoriesInDataRangeAsync(
+                    budgetId, startDate, endDate, categoryIds);
+
+                return transactions.Select(t => t.ToGetResponse());
+            }
+            else
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+
         public async Task<TransactionGetResponseModel?> GetTransactionByIdsAsync(string userId, string budgetId, string transactionId)
         {
             if (await HasAccessToBudgetAsync(userId, budgetId))
@@ -54,7 +69,6 @@ namespace HomeBudget.Api.Services
                 throw new UnauthorizedAccessException();
             }
         }
-
 
         public async Task<TransactionCreateResponseModel?> CreateTransactionAsync(string userId, string budgetId, TransactionCreateRequestModel requestModel)
         {
