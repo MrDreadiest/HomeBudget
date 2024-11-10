@@ -4,9 +4,9 @@ namespace HomeBudget.App.Views.ContentViews.FullViews;
 
 public partial class ManageTransactionsSplitAndroidPageView : ContentPage
 {
-    private ManageTransactionsSplitPageViewModel _viewModel;
+    private AddTransactionBySplitPageViewModel _viewModel;
 
-    public ManageTransactionsSplitAndroidPageView(ManageTransactionsSplitPageViewModel viewModel)
+    public ManageTransactionsSplitAndroidPageView(AddTransactionBySplitPageViewModel viewModel)
     {
         _viewModel = viewModel;
         BindingContext = _viewModel;

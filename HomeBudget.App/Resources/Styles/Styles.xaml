@@ -83,16 +83,16 @@
         <Setter Property="WidthRequest" Value="60" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="BackgroundColor" Value="{StaticResource Gray100}" />
-        <Setter Property="BorderColor" Value="{StaticResource Gray100}" />
+        <Setter Property="BorderColor" Value="Transparent" />
     </Style>
-    <Style
-        x:Key="RectangleSeletedInnerFrame"
-        BasedOn="{StaticResource CircleSeletedInnerFrame}"
-        TargetType="Frame">
+    <Style x:Key="RectangleSeletedInnerFrame" TargetType="Frame">
         <Setter Property="Padding" Value="0" />
         <Setter Property="CornerRadius" Value="3" />
         <Setter Property="HeightRequest" Value="52" />
         <Setter Property="WidthRequest" Value="52" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="BorderColor" Value="{StaticResource Gray200}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Gray100}" />
     </Style>
     <Style
         x:Key="SeletedInnerIcon"
@@ -588,9 +588,9 @@
     </Style>
 
     <Style TargetType="SearchBar">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
-        <Setter Property="CancelButtonColor" Value="{StaticResource Gray500}" />
+        <Setter Property="TextColor" Value="{StaticResource Gray600}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource Gray300}" />
+        <Setter Property="CancelButtonColor" Value="{StaticResource Gray600}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="RedHatDisplayMedium" />
         <Setter Property="FontSize" Value="{StaticResource MediumFontSize}" />
@@ -612,8 +612,8 @@
     </Style>
 
     <Style TargetType="SearchHandler">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
+        <Setter Property="TextColor" Value="{StaticResource Gray600}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource Gray600}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="RedHatDisplayMedium" />
         <Setter Property="FontSize" Value="14" />

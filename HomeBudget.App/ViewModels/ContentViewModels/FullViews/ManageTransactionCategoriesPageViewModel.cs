@@ -50,7 +50,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
         {
             if (IsBusy)
                 return;
-
             try
             {
                 IsBusy = true;
@@ -267,7 +266,7 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
         {
             if (!IconSelectVM.IsPopulated)
             {
-                IconSelectVM.PopulateIconCollection();
+                IconSelectVM.ReloadData();
             }
 
             TemporaryCategory = new TransactionCategory() { BudgetId = string.Empty, Id = string.Empty };

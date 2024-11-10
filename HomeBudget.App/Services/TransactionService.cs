@@ -10,6 +10,10 @@ namespace HomeBudget.App.Services
     {
         private readonly IApiClient _apiClient;
 
+        public event EventHandler<Transaction>? TransactionCreated;
+        public event EventHandler<Transaction>? TransactionDeleted;
+        public event EventHandler<Transaction>? TransactionUpdated;
+
         public TransactionService(IApiClient apiClient)
         {
             _apiClient = apiClient;
@@ -47,8 +51,33 @@ namespace HomeBudget.App.Services
                 $"{ApiEndpoints.Budget}" +
                 $"/{budgetId}" +
                 $"{ApiEndpoints.Transaction}" +
+                $"{ApiEndpoints.DateRange}" +
                 $"?startDate={startDate:yyyy-MM-dd}" +
                 $"&endDate={endDate:yyyy-MM-dd}";
+
+            var response = await _apiClient.GetAsync<List<TransactionGetResponseModel>>(url);
+
+            if (response != null)
+            {
+                return response.Select(r => r.FromGetResponse()).ToList();
+            }
+            return [];
+        }
+
+        public async Task<List<Transaction>> GetTransactionInRangeByCategoriesAsync(string budgetId, DateTime startDate, DateTime endDate, List<string> categoryIds)
+        {
+            string categoriesQuery = string.Join("&categoryIds=", categoryIds);
+            string url = $"" +
+                $"{ApiEndpoints.BaseAddress}" +
+                $"{ApiEndpoints.Api}" +
+                $"{ApiEndpoints.User}" +
+                $"{ApiEndpoints.Budget}" +
+                $"/{budgetId}" +
+                $"{ApiEndpoints.Transaction}" +
+                $"{ApiEndpoints.Filtered}" +
+                $"?startDate={startDate:yyyy-MM-dd}" +
+                $"&endDate={endDate:yyyy-MM-dd}" +
+                $"&categoryIds={categoriesQuery}";
 
             var response = await _apiClient.GetAsync<List<TransactionGetResponseModel>>(url);
 
@@ -100,6 +129,7 @@ namespace HomeBudget.App.Services
                 foreach (var transaction in response)
                 {
                     budget.Transactions.Add(transaction.FromCreateResponse());
+                    TransactionCreated?.Invoke(this, transaction.FromCreateResponse());
                 }
                 return true;
             }
@@ -126,6 +156,7 @@ namespace HomeBudget.App.Services
                 if (response != null)
                 {
                     transactionToUpdate.FromUpdateResponse(response);
+                    TransactionUpdated?.Invoke(this, transactionToUpdate);
                     return true;
                 }
             }
@@ -151,6 +182,7 @@ namespace HomeBudget.App.Services
                 if (result)
                 {
                     budget.Transactions.Remove(transactionToDelete);
+                    TransactionDeleted?.Invoke(this, transactionToDelete);
                     return true;
                 }
             }

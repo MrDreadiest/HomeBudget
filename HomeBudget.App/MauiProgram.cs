@@ -7,6 +7,7 @@ using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelp
 using HomeBudget.App.Views;
 using HomeBudget.App.Views.ContentViews.FullViews;
 using Microsoft.Extensions.Logging;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace HomeBudget.App
 {
@@ -17,6 +18,7 @@ namespace HomeBudget.App
             var builder = MauiApp.CreateBuilder();
 
             builder
+                .UseSkiaSharp()
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
@@ -75,16 +77,17 @@ namespace HomeBudget.App
             builder.Services.AddSingleton<PasswordReminderViewModel>();
             builder.Services.AddSingleton<UserAccountSetupPageViewModel>();
 
-            builder.Services.AddTransient<ManageTransactionsPageViewModel>();
+            builder.Services.AddTransient<AddTransactionPageViewModel>();
             builder.Services.AddTransient<ManageTransactionCategoriesPageViewModel>();
 
             builder.Services.AddTransient<ManageCurrentBudgetBalancePageViewModel>();
             builder.Services.AddTransient<ManageCurrentBudgetPageViewModel>();
             builder.Services.AddTransient<ManageShortcutsPageViewModel>();
             builder.Services.AddTransient<ManageRegularTransactionsPageViewModel>();
-            builder.Services.AddTransient<ManageTransactionsSplitPageViewModel>();
+            builder.Services.AddTransient<AddTransactionBySplitPageViewModel>();
 
-            builder.Services.AddSingleton<CollapseManager>();
+            builder.Services.AddTransient<CollapseManager>();
+            builder.Services.AddTransient<FadeManager>();
             // PAGE VIEWS
 
             builder.Services.AddSingleton<DashboardPageAndroidView>();

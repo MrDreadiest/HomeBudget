@@ -68,10 +68,22 @@ namespace HomeBudget.App.ViewModels.ContentViewModels
             SelectedIconItem = new IconItem() { Name = "DEFAULT", Unicode = Icons.Budget };
         }
 
-        public void PopulateIconCollection()
+        public void ResetView()
         {
+            IsVisible = false;
 
-            IsBusy = true;
+            if (IsPopulated)
+            {
+                SelectIcon(IconCategories.FirstOrDefault()!.Icons.FirstOrDefault()!);
+            }
+            else
+            {
+                SelectedIconItem = new IconItem() { Name = "DEFAULT", Unicode = Icons.Budget };
+            }
+        }
+
+        public void ReloadData()
+        {
             IconCategories.Clear();
             IconCategories = IconHelper.GetBudgetRelatedIcons()
             .Select(category => new IconCategory()
@@ -86,8 +98,7 @@ namespace HomeBudget.App.ViewModels.ContentViewModels
                 }).ToList()
             }).ToList();
 
-            SelectedIconItem = IconCategories.FirstOrDefault().Icons.FirstOrDefault();
-            SelectIcon(SelectedIconItem!);
+            SelectIcon(IconCategories.FirstOrDefault()!.Icons.FirstOrDefault()!);
         }
 
         public override Task OnAppearingAsync()

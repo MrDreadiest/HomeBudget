@@ -23,5 +23,8 @@
         public static readonly string Budget = "/Budget";
         public static readonly string Transaction = "/Transaction";
         public static readonly string TransactionCategory = "/TransactionCategory";
+
+        public static readonly string DateRange = "/DateRange";
+        public static readonly string Filtered = "/Filtered";
     }
 }

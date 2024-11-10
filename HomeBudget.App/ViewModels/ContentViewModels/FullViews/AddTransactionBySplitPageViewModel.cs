@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
 {
-    public partial class ManageTransactionsSplitPageViewModel : BaseViewModel
+    public partial class AddTransactionBySplitPageViewModel : BaseViewModel
     {
 
         [RelayCommand]
@@ -200,7 +200,7 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
         private readonly ITransactionCategoryService _transactionCategoryService;
         private readonly ITransactionService _transactionService;
 
-        public ManageTransactionsSplitPageViewModel(IBudgetService budgetService, IUserService userService, ITransactionCategoryService transactionCategoryService, ITransactionService transactionService)
+        public AddTransactionBySplitPageViewModel(IBudgetService budgetService, IUserService userService, ITransactionCategoryService transactionCategoryService, ITransactionService transactionService)
         {
             Route = nameof(ManageTransactionsSplitAndroidPageView);
             Title = "Dodaj z podziałem";
@@ -226,9 +226,8 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             CalculatorPopupContentVM = new CalculatorPopupContentViewModel();
             CalculatorPopupContentVM.CalculationCompleted += CalculatorPopupContentVM_CalculationCompleted;
 
-            CategorySelectVM = new DropdownTransactionCategoryContentViewModel(SelectionMode.Single);
+            CategorySelectVM = new DropdownTransactionCategoryContentViewModel(true);
             CategorySelectVM.SelectedTransactionCategoryChanged += CategorySelectVM_SelectedTransactionCategoryChanged;
-
         }
 
         public async override Task OnAppearingAsync()
@@ -238,7 +237,8 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
                 IsBusy = true;
                 IsVisible = true;
 
-                await ReloadData();
+                await Task.Delay(100);
+
                 await ResetView();
             }
             catch (Exception ex)
@@ -289,9 +289,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             TemporaryTransaction.Date = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, newValue.Hours, newValue.Minutes, newValue.Seconds);
         }
 
-        private async Task ReloadData()
+        partial void OnAmountToSplitChanged(decimal oldValue, decimal newValue)
         {
-            await _transactionCategoryService.GetAllTransactionCategoriesAsync(_budgetService.CurrentBudget);
+            //throw new NotImplementedException();
         }
 
         private async Task ResetView()
@@ -311,7 +311,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
 
             Transactions.Clear();
 
-            await CategorySelectVM.PopulateCollection(_budgetService.CurrentBudget.TransactionCategories);
         }
 
         private void CategorySelectVM_SelectedTransactionCategoryChanged(object? sender, EventArgs e)

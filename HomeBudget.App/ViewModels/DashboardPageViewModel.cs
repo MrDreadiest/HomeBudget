@@ -102,7 +102,7 @@ namespace HomeBudget.App.ViewModels
                 IsBusy = true;
                 IsVisible = true;
 
-
+                await Task.Delay(100);
 
                 if (_budgetService.CurrentBudget.IsNullOrEmpty())
                 {
