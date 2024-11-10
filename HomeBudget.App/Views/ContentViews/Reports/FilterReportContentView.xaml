@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.Reports.FilterReportContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    xmlns:reportModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Reports"
+    x:DataType="reportModels:FilterReportContentViewModel">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <Border
+            x:Name="Header"
+            BackgroundColor="{StaticResource Primary}"
+            Stroke="{StaticResource Primary}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10,10,0,0" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,*">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="15"
+                    Style="{StaticResource H2Label}"
+                    Text="{Binding Title}"
+                    TextColor="{StaticResource White}" />
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="0"
+                    Command="{Binding ToggleIsCollapsedCommand}"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{x:Static icons:Icons.Menu}"
+                    TextColor="{StaticResource White}" />
+            </Grid>
+        </Border>
+
+        <Border
+            x:Name="Body"
+            Grid.Row="1"
+            Padding="15"
+            BackgroundColor="White"
+            Stroke="White">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,10,10" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout>
+
+                <controls:SelectableButtonGroupView BindingContext="{Binding FilterDateTypeVM}" />
+
+                <Grid
+                    Grid.Row="0"
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="5"
+                    IsEnabled="{Binding IsDateEntryEnable}">
+                    <Frame Grid.Column="0" Style="{StaticResource SecondaryEntryFrame}">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label
+                                Margin="10,0,0,0"
+                                Style="{StaticResource SeletedInnerIcon}"
+                                Text="{x:Static icons:Icons.CalendarStart}" />
+                            <DatePicker Grid.Column="1" Date="{Binding DateFrom, Mode=TwoWay}" />
+                        </Grid>
+                    </Frame>
+
+
+                    <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label
+                                Margin="10,0,0,0"
+                                Style="{StaticResource SeletedInnerIcon}"
+                                Text="{x:Static icons:Icons.CalendarEnds}" />
+                            <DatePicker Grid.Column="1" Date="{Binding DateTo, Mode=TwoWay}" />
+                        </Grid>
+                    </Frame>
+                </Grid>
+
+                <controls:DropdownPickerTransactionCategoryContentView BindingContext="{Binding CategoriesDropDownVM}" />
+
+                <CollectionView ItemsSource="{Binding FilteredCategories}" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="5" Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:TransactionCategory">
+                            <Frame Padding="5,0,5,0" BackgroundColor="{StaticResource Gray100}">
+                                <HorizontalStackLayout Spacing="5">
+                                    <Label
+                                        FontSize="{StaticResource MediumPlusFontSize}"
+                                        Style="{StaticResource SeletedInnerIcon}"
+                                        Text="{Binding IconUnicode}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource H3Label}"
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button
+                    Command="{Binding FilterCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="Filtruj" />
+
+            </VerticalStackLayout>
+
+        </Border>
+
+    </Grid>
+
+</ContentView>

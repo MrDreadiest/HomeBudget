@@ -2,15 +2,22 @@
 using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Models;
 using HomeBudget.App.Services.Interfaces;
+using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelper;
 using HomeBudget.App.Views;
 using HomeBudget.App.Views.ContentViews.HandViews;
 using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
 {
-    public partial class LastTransactionsReminderContentViewModel : HandViewBaseModel, IHandViewBaseModel
+    public partial class LastTransactionsReminderContentViewModel : HandViewBaseModel, IHandViewBaseModel, ICollapseContentViewModel
     {
         private const int LastTransactionReminderCount = 6;
+
+        [RelayCommand]
+        public void ToggleIsCollapsed()
+        {
+            IsCollapsed = !IsCollapsed;
+        }
 
         [RelayCommand]
         public async Task GoToFullView()

@@ -195,10 +195,7 @@
 
         </Grid>
 
-        <contentViews:IconSelectContentView
-            Grid.Row="1"
-            Margin="30,15,30,30"
-            BindingContext="{Binding IconSelectVM}" />
+        <contentViews:IconSelectContentView Grid.RowSpan="2" BindingContext="{Binding IconSelectVM}" />
         <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
     </Grid>
 </ContentPage>

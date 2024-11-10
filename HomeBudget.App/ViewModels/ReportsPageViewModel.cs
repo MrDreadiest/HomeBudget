@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HomeBudget.App.Models.Reports;
 using HomeBudget.App.Resources.Icons;
+using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.ViewModels.ContentViewModels.Reports;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls;
 using HomeBudget.App.Views;
@@ -9,8 +11,10 @@ namespace HomeBudget.App.ViewModels
 {
     public partial class ReportsPageViewModel : BaseViewModel
     {
-
         public ObservableCollection<ReportCarouselItemBaseViewModel> ReportsCarouselVMs { get; }
+
+        [ObservableProperty]
+        private FilterReportContentViewModel _filterVM;
 
         [ObservableProperty]
         private int _carouselPosition;
@@ -19,12 +23,23 @@ namespace HomeBudget.App.ViewModels
 
         public SelectableButtonGroupViewModel SelectableButtonGroupVM { get; }
 
-        public ReportsPageViewModel()
+        private readonly IBudgetService _budgetService;
+        private readonly ITransactionCategoryService _transactionCategoryService;
+        private readonly ITransactionService _transactionService;
+
+        public ReportsPageViewModel(IBudgetService budgetService, ITransactionService transactionService, ITransactionCategoryService transactionCategoryService)
         {
+            _budgetService = budgetService;
+            _transactionService = transactionService;
+            _transactionCategoryService = transactionCategoryService;
+
             Route = nameof(ReportsPageAndroidView);
             //TODO : Zasoby
             Title = "Raporty";
             IconUnicode = Icons.Graphs;
+
+            FilterVM = new FilterReportContentViewModel();
+            FilterVM.FilterCommandRaised += FilterVM_FilterCommandRaised;
 
             ReportsCarouselVMs = new ObservableCollection<ReportCarouselItemBaseViewModel>()
             {
@@ -40,6 +55,19 @@ namespace HomeBudget.App.ViewModels
             SelectableButtonGroupVM.SelectedChanged += SelectableButtonGroupVM_SelectedChanged;
         }
 
+        private async void FilterVM_FilterCommandRaised(object? sender, Dictionary<string, Dictionary<string, decimal>> filteredData)
+        {
+            Task[] tasks = [];
+            foreach (var item in ReportsCarouselVMs)
+            {
+                if (item is IReport report)
+                {
+                    tasks.Append(report.DataPresentation(filteredData));
+                }
+            }
+            await Task.WhenAll(tasks);
+        }
+
         public async override Task OnAppearingAsync()
         {
             try
@@ -47,7 +75,7 @@ namespace HomeBudget.App.ViewModels
                 IsBusy = true;
                 IsVisible = true;
 
-                await Task.Delay(100);
+                await Task.Delay(200);
 
                 if (_isInitialized)
                 {
@@ -58,7 +86,7 @@ namespace HomeBudget.App.ViewModels
                     _isInitialized = true;
                 }
 
-                ResetView();
+                await ResetView();
 
             }
             catch (Exception ex)
@@ -74,17 +102,23 @@ namespace HomeBudget.App.ViewModels
         public async override Task OnDisappearingAsync()
         {
             IsVisible = false;
+
+            if (!FilterVM.IsCollapsed)
+            {
+                FilterVM.ToggleIsCollapsed();
+            }
+
             await Task.CompletedTask;
         }
 
-        private void ResetView()
+        private async Task ResetView()
         {
-            //throw new NotImplementedException();
+            await FilterVM.ReloadData();
         }
 
         private async Task ReloadData()
         {
-            await Task.CompletedTask;
+
         }
 
         partial void OnCarouselPositionChanged(int oldValue, int newValue)
@@ -92,11 +126,10 @@ namespace HomeBudget.App.ViewModels
             if (!_isInternalCarouselPositionChange)
             {
                 SelectableButtonGroupVM.SelectWithoutNotify(newValue);
-
-                ReportsCarouselVMs[newValue].OnAppearingAsync();
-                ReportsCarouselVMs[oldValue].OnAppearingAsync();
             }
         }
+
+
 
         private async void SelectableButtonGroupVM_SelectedChanged(object? sender, EventArgs e)
         {
@@ -126,7 +159,5 @@ namespace HomeBudget.App.ViewModels
                 }
             }
         }
-
-
     }
 }

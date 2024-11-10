@@ -26,7 +26,7 @@
 		<ApplicationTitle>HomeBudget.App</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.homebudget.app</ApplicationId>
+		<ApplicationId>com.companyname.1.homebudget.app</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -66,6 +66,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.5" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
@@ -88,8 +89,8 @@
 	  <Compile Update="Views\ContentViews\FullViews\AddTransactionAndroidPageView.xaml.cs">
 	    <DependentUpon>AddTransactionAndroidPageView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\ContentViews\Reports\AddReportTableContentView.xaml.cs">
-	    <DependentUpon>AddReportTableContentView.xaml</DependentUpon>
+	  <Compile Update="Views\ContentViews\Reports\FilterReportContentView.xaml.cs">
+	    <DependentUpon>FilterReportContentView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ContentViews\Shortcuts\ShortcutButtonContentView.xaml.cs">
 	    <DependentUpon>ShortcutButtonContentView.xaml</DependentUpon>
@@ -140,10 +141,7 @@
 	  <MauiXaml Update="Views\ContentViews\HandViews\CurrentBudgetBalanceContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\Reports\AddReportTableContentView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\Reports\AddReportGraphContentView.xaml">
+	  <MauiXaml Update="Views\ContentViews\Reports\FilterReportContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\Reports\ReportGraphContentView.xaml">
@@ -177,6 +175,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\HandViews\LastTransactionsReminderContentView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ContentViews\UniversalControls\AddInlistCategoryContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\UniversalControls\CalculatorPopupContentView.xaml">
@@ -230,5 +231,9 @@
 	  <MauiXaml Update="Views\UserAccountSetupPageAndroidView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="ViewModels\Converters\" />
 	</ItemGroup>
 </Project>

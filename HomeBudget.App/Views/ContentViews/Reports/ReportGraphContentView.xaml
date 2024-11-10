@@ -5,16 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
     xmlns:reportModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Reports"
     xmlns:reportViews="clr-namespace:HomeBudget.App.Views.ContentViews.Reports"
     xmlns:universalViews="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     x:DataType="reportModels:ReportGraphViewModel">
 
-    <Grid Margin="20">
+    <Grid>
 
-        <VerticalStackLayout Spacing="5">
-            <reportViews:AddReportGraphContentView BindingContext="{Binding AddReportGraphVM}" />
-        </VerticalStackLayout>
+        <lvc:CartesianChart
+            LegendPosition="Top"
+            Series="{Binding Series}"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}"  />
 
     </Grid>
 

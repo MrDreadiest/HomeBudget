@@ -9,11 +9,65 @@
     xmlns:reportViews="clr-namespace:HomeBudget.App.Views.ContentViews.Reports"
     x:DataType="reportModels:ReportTableViewModel">
 
-    <Grid Margin="20">
+    <Grid Padding="10" RowDefinitions="Auto, *">
 
-        <VerticalStackLayout Spacing="5">
-            <reportViews:AddReportTableContentView BindingContext="{Binding AddReportTableVM}" />
-        </VerticalStackLayout>
+        <Grid ColumnDefinitions="200,Auto">
+            <CollectionView Grid.Column="1" ItemsSource="{Binding Months}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="0" WidthRequest="100">
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="TailTruncation"
+                                Style="{StaticResource H2Label}"
+                                Text="{Binding .}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Rows}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="reportModels:TransactionRow">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <!--  Kategoria  -->
+                        <Grid Grid.Column="0" WidthRequest="200">
+                            <Label
+                                FontAttributes="Bold"
+                                Style="{StaticResource H2Label}"
+                                Text="{Binding Category}" />
+
+                        </Grid>
+
+                        <!--  Wyświetlanie wartości  -->
+                        <CollectionView Grid.Column="1" ItemsSource="{Binding Values}">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0" WidthRequest="100">
+                                        <Label
+                                            FontAttributes="Italic"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource H2Label}"
+                                            Text="{Binding .}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
     </Grid>
 

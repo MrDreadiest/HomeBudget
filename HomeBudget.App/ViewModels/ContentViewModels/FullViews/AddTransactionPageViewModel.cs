@@ -11,7 +11,7 @@ using Transaction = HomeBudget.App.Models.Transaction;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
 {
-    public partial class ManageTransactionsPageViewModel : BaseViewModel
+    public partial class AddTransactionPageViewModel : BaseViewModel
     {
         [RelayCommand]
         public async Task Back()
@@ -83,13 +83,12 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
         [ObservableProperty]
         private TimeSpan _selectedTime;
 
-
         private readonly IBudgetService _budgetService;
         private readonly IUserService _userService;
         private readonly ITransactionCategoryService _transactionCategoryService;
         private readonly ITransactionService _transactionService;
 
-        public ManageTransactionsPageViewModel(IBudgetService budgetService, IUserService userService, ITransactionCategoryService transactionCategoryService, ITransactionService transactionService)
+        public AddTransactionPageViewModel(IBudgetService budgetService, IUserService userService, ITransactionCategoryService transactionCategoryService, ITransactionService transactionService)
         {
             Route = nameof(AddTransactionAndroidPageView);
             Title = "Zarządzanie transakcją";
@@ -113,7 +112,7 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             ActionTypeSelectGroupVM = new SelectableButtonGroupViewModel(Enum.GetValues(typeof(TransactionModifyActionType)).Cast<TransactionModifyActionType>().Select(a => new OptionItem(a.GetDescription(), a)).ToList());
             ActionTypeSelectGroupVM.SelectedChanged += ActionTypeSelectGroupVM_SelectedChanged;
 
-            CategorySelectVM = new DropdownTransactionCategoryContentViewModel(SelectionMode.Single);
+            CategorySelectVM = new DropdownTransactionCategoryContentViewModel(true);
             CategorySelectVM.SelectedTransactionCategoryChanged += CategorySelectVM_SelectedTransactionCategoryChanged;
         }
 
@@ -124,10 +123,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
                 IsBusy = true;
                 IsVisible = true;
 
-                await ReloadData();
+                await Task.Delay(100);
+
                 await ResetView();
-
-
             }
             catch (Exception ex)
             {
@@ -137,7 +135,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             {
                 IsBusy = false;
             }
-            await Task.CompletedTask;
         }
 
         public async override Task OnDisappearingAsync()
@@ -146,14 +143,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             await Task.CompletedTask;
         }
 
-        private async Task ReloadData()
-        {
-            await _transactionCategoryService.GetAllTransactionCategoriesAsync(_budgetService.CurrentBudget);
-        }
-
         private async Task ResetView()
         {
-            await CategorySelectVM.PopulateCollection(_budgetService.CurrentBudget.TransactionCategories);
+            //await CategorySelectVM.ReloadData();
 
             TemporaryTransaction = new Transaction()
             {

@@ -10,6 +10,10 @@ namespace HomeBudget.App.Services
     {
         private readonly IApiClient _apiClient;
 
+        public event EventHandler<TransactionCategory> TransactionCategoryCreated;
+        public event EventHandler<TransactionCategory> TransactionCategoryDeleted;
+        public event EventHandler<TransactionCategory> TransactionCategoryUpdated;
+
         public TransactionCategoryService(IApiClient apiClient)
         {
             _apiClient = apiClient;
@@ -59,6 +63,7 @@ namespace HomeBudget.App.Services
                 foreach (var item in response)
                 {
                     budget.TransactionCategories.Add(item.FromCreateResponse());
+                    TransactionCategoryCreated?.Invoke(this, item.FromCreateResponse());
                 }
                 return true;
             }
@@ -89,6 +94,7 @@ namespace HomeBudget.App.Services
                 if (response != null)
                 {
                     categoryToUpdate.FromUpdateResponse(response);
+                    TransactionCategoryUpdated?.Invoke(this, categoryToUpdate);
                     return true;
                 }
             }
@@ -115,6 +121,7 @@ namespace HomeBudget.App.Services
                 if (result)
                 {
                     budget.TransactionCategories.Remove(categoryToDelete);
+                    TransactionCategoryDeleted?.Invoke(this, categoryToDelete);
                     return true;
                 }
             }

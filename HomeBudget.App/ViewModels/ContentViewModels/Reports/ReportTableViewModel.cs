@@ -1,78 +1,95 @@
-﻿using System.Collections.ObjectModel;
+﻿using HomeBudget.App.Models;
+using HomeBudget.App.Models.Reports;
+using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
 {
-    public partial class ReportTableViewModel : ReportCarouselItemBaseViewModel
+    public partial class ReportTableViewModel : ReportCarouselItemBaseViewModel, IReport
     {
-        public AddReportContentViewModelBase AddReportTableVM { get; }
 
-        public ObservableCollection<SingleReportViewModelBase> Reports { get; set; }
+        private Dictionary<string, Dictionary<string, decimal>> _filteredData;
+
+        public ObservableCollection<TransactionRow> Rows { get; set; }
+        public ObservableCollection<string> Months { get; set; }
 
         public ReportType ReportType => ReportType.Table;
 
         public ReportTableViewModel()
         {
             Title = ReportType.GetDescription();
-
-            Reports = new ObservableCollection<SingleReportViewModelBase>();
-
-            AddReportTableVM = new AddReportTableContentViewModel();
-            AddReportTableVM.AddCommandRaised += AddReportTableVM_AddCommandRaised;
+            Rows = new ObservableCollection<TransactionRow>();
+            Months = new ObservableCollection<string>();
         }
 
-        public async override Task OnAppearingAsync()
+        public override void ResetView()
         {
-            try
+            throw new NotImplementedException();
+        }
+
+        public override void ReloadData(List<TransactionCategory> categories, List<Transaction> transactions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DataPresentation(Dictionary<string, Dictionary<string, decimal>> filteredData)
+        {
+            _filteredData = filteredData;
+
+            Rows.Clear();
+            Months.Clear();
+
+            int currentYear = DateTime.Now.Year;
+
+
+
+            var months = filteredData.Keys
+            .OrderBy(m => DateTime.ParseExact(m, "MMMM yyyy", null))
+            .ToList();
+
+            months.ForEach(m =>
             {
-                IsBusy = true;
-                IsVisible = true;
+                var date = DateTime.ParseExact(m, "MMMM yyyy", null);
+                string formattedYear = date.Year == currentYear ? date.ToString("MMM") : date.ToString("MMM yyyy");
+                Months.Add(formattedYear);
+            });
 
-                await Task.Delay(100);
+            var categories = filteredData.Values
+                .SelectMany(dict => dict.Keys)
+                .Distinct()
+                .OrderBy(cat => cat)
+                .ToList();
 
-                if (_isInitialized)
+            foreach (var category in categories)
+            {
+                var row = new TransactionRow
                 {
-                    await ReloadData();
-                }
-                else
+                    Category = category,
+                    Values = new List<decimal>()
+                };
+
+                foreach (var month in months)
                 {
-                    _isInitialized = true;
+                    if (filteredData[month].TryGetValue(category, out decimal amount))
+                    {
+                        row.Values.Add(amount);
+                    }
+                    else
+                    {
+                        row.Values.Add(0);
+                    }
                 }
-
-                ResetView();
-
+                Rows.Add(row);
             }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            return Task.CompletedTask;
         }
 
-        public async override Task OnDisappearingAsync()
-        {
-            IsVisible = false;
-            await Task.CompletedTask;
-        }
-
-        private void ResetView()
-        {
-
-        }
-
-        private async Task ReloadData()
-        {
-
-        }
-
-        private void AddReportTableVM_AddCommandRaised(object? sender, EventArgs e)
-        {
-            if (sender is AddReportTableContentViewModel viewModel)
-            {
-                Reports.Add(new SingleReportTableViewModel());
-            }
-        }
     }
+
+    public class TransactionRow
+    {
+        public string Category { get; set; }
+        public List<decimal> Values { get; set; }
+    }
+
+
 }

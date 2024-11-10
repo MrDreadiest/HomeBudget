@@ -155,7 +155,7 @@ namespace HomeBudget.App.ViewModels
 
             if (!BudgetIconSelectVM.IsPopulated)
             {
-                BudgetIconSelectVM.PopulateIconCollection();
+                BudgetIconSelectVM.ReloadData();
             }
         }
 

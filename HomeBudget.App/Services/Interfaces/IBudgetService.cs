@@ -16,8 +16,8 @@ namespace HomeBudget.App.Services.Interfaces
         Task<bool> GetAllBudgetsAsync();
         Task<Budget?> GetBudgetByIdAsync(string budgetId);
         Task<bool> CreateBudgetAsync(Budget budget);
-        Task<bool> UpdateBudgetAsync(Budget budget);  
+        Task<bool> UpdateBudgetAsync(Budget budget);
         Task<bool> DeleteBudgetAsync(string budgetId);
-        
+
     }
 }

@@ -3,25 +3,25 @@ using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelp
 
 namespace HomeBudget.App.Views.ContentViews.Reports;
 
-public partial class AddReportTableContentView : ContentView
+public partial class FilterReportContentView : ContentView
 {
-    private AddReportTableContentViewModel _viewModel;
+    private FilterReportContentViewModel _viewModel;
     private CollapseManager _collapseManager;
 
-    public AddReportTableContentView() : this(App.Services.GetService<CollapseManager>()!)
+    public FilterReportContentView() : this(App.Services.GetService<CollapseManager>()!)
     {
     }
 
-    public AddReportTableContentView(CollapseManager collapseManager)
+    public FilterReportContentView(CollapseManager collapseManager)
     {
-        _collapseManager = new CollapseManager();
+        _collapseManager = collapseManager;
         InitializeComponent();
         BindingContextChanged += OnBindingContextChanged;
     }
 
     private void OnBindingContextChanged(object sender, EventArgs e)
     {
-        if (BindingContext is AddReportTableContentViewModel viewModel)
+        if (BindingContext is FilterReportContentViewModel viewModel)
         {
             if (_viewModel != null)
             {

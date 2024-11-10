@@ -21,9 +21,11 @@
                 Style="{StaticResource MaterialIcon}"
                 Text="{Binding SelectedCategory.IconUnicode}"
                 VerticalOptions="Center" />
-            <Label
+            <Entry
                 Grid.Column="1"
-                Style="{StaticResource H2Label}"
+                IsReadOnly="True"
+                Placeholder="Wybierz kategorię"
+                Style="{StaticResource DarkMediumEntry}"
                 Text="{Binding SelectedCategory.Name}"
                 VerticalOptions="Center" />
             <Label

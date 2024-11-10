@@ -4,9 +4,9 @@ namespace HomeBudget.App.Views.ContentViews.FullViews;
 
 public partial class AddTransactionAndroidPageView : ContentPage
 {
-    private ManageTransactionsPageViewModel _viewModel;
+    private AddTransactionPageViewModel _viewModel;
 
-    public AddTransactionAndroidPageView(ManageTransactionsPageViewModel viewModel)
+    public AddTransactionAndroidPageView(AddTransactionPageViewModel viewModel)
     {
         _viewModel = viewModel;
         BindingContext = _viewModel;

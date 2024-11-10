@@ -25,8 +25,8 @@
                                     Margin="0"
                                     Padding="10,0,0,0"
                                     BackgroundColor="{StaticResource Secondary}"
-                                    CornerRadius="5"
                                     BorderColor="Transparent"
+                                    CornerRadius="5"
                                     HeightRequest="40">
                                     <Label
                                         HorizontalOptions="Start"
@@ -139,7 +139,6 @@
                 </ScrollView>
             </RefreshView>
         </Grid>
-
         <Grid BackgroundColor="{StaticResource Gray100}" VerticalOptions="Start">
             <Frame
                 Margin="10,10,10,-5"

@@ -5,6 +5,7 @@ namespace HomeBudget.Api.Services.Interfaces
     public interface ITransactionService
     {
         Task<IEnumerable<TransactionGetResponseModel>> GetTransactionsByBudgetIdAsync(string userId, string budgetId);
+        Task<IEnumerable<TransactionGetResponseModel>> GetTransactionsByBudgetIdAndCategoriesInDataRangeAsync(string userId, string budgetId, DateTime? startDate, DateTime? endDate, List<string> categoryIds);
         Task<IEnumerable<TransactionGetResponseModel>> GetTransactionsByBudgetIdInDateRangeAsync(string userId, string budgetId, DateTime? startDate, DateTime? endDate);
         Task<TransactionGetResponseModel?> GetTransactionByIdsAsync(string userId, string budgetId, string transactionId);
         Task<TransactionCreateResponseModel?> CreateTransactionAsync(string userId, string budgetId, TransactionCreateRequestModel requestModel);

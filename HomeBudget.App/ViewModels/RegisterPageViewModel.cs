@@ -64,7 +64,7 @@ namespace HomeBudget.App.ViewModels
                 IsBusy = true;
                 if (RegisterModel.Password.Equals(RepeatedPassword))
                 {
-                    var result = await _registerService.RegisterAsync(RegisterModel);  
+                    var result = await _registerService.RegisterAsync(RegisterModel);
                     if (result)
                     {
                         await Shell.Current.GoToAsync($"//{nameof(LoginPageAndroidView)}");
@@ -74,7 +74,7 @@ namespace HomeBudget.App.ViewModels
                         // TODO: Przenieść do zasobów
                         await Shell.Current.DisplayAlert("Błąd formularza", "Nieudana próba rejestracji.", "Ok");
                     }
-                    
+
                 }
                 else
                 {

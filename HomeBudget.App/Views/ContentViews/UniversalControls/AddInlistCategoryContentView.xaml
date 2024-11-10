@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    x:Class="HomeBudget.App.Views.ContentViews.Reports.AddReportTableContentView"
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.AddInlistCategoryContentView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controlModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.UniversalControls"
     xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
-    xmlns:reportModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Reports"
-    x:DataType="reportModels:AddReportTableContentViewModel">
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    x:DataType="controlModels:AddInlistCategoryContentViewModel">
 
     <Grid RowDefinitions="*,Auto">
 
@@ -33,7 +34,7 @@
                     Margin="0"
                     Command="{Binding ToggleIsCollapsedCommand}"
                     Style="{StaticResource NavigationIconButton}"
-                    Text="{x:Static icons:Icons.Menu}"
+                    Text="{x:Static icons:Icons.ArrowDown}"
                     TextColor="{StaticResource White}" />
             </Grid>
         </Border>
@@ -49,31 +50,35 @@
             </Border.StrokeShape>
 
             <VerticalStackLayout>
+                <Grid
+                    Grid.Row="1"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="5">
+                    <Button
+                        Grid.Column="0"
+                        Command="{Binding ToggleIconSelectCommand}"
+                        HeightRequest="50"
+                        Style="{StaticResource IconFramedFlexButton}"
+                        Text="{Binding TemporaryCategory.IconUnicode}" />
 
-                <Frame Style="{StaticResource SecondaryEntryFrame}">
-                    <Entry
-                        Placeholder="Nazwa"
-                        Style="{StaticResource DarkMediumEntry}"
-                        Text="{Binding Name}" />
-                </Frame>
+                    <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                        <Entry
+                            Placeholder="Nazwa kategorii"
+                            Style="{StaticResource DarkMediumEntry}"
+                            Text="{Binding TemporaryCategory.Name}" />
+                    </Frame>
+                </Grid>
 
-                <Frame Style="{StaticResource SecondaryEntryFrame}">
-                    <Entry
-                        Placeholder="Opis dodatkowy"
-                        Style="{StaticResource DarkMediumEntry}"
-                        Text="{Binding Description}" />
-                </Frame>
+                <Label
+                    Grid.Row="2"
+                    Style="{StaticResource H3Label}"
+                    Text="Kliknij w ikonę aby zmienić" />
 
                 <Button
-                    Command="{Binding AddCommand}"
+                    Command="{Binding AddCategoryCommand}"
                     Style="{StaticResource PrimaryButton}"
-                    Text="Wykonaj" />
-
+                    Text="Dodaj" />
             </VerticalStackLayout>
-
         </Border>
-
     </Grid>
-
-
 </ContentView>

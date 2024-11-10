@@ -4,6 +4,10 @@ namespace HomeBudget.App.Services.Interfaces
 {
     public interface ITransactionCategoryService
     {
+        event EventHandler<TransactionCategory> TransactionCategoryCreated;
+        event EventHandler<TransactionCategory> TransactionCategoryDeleted;
+        event EventHandler<TransactionCategory> TransactionCategoryUpdated;
+
         Task<bool> GetAllTransactionCategoriesAsync(Budget budget);
         Task<TransactionCategory> GetTransactionCategoryByIdsAsync(string budgetId, string categoryId);
         Task<bool> CreateTransactionCategoryAsync(Budget budget, TransactionCategory transactionCategory);

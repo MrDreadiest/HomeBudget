@@ -12,7 +12,7 @@
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
     xmlns:model="clr-namespace:HomeBudget.App.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:DataType="fullViewModels:ManageTransactionsSplitPageViewModel">
+    x:DataType="fullViewModels:AddTransactionBySplitPageViewModel">
 
     <Grid BackgroundColor="{StaticResource Gray200}" RowDefinitions="Auto,*">
 
@@ -83,7 +83,7 @@
 
                     <Grid
                         Grid.Row="2"
-                        ColumnDefinitions="*,Auto"
+                        ColumnDefinitions="2*,*,*,Auto"
                         ColumnSpacing="5">
 
                         <Frame
@@ -95,11 +95,21 @@
                                 Keyboard="Numeric"
                                 Placeholder="00,00"
                                 Style="{StaticResource DarkMediumEntry}"
-                                Text="{Binding AmountToSplit, Mode=TwoWay, StringFormat='{}{0:c}'}" />
+                                Text="{Binding AmountToSplit, Mode=TwoWay, StringFormat='{0:N2}'}" />
                         </Frame>
 
-                        <Button
+                        <Label
                             Grid.Column="1"
+                            Style="{StaticResource H1Label}"
+                            Text="zł" />
+                        <Label
+                            Grid.Column="2"
+                            Style="{StaticResource H3Label}"
+                            Text="Zrzuć resztę" />
+
+
+                        <Button
+                            Grid.Column="3"
                             Command="{Binding PushRestCommand}"
                             FontSize="{StaticResource LargeFontSize}"
                             Style="{StaticResource IconFramedFlexButton}"
@@ -132,7 +142,7 @@
 
                     <Grid
                         Grid.Row="7"
-                        ColumnDefinitions="*,Auto"
+                        ColumnDefinitions="2*,*,*,Auto"
                         ColumnSpacing="5">
 
                         <Frame
@@ -144,11 +154,20 @@
                                 Keyboard="Numeric"
                                 Placeholder="00,00"
                                 Style="{StaticResource DarkMediumEntry}"
-                                Text="{Binding TemporaryTransaction.TotalAmount, Mode=TwoWay, StringFormat='{}{0:C}'}" />
+                                Text="{Binding TemporaryTransaction.TotalAmount, Mode=TwoWay, StringFormat='{0:N2}'}" />
                         </Frame>
 
-                        <Button
+                        <Label
                             Grid.Column="1"
+                            Style="{StaticResource H1Label}"
+                            Text="zł" />
+                        <Label
+                            Grid.Column="2"
+                            Style="{StaticResource H3Label}"
+                            Text="Wylicz kalkulatorem" />
+
+                        <Button
+                            Grid.Column="3"
                             Command="{Binding CalculatorPopupContentVM.ToggleVisibilityCommand}"
                             FontSize="{StaticResource LargeFontSize}"
                             Style="{StaticResource IconFramedFlexButton}"
@@ -175,7 +194,7 @@
                                             <SwipeItemView>
                                                 <Grid>
                                                     <Button
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type fullViewModels:ManageTransactionsSplitPageViewModel}}, Path=RemoveTransactionCommand}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type fullViewModels:AddTransactionBySplitPageViewModel}}, Path=RemoveTransactionCommand}"
                                                         CommandParameter="{Binding}"
                                                         FontSize="{StaticResource LargeFontSize}"
                                                         HorizontalOptions="FillAndExpand"

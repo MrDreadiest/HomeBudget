@@ -61,29 +61,74 @@ namespace HomeBudget.App.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Od najniższej.
+        ///   Looks up a localized string similar to Własne.
         /// </summary>
-        internal static string ReportFilterType_Asc {
+        internal static string ReportDateFilterType_Own {
             get {
-                return ResourceManager.GetString("ReportFilterType_Asc", resourceCulture);
+                return ResourceManager.GetString("ReportDateFilterType_Own", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Od najwyższej.
+        ///   Looks up a localized string similar to 6 miesięcy.
         /// </summary>
-        internal static string ReportFilterType_Desc {
+        internal static string ReportDateFilterType_SixMonths {
             get {
-                return ResourceManager.GetString("ReportFilterType_Desc", resourceCulture);
+                return ResourceManager.GetString("ReportDateFilterType_SixMonths", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Najczęstrze.
+        ///   Looks up a localized string similar to Ten miesiac.
         /// </summary>
-        internal static string ReportFilterType_MostUse {
+        internal static string ReportDateFilterType_ThisMonth {
             get {
-                return ResourceManager.GetString("ReportFilterType_MostUse", resourceCulture);
+                return ResourceManager.GetString("ReportDateFilterType_ThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ten rok.
+        /// </summary>
+        internal static string ReportDateFilterType_ThisYear {
+            get {
+                return ResourceManager.GetString("ReportDateFilterType_ThisYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3 miesiące.
+        /// </summary>
+        internal static string ReportDateFilterType_ThreeMonths {
+            get {
+                return ResourceManager.GetString("ReportDateFilterType_ThreeMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 12 miesięcy.
+        /// </summary>
+        internal static string ReportDateFilterType_TwelveMonths {
+            get {
+                return ResourceManager.GetString("ReportDateFilterType_TwelveMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kategoria.
+        /// </summary>
+        internal static string ReportFilterType_Category {
+            get {
+                return ResourceManager.GetString("ReportFilterType_Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data.
+        /// </summary>
+        internal static string ReportFilterType_Date {
+            get {
+                return ResourceManager.GetString("ReportFilterType_Date", resourceCulture);
             }
         }
         
@@ -133,29 +178,38 @@ namespace HomeBudget.App.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kategoria.
+        ///   Looks up a localized string similar to Od najniższej.
         /// </summary>
-        internal static string ReportSortType_Category {
+        internal static string ReportSortDirectoryType_Asc {
             get {
-                return ResourceManager.GetString("ReportSortType_Category", resourceCulture);
+                return ResourceManager.GetString("ReportSortDirectoryType_Asc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data.
+        ///   Looks up a localized string similar to Od najwyższej.
         /// </summary>
-        internal static string ReportSortType_Date {
+        internal static string ReportSortDirectoryType_Desc {
             get {
-                return ResourceManager.GetString("ReportSortType_Date", resourceCulture);
+                return ResourceManager.GetString("ReportSortDirectoryType_Desc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wyłącz.
+        ///   Looks up a localized string similar to Najczęstrze.
         /// </summary>
-        internal static string ReportSortType_None {
+        internal static string ReportSortType_MostUse {
             get {
-                return ResourceManager.GetString("ReportSortType_None", resourceCulture);
+                return ResourceManager.GetString("ReportSortType_MostUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kwota.
+        /// </summary>
+        internal static string ReportSortType_Price {
+            get {
+                return ResourceManager.GetString("ReportSortType_Price", resourceCulture);
             }
         }
         

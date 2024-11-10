@@ -18,6 +18,8 @@ namespace HomeBudget.Api.Repositories
         {
             return await _context.TransactionCategories
                 .Include(e => e.Budget)
+                .Include(e => e.Transactions)
+                .OrderByDescending(e => e.Transactions.Count)
                 .Where(e => e.BudgetId.Equals(budgetId)).ToListAsync();
         }
 

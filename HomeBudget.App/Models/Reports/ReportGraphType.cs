@@ -1,6 +1,6 @@
 ﻿using HomeBudget.App.Resources.Languages;
 
-namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
+namespace HomeBudget.App.Models.Reports
 {
     public enum ReportGraphType
     {

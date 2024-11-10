@@ -156,26 +156,26 @@
   <data name="ReportType_Graph" xml:space="preserve">
     <value>Graficzny</value>
   </data>
-  <data name="ReportSortType_Date" xml:space="preserve">
+  <data name="ReportFilterType_Date" xml:space="preserve">
     <value>Data</value>
   </data>
-  <data name="ReportSortType_Category" xml:space="preserve">
+  <data name="ReportFilterType_Category" xml:space="preserve">
     <value>Kategoria</value>
-  </data>
-  <data name="ReportSortType_None" xml:space="preserve">
-    <value>Wyłącz</value>
-  </data>
-  <data name="ReportFilterType_Asc" xml:space="preserve">
-    <value>Od najniższej</value>
-  </data>
-  <data name="ReportFilterType_Desc" xml:space="preserve">
-    <value>Od najwyższej</value>
-  </data>
-  <data name="ReportFilterType_MostUse" xml:space="preserve">
-    <value>Najczęstrze</value>
   </data>
   <data name="ReportFilterType_None" xml:space="preserve">
     <value>Wyłącz</value>
+  </data>
+  <data name="ReportSortDirectoryType_Asc" xml:space="preserve">
+    <value>Od najniższej</value>
+  </data>
+  <data name="ReportSortDirectoryType_Desc" xml:space="preserve">
+    <value>Od najwyższej</value>
+  </data>
+  <data name="ReportSortType_MostUse" xml:space="preserve">
+    <value>Najczęstrze</value>
+  </data>
+  <data name="ReportSortType_Price" xml:space="preserve">
+    <value>Kwota</value>
   </data>
   <data name="ReportGraphType.Time" xml:space="preserve">
     <value>Czasowy</value>
@@ -188,5 +188,29 @@
   </data>
   <data name="ReportGraphType.Radial" xml:space="preserve">
     <value>Radialny</value>
+  </data>
+  <data name="ReportDateFilterType_ThisMonth" xml:space="preserve">
+    <value>Ten miesiac</value>
+    <comment>This Month</comment>
+  </data>
+  <data name="ReportDateFilterType_ThreeMonths" xml:space="preserve">
+    <value>3 miesiące</value>
+    <comment>Three Months</comment>
+  </data>
+  <data name="ReportDateFilterType_SixMonths" xml:space="preserve">
+    <value>6 miesięcy</value>
+    <comment>Six Months</comment>
+  </data>
+  <data name="ReportDateFilterType_TwelveMonths" xml:space="preserve">
+    <value>12 miesięcy</value>
+    <comment>Twelve Months</comment>
+  </data>
+  <data name="ReportDateFilterType_ThisYear" xml:space="preserve">
+    <value>Ten rok</value>
+    <comment>This Year</comment>
+  </data>
+  <data name="ReportDateFilterType_Own" xml:space="preserve">
+    <value>Własne</value>
+    <comment>Own</comment>
   </data>
 </root>
