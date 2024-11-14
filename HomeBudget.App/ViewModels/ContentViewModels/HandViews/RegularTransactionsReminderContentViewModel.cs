@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using HomeBudget.App.ViewModels.Widgets;
 using HomeBudget.App.Views.ContentViews.FullViews;
-using HomeBudget.App.Views.ContentViews.HandViews;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
 {
-    public partial class RegularTransactionsReminderContentViewModel : HandViewBaseModel, IHandViewBaseModel
+    public partial class RegularTransactionsReminderContentViewModel : WidgetContentViewModelBase
     {
         [RelayCommand]
         public async Task GoToFullView()
@@ -31,11 +31,20 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
             throw new NotImplementedException();
         }
 
+        public override void LoadConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
         public RegularTransactionsReminderContentViewModel()
         {
             // TODO: Przeniesienie do zasobów
             Title = "Cykliczne transakcje";
-            Route = nameof(RegularTransactionsReminderContentView);
             FullViewRoute = nameof(ManageRegularTransactionsAndroidPageView);
 
         }

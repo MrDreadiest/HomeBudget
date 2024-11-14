@@ -1,95 +1,115 @@
-﻿using HomeBudget.App.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HomeBudget.App.Models.Reports;
+using SkiaSharp;
 using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
 {
     public partial class ReportTableViewModel : ReportCarouselItemBaseViewModel, IReport
     {
+        [ObservableProperty]
+        private bool _isPercentageVisible = false;
 
-        private Dictionary<string, Dictionary<string, decimal>> _filteredData;
-
-        public ObservableCollection<TransactionRow> Rows { get; set; }
-        public ObservableCollection<string> Months { get; set; }
+        public ObservableCollection<CategoryInfo> Categories { get; set; } = new();
+        public ObservableCollection<MonthColumn> MonthColumns { get; set; } = new();
 
         public ReportType ReportType => ReportType.Table;
 
-        public ReportTableViewModel()
+        private readonly ReportViewModel _reportViewModel;
+
+        public ReportTableViewModel(ReportViewModel reportViewModel)
         {
             Title = ReportType.GetDescription();
-            Rows = new ObservableCollection<TransactionRow>();
-            Months = new ObservableCollection<string>();
+            _reportViewModel = reportViewModel;
         }
 
-        public override void ResetView()
+        private string GenerateLabel(string month)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void ReloadData(List<TransactionCategory> categories, List<Transaction> transactions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DataPresentation(Dictionary<string, Dictionary<string, decimal>> filteredData)
-        {
-            _filteredData = filteredData;
-
-            Rows.Clear();
-            Months.Clear();
-
             int currentYear = DateTime.Now.Year;
 
+            var date = DateTime.ParseExact(month, "MMMM yyyy", null);
+            return date.Year == currentYear ? date.ToString("MMM") : date.ToString("MMM yyyy");
 
+        }
 
-            var months = filteredData.Keys
-            .OrderBy(m => DateTime.ParseExact(m, "MMMM yyyy", null))
-            .ToList();
+        private void PopulateSeries()
+        {
+            var filteredData = _reportViewModel.FilteredData;
+            var months = _reportViewModel.Months;
+            var categories = _reportViewModel.Categories;
+            var categoryColors = _reportViewModel.CategoryColors;
 
-            months.ForEach(m =>
-            {
-                var date = DateTime.ParseExact(m, "MMMM yyyy", null);
-                string formattedYear = date.Year == currentYear ? date.ToString("MMM") : date.ToString("MMM yyyy");
-                Months.Add(formattedYear);
-            });
+            IsPercentageVisible = _reportViewModel.IsPercentageVisible;
 
-            var categories = filteredData.Values
-                .SelectMany(dict => dict.Keys)
-                .Distinct()
-                .OrderBy(cat => cat)
-                .ToList();
+            Categories.Clear();
+            MonthColumns.Clear();
 
             foreach (var category in categories)
             {
-                var row = new TransactionRow
+                Categories.Add(new CategoryInfo
                 {
-                    Category = category,
-                    Values = new List<decimal>()
+                    IconUnicode = category.IconUnicode,
+                    Name = category.Name,
+                    CategoryColor = categoryColors.ContainsKey(category.Id) ? categoryColors[category.Id] : SKColor.Empty
+                });
+            }
+
+            foreach (var month in months)
+            {
+                var column = new MonthColumn
+                {
+                    MonthLabel = GenerateLabel(month),
+                    Values = new List<SumAndPercentage>()
                 };
 
-                foreach (var month in months)
+                foreach (var category in categories)
                 {
-                    if (filteredData[month].TryGetValue(category, out decimal amount))
+                    if (filteredData[month].TryGetValue(category.Id, out decimal amount))
                     {
-                        row.Values.Add(amount);
+                        decimal totalForMonth = filteredData[month].Values.Sum();
+                        decimal percentageByCategory = totalForMonth > 0 ? (amount / totalForMonth) * 100 : 0;
+
+                        column.Values.Add(new SumAndPercentage(amount, percentageByCategory));
                     }
                     else
                     {
-                        row.Values.Add(0);
+                        column.Values.Add(new SumAndPercentage(0, 0));
                     }
                 }
-                Rows.Add(row);
+
+                MonthColumns.Add(column);
             }
-            return Task.CompletedTask;
         }
 
+        public Task DataPresentation()
+        {
+            PopulateSeries();
+            return Task.CompletedTask;
+        }
     }
 
-    public class TransactionRow
+    public class CategoryInfo
     {
-        public string Category { get; set; }
-        public List<decimal> Values { get; set; }
+        public string IconUnicode { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public SKColor CategoryColor { get; set; }
     }
 
+    public class MonthColumn
+    {
+        public string MonthLabel { get; set; } = string.Empty;
+        public List<SumAndPercentage> Values { get; set; } = new();
+    }
 
+    public class SumAndPercentage
+    {
+        public decimal Sum { get; }
+        public decimal Percentage { get; }
+
+        public SumAndPercentage(decimal sum, decimal percentage)
+        {
+            Sum = sum;
+            Percentage = percentage;
+        }
+    }
 }

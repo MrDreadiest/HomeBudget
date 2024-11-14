@@ -3,13 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Models;
 using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelper;
+using HomeBudget.App.ViewModels.Widgets;
 using HomeBudget.App.Views;
-using HomeBudget.App.Views.ContentViews.HandViews;
 using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
 {
-    public partial class LastTransactionsReminderContentViewModel : HandViewBaseModel, IHandViewBaseModel, ICollapseContentViewModel
+    public partial class LastTransactionsReminderContentViewModel : WidgetContentViewModelBase, ICollapseContentViewModel
     {
         private const int LastTransactionReminderCount = 6;
 
@@ -41,7 +41,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
         [ObservableProperty]
         private ObservableCollection<TransactionGroupItem> _transactions;
 
-        //TODO: Zmiana w ustawieniach
         [ObservableProperty]
         private int _reminderListCount = LastTransactionReminderCount;
 
@@ -53,7 +52,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
 
             // TODO: Przeniesienie do zasobów
             Title = "Ostatnie transakcje";
-            Route = nameof(LastTransactionsReminderContentView);
             FullViewRoute = nameof(TransactionsPageAndroidView);
 
             Transactions = new ObservableCollection<TransactionGroupItem>();
@@ -70,6 +68,16 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
                     Transactions.Add(new TransactionGroupItem(transaction, transactionCategories.Find(c => c.Id.Equals(transaction.TransactionCategoryId))!));
                 }
             });
+        }
+
+        public override void LoadConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveConfiguration()
+        {
+            throw new NotImplementedException();
         }
     }
 }

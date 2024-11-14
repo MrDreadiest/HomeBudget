@@ -7,6 +7,7 @@
     xmlns:fullViews="clr-namespace:HomeBudget.App.Views.ContentViews.FullViews"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
     xmlns:local="clr-namespace:HomeBudget.App.Views"
+    xmlns:widgetViews="clr-namespace:HomeBudget.App.Views.Widgets"
     Title="HomeBudget.App"
     Shell.FlyoutBehavior="Disabled">
 
@@ -119,9 +120,9 @@
         Shell.NavBarIsVisible="False" />
 
     <ShellContent
-        Title="ManageCurrentBudgetBalanceAndroidPageView"
-        ContentTemplate="{DataTemplate fullViews:ManageCurrentBudgetBalanceAndroidPageView}"
-        Route="ManageCurrentBudgetBalanceAndroidPageView"
+        Title="ManageFastBalanceAndroidPageView"
+        ContentTemplate="{DataTemplate widgetViews:ManageFastBalanceAndroidPageView}"
+        Route="ManageFastBalanceAndroidPageView"
         Shell.NavBarIsVisible="False" />
 
     <ShellContent

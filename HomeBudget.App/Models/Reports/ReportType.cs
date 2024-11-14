@@ -5,7 +5,8 @@ namespace HomeBudget.App.Models.Reports
     public enum ReportType
     {
         Table,
-        Graph
+        GraphBar,
+        GraphPie
     }
 
     public static class ReportTypeExtensions
@@ -16,8 +17,10 @@ namespace HomeBudget.App.Models.Reports
             {
                 case ReportType.Table:
                     return AppResource.ReportType_Table;
-                case ReportType.Graph:
-                    return AppResource.ReportType_Graph;
+                case ReportType.GraphBar:
+                    return AppResource.ReportType_GraphBar;
+                case ReportType.GraphPie:
+                    return AppResource.ReportType_GraphPie;
                 default:
                     return string.Empty;
             }

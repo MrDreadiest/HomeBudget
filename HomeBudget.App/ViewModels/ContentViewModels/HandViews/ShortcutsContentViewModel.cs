@@ -2,13 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Resources.Icons;
 using HomeBudget.App.ViewModels.ContentViewModels.Shortcuts;
+using HomeBudget.App.ViewModels.Widgets;
 using HomeBudget.App.Views.ContentViews.FullViews;
-using HomeBudget.App.Views.ContentViews.HandViews;
 using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
 {
-    public partial class ShortcutsContentViewModel : HandViewBaseModel, IHandViewBaseModel
+    public partial class ShortcutsContentViewModel : WidgetContentViewModelBase
     {
         [RelayCommand]
         public async Task GoToFullView()
@@ -30,6 +30,16 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
             await Task.CompletedTask;
         }
 
+        public override void LoadConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
         [ObservableProperty]
         private ObservableCollection<ShortcutBaseContentViewModel> _shortcuts;
 
@@ -37,7 +47,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
         {
             // TODO: Przeniesienie do zasobów
             Title = "Skróty";
-            Route = nameof(ShortcutsContentView);
             FullViewRoute = nameof(ManageShortcutsAndroidPageView);
 
             Shortcuts = new ObservableCollection<ShortcutBaseContentViewModel>()

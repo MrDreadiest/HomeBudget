@@ -184,6 +184,26 @@
         <Setter Property="FontSize" Value="{StaticResource LargePlusFontSize}" />
     </Style>
 
+    <Style
+        x:Key="TransparentButton"
+        BasedOn="{StaticResource FlexButton}"
+        TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontFamily" Value="RedHatDisplayMedium" />
+        <Setter Property="FontSize" Value="{StaticResource SmallFontSize}" />
+        <Setter Property="TextColor" Value="{StaticResource Gray600}" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style
+        x:Key="SettingsNavigationButton"
+        BasedOn="{StaticResource TransparentButton}"
+        TargetType="Button">
+        <Setter Property="FontSize" Value="{StaticResource LargeFontSize}" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+    </Style>
+
     <!--  CHECKBOXES  -->
     <Style x:Key="PrimaryCheckBox" TargetType="CheckBox">
         <Setter Property="Color" Value="{StaticResource MyPrimaryLight}" />
@@ -212,31 +232,7 @@
         <Setter Property="Margin" Value="5" />
     </Style>
 
-    <Style x:Key="TransparentButton" TargetType="Button">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="FontFamily" Value="RedHatDisplayMedium" />
-        <Setter Property="FontSize" Value="{StaticResource SmallFontSize}" />
-        <Setter Property="TextColor" Value="{StaticResource Gray600}" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
-                    <VisualState x:Name="Pressed">
-                        <VisualState.Setters>
-                            <Setter Property="Scale" Value="0.95" />
-                            <Setter Property="Background" Value="{StaticResource Gray100}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="PointerOver">
-                        <VisualState.Setters>
-                            <Setter Property="Scale" Value="0.95" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
-    </Style>
+
 
     <!--  Custom labels view  -->
     <Style x:Key="H1Label" TargetType="Label">

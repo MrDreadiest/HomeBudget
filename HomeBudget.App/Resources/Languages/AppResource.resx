@@ -153,8 +153,8 @@
   <data name="ReportType_Table" xml:space="preserve">
     <value>Tabelaryczny</value>
   </data>
-  <data name="ReportType_Graph" xml:space="preserve">
-    <value>Graficzny</value>
+  <data name="ReportType_GraphBar" xml:space="preserve">
+    <value>Graficzny słupkowy</value>
   </data>
   <data name="ReportFilterType_Date" xml:space="preserve">
     <value>Data</value>
@@ -212,5 +212,20 @@
   <data name="ReportDateFilterType_Own" xml:space="preserve">
     <value>Własne</value>
     <comment>Own</comment>
+  </data>
+  <data name="TransactionCategoriesSelectType_Own" xml:space="preserve">
+    <value>Własne</value>
+    <comment>Own</comment>
+  </data>
+  <data name="TransactionCategoriesSelectType_TopCount" xml:space="preserve">
+    <value>Najwięcej transakcji</value>
+    <comment>Top transactions</comment>
+  </data>
+  <data name="TransactionCategoriesSelectType_TopAmount" xml:space="preserve">
+    <value>Największa suma</value>
+    <comment>Top amount</comment>
+  </data>
+  <data name="ReportType_GraphPie" xml:space="preserve">
+    <value>Graficzny kołowy</value>
   </data>
 </root>

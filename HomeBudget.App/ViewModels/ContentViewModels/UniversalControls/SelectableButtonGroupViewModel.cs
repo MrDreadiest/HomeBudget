@@ -44,6 +44,12 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
                 opt.IsSelected = opt == option;
             }
         }
+
+        public void SelectWithNotify(int index)
+        {
+            var option = Options[index];
+            SelectOption(option);
+        }
     }
 
     public partial class OptionItem : ObservableObject

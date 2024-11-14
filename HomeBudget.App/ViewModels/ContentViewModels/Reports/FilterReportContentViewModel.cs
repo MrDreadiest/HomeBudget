@@ -5,13 +5,14 @@ using HomeBudget.App.Models.Reports;
 using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelper;
+using HomeBudget.App.ViewModels.Widgets;
 using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
 {
-    public partial class FilterReportContentViewModel : ObservableObject, ICollapseContentViewModel
+    public partial class FilterReportContentViewModel : WidgetContentViewModelBase, ICollapseContentViewModel
     {
-        public event EventHandler<Dictionary<string, Dictionary<string, decimal>>>? FilterCommandRaised;
+        public event EventHandler<(List<Transaction> FilteredTeansactions, List<TransactionCategory> FilteredCategories)> FilterCommandRaised;
 
         [RelayCommand]
         public async Task Filter()
@@ -21,11 +22,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
             try
             {
                 IsBusy = true;
-                if (IsValid())
-                {
-                    var transactions = await _transactionService.GetTransactionInRangeByCategoriesAsync(_budgetService.CurrentBudget.Id, DateFrom, DateTo, FilteredCategories.Select(c => c.Id).ToList());
-                    FilterCommandRaised?.Invoke(this, FilterDataHelper.GroupTransactionsByMonthAndCategory(transactions, _budgetService.CurrentBudget.TransactionCategories));
-                }
+
+                var transactions = await _transactionService.GetTransactionInRangeByCategoriesAsync(_budgetService.CurrentBudget.Id, DateFrom, DateTo, FilteredCategories.Select(c => c.Id).ToList());
+                FilterCommandRaised?.Invoke(this, (transactions, FilteredCategories.ToList()));
             }
             catch
             {
@@ -42,24 +41,18 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
         {
             IsCollapsed = !IsCollapsed;
         }
+
         [ObservableProperty]
         private ObservableCollection<TransactionCategory> _filteredCategories;
+
         [ObservableProperty]
         private DateTime _dateFrom;
+
         [ObservableProperty]
         private DateTime _dateTo;
 
         [ObservableProperty]
         private bool _isDateEntryEnable;
-
-        [ObservableProperty]
-        private bool isBusy;
-
-        [ObservableProperty]
-        private bool _isCollapsed;
-
-        [ObservableProperty]
-        private string _title = string.Empty;
 
         public SelectableButtonGroupViewModel FilterDateTypeVM { get; }
 
@@ -79,7 +72,7 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
             _transactionService = transactionService;
 
             IsCollapsed = true;
-            Title = String.Concat("Ustawienia filtracji");
+            Title = "Ustawienia filtracji";
 
             CategoriesDropDownVM = new DropdownTransactionCategoryContentViewModel(SelectionMode.Multiple);
             CategoriesDropDownVM.SelectedTransactionCategoryChanged += CategoriesDropDownVM_SelectedTransactionCategoryChanged;
@@ -89,7 +82,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
             FilterDateTypeVM = new SelectableButtonGroupViewModel(Enum.GetValues(typeof(ReportDateFilterType)).Cast<ReportDateFilterType>().Select(f => new OptionItem(f.GetDescription(), f)).ToList());
             FilterDateTypeVM.SelectedChanged += FilterDateTypeVM_SelectedChanged;
 
-            UpdateDateRange((ReportDateFilterType)FilterDateTypeVM.SelectedType!);
+            var result = ((ReportDateFilterType)FilterDateTypeVM.SelectedType!).GetDateRange();
+            DateFrom = result.DateFrom;
+            DateTo = result.DateTo;
         }
 
         private void ResetView()
@@ -99,7 +94,10 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
             FilteredCategories.Clear();
 
             FilterDateTypeVM.SelectWithoutNotify(0);
-            UpdateDateRange((ReportDateFilterType)FilterDateTypeVM.SelectedType!);
+
+            var result = ((ReportDateFilterType)FilterDateTypeVM.SelectedType!).GetDateRange();
+            DateFrom = result.DateFrom;
+            DateTo = result.DateTo;
 
             CategoriesDropDownVM.SelectTopInRange(3);
             Task.Run(async () => { await Filter(); });
@@ -107,52 +105,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
 
         public async Task ReloadData()
         {
-            //await CategoriesDropDownVM.ReloadData();
+            await CategoriesDropDownVM.Reload();
 
             ResetView();
-        }
-
-        private void UpdateDateRange(ReportDateFilterType dateFilterType)
-        {
-            var today = DateTime.Today;
-
-            IsDateEntryEnable = dateFilterType == ReportDateFilterType.Own;
-
-            switch (dateFilterType)
-            {
-                case ReportDateFilterType.ThisMonth:
-                    DateFrom = new DateTime(today.Year, today.Month, 1);
-                    DateTo = DateFrom.AddMonths(1).AddDays(-1);
-                    break;
-
-                case ReportDateFilterType.ThreeMonths:
-                    DateFrom = new DateTime(today.Year, today.Month, 1).AddMonths(-2);
-                    DateTo = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
-                    break;
-
-                case ReportDateFilterType.SixMonths:
-                    DateFrom = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
-                    DateTo = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
-                    break;
-
-                case ReportDateFilterType.TwelveMonths:
-                    DateFrom = new DateTime(today.Year, today.Month, 1).AddMonths(-11);
-                    DateTo = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
-                    break;
-
-                case ReportDateFilterType.Own:
-                    DateFrom = today;
-                    DateTo = today;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private bool IsValid()
-        {
-            return true;
         }
 
         private void FilterDateTypeVM_SelectedChanged(object? sender, EventArgs e)
@@ -161,19 +116,26 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
             {
                 if (selectableVM.SelectedType is ReportDateFilterType dateType)
                 {
-                    UpdateDateRange(dateType);
+                    var result = dateType.GetDateRange();
+                    DateFrom = result.DateFrom;
+                    DateTo = result.DateTo;
                 }
             }
         }
 
-        private void CategoriesDropDownVM_SelectedTransactionCategoryChanged(object? sender, EventArgs e)
+        private void CategoriesDropDownVM_SelectedTransactionCategoryChanged(object? sender, List<TransactionCategory> e)
         {
-            if (sender is List<TransactionCategory> list)
-            {
-                FilteredCategories = new ObservableCollection<TransactionCategory>(list);
-            }
+            FilteredCategories = new ObservableCollection<TransactionCategory>(e);
         }
 
+        public override void LoadConfiguration()
+        {
+            throw new NotImplementedException();
+        }
 
+        public override void SaveConfiguration()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

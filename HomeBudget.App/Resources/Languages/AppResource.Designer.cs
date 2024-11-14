@@ -214,11 +214,20 @@ namespace HomeBudget.App.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Graficzny.
+        ///   Looks up a localized string similar to Graficzny słupkowy.
         /// </summary>
-        internal static string ReportType_Graph {
+        internal static string ReportType_GraphBar {
             get {
-                return ResourceManager.GetString("ReportType_Graph", resourceCulture);
+                return ResourceManager.GetString("ReportType_GraphBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Graficzny kołowy.
+        /// </summary>
+        internal static string ReportType_GraphPie {
+            get {
+                return ResourceManager.GetString("ReportType_GraphPie", resourceCulture);
             }
         }
         
@@ -264,6 +273,33 @@ namespace HomeBudget.App.Resources.Languages {
         internal static string ShortcutType_SplitTransaction {
             get {
                 return ResourceManager.GetString("ShortcutType_SplitTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Własne.
+        /// </summary>
+        internal static string TransactionCategoriesSelectType_Own {
+            get {
+                return ResourceManager.GetString("TransactionCategoriesSelectType_Own", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Największa suma.
+        /// </summary>
+        internal static string TransactionCategoriesSelectType_TopAmount {
+            get {
+                return ResourceManager.GetString("TransactionCategoriesSelectType_TopAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Najwięcej transakcji.
+        /// </summary>
+        internal static string TransactionCategoriesSelectType_TopCount {
+            get {
+                return ResourceManager.GetString("TransactionCategoriesSelectType_TopCount", resourceCulture);
             }
         }
         

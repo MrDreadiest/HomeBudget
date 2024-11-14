@@ -2,6 +2,7 @@
 using HomeBudget.App.Resources.Icons;
 using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.Views;
+using HomeBudget.App.Views.Widgets;
 
 namespace HomeBudget.App.ViewModels
 {
@@ -28,6 +29,27 @@ namespace HomeBudget.App.ViewModels
                 IsBusy = false;
             }
         }
+
+        [RelayCommand]
+        public async Task GoToManageFastBalance()
+        {
+            if (IsBusy)
+                return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync($"//{nameof(ManageFastBalanceAndroidPageView)}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
 
         private readonly IAppSettingsService _settingsService;
         private readonly IAuthenticationService _authenticationService;

@@ -45,8 +45,8 @@
 
         <Grid Grid.Row="1">
             <Frame
-                Margin="15"
-                Padding="15"
+                Margin="10"
+                Padding="10"
                 BackgroundColor="{StaticResource White}"
                 BorderColor="{StaticResource Gray100}"
                 HasShadow="True">

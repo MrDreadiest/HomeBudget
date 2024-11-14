@@ -9,21 +9,21 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
 {
     public partial class DropdownTransactionCategoryContentViewModel : ObservableObject
     {
-        public event EventHandler? SelectedTransactionCategoryChanged;
+        public event EventHandler<List<TransactionCategory>>? SelectedTransactionCategoryChanged;
 
         [RelayCommand]
         public async Task Reload()
         {
-            if (IsBusy)
-                return;
+            if (IsBusy) return;
+
             try
             {
                 IsBusy = true;
-                await ReloadData();
+                await ReloadDataAsync();
             }
             catch (Exception ex)
             {
-
+                // TODO: Obsługuje błąd (opcjonalnie logowanie)
             }
             finally
             {
@@ -44,12 +44,12 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
 
                 if (IsVisible)
                 {
-                    await ReloadData();
+                    await ReloadDataAsync();
                 }
             }
             catch (Exception ex)
             {
-
+                // TODO: Obsługuje błąd (opcjonalnie logowanie)
             }
             finally
             {
@@ -62,30 +62,33 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
         {
             if (SelectionMode == SelectionMode.Multiple)
             {
-                SelectedCategories = SelectedObjects.Select(o => o as TransactionCategory).ToList();
-                SelectedTransactionCategoryChanged?.Invoke(SelectedCategories, EventArgs.Empty);
+                SelectedCategories = SelectedObjects.OfType<TransactionCategory>().ToList();
+                SelectedTransactionCategoryChanged?.Invoke(this, SelectedCategories);
             }
         }
 
         [ObservableProperty]
-        private ObservableCollection<TransactionCategory> _transactionCategories;
+        private ObservableCollection<TransactionCategory> _transactionCategories = new();
 
         [ObservableProperty]
-        private ObservableCollection<TransactionCategory> _filteredTransactionCategories;
+        private ObservableCollection<TransactionCategory> _filteredTransactionCategories = new();
 
         [ObservableProperty]
         private TransactionCategory _selectedCategory;
 
-        public List<TransactionCategory> SelectedCategories;
+        public List<TransactionCategory> SelectedCategories { get; private set; } = new();
 
         [ObservableProperty]
-        private ObservableCollection<object> _selectedObjects;
+        private ObservableCollection<object> _selectedObjects = new();
 
         [ObservableProperty]
-        private string _searchText;
+        private string _searchText = string.Empty;
 
         [ObservableProperty]
-        private bool isVisible;
+        private bool _isVisible;
+
+        [ObservableProperty]
+        private bool _isEnable = true;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBusy))]
@@ -99,8 +102,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
         private bool _isAddMethodAvailable = false;
 
         public AddInlistCategoryContentViewModel AddInlistCategoryVM { get; set; }
-
-
 
         private readonly IBudgetService _budgetService;
         private readonly ITransactionCategoryService _transactionCategoryService;
@@ -127,17 +128,13 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
         {
             _budgetService = budgetService;
             _transactionCategoryService = transactionCategoryService;
-
             _transactionCategoryService.TransactionCategoryCreated += TransactionCategoryService_TransactionCategoryCreated;
 
-            SelectionMode = selectionMode;
-            TransactionCategories = new ObservableCollection<TransactionCategory>();
-            FilteredTransactionCategories = new ObservableCollection<TransactionCategory>();
             SelectedCategory = new TransactionCategory() { Id = string.Empty, BudgetId = string.Empty };
-            SelectedObjects = new();
-            SelectedCategories = new();
 
+            SelectionMode = selectionMode;
             IsAddMethodAvailable = isAddMethodAvailable;
+
             if (IsAddMethodAvailable)
             {
                 AddInlistCategoryVM = new AddInlistCategoryContentViewModel();
@@ -146,14 +143,34 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
 
         public void SelectTopInRange(int count)
         {
+            SelectCategories(TransactionCategories.Take(count).Select(c => c.Id));
+        }
+
+        public void SelectCategories(IEnumerable<string> ids)
+        {
             if (SelectionMode == SelectionMode.Multiple)
             {
-                _budgetService.CurrentBudget.TransactionCategories.GetRange(0, count).ForEach(t => { SelectedObjects.Add(t); });
-                SelectedTransactionCategoryChanged?.Invoke(SelectedCategories, EventArgs.Empty);
+                SelectedObjects.Clear();
+                foreach (var id in ids)
+                {
+                    var category = TransactionCategories.FirstOrDefault(c => c.Id == id);
+                    if (category != null)
+                    {
+                        SelectedObjects.Add(category);
+                    }
+                }
+            }
+            else if (SelectionMode == SelectionMode.Single)
+            {
+                var category = TransactionCategories.FirstOrDefault(c => c.Id == ids.First());
+                if (category != null)
+                {
+                    SelectedCategory = category;
+                }
             }
         }
 
-        private void ResetView()
+        public void ResetView()
         {
             FilteredTransactionCategories = new ObservableCollection<TransactionCategory>(TransactionCategories);
 
@@ -161,25 +178,49 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
             SelectedCategories.Clear();
             SelectedObjects.Clear();
 
-            AddInlistCategoryVM.ResetView();
+            AddInlistCategoryVM?.ResetView();
             SearchText = string.Empty;
         }
 
-        private async Task ReloadData()
+        private async Task ReloadDataAsync()
         {
-            TransactionCategories.Clear();
-
             var result = await _transactionCategoryService.GetAllTransactionCategoriesAsync(_budgetService.CurrentBudget);
 
             if (result)
             {
-                _budgetService.CurrentBudget.TransactionCategories.ForEach(c =>
+                TransactionCategories.Clear();
+                foreach (var category in _budgetService.CurrentBudget.TransactionCategories)
                 {
-                    TransactionCategories.Add(c);
-                });
+                    TransactionCategories.Add(category);
+                }
             }
 
-            ResetView();
+            FilteredTransactionCategories = new ObservableCollection<TransactionCategory>(TransactionCategories);
+
+            UpdateSelectedObjects();
+
+            AddInlistCategoryVM?.ResetView();
+        }
+
+        private void UpdateSelectedObjects()
+        {
+            if (SelectionMode == SelectionMode.Multiple)
+            {
+                var selectedCategories = SelectedObjects.OfType<TransactionCategory>().ToList();
+                SelectedObjects.Clear();
+                foreach (var category in selectedCategories)
+                {
+                    var selectedCategory = FilteredTransactionCategories.FirstOrDefault(c => c.Id == category.Id);
+                    if (selectedCategory != null)
+                    {
+                        SelectedObjects.Add(selectedCategory);
+                    }
+                }
+            }
+            else
+            {
+                SelectedCategory = FilteredTransactionCategories.FirstOrDefault(c => c.Id == SelectedCategory?.Id) ?? new TransactionCategory { Id = string.Empty, BudgetId = string.Empty };
+            }
         }
 
         private void FilterTransactionCategories(string searchText)
@@ -205,20 +246,13 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
 
         partial void OnSelectedCategoryChanged(TransactionCategory? oldValue, TransactionCategory newValue)
         {
-            SelectedTransactionCategoryChanged?.Invoke(newValue, EventArgs.Empty);
+            SelectedTransactionCategoryChanged?.Invoke(newValue, new List<TransactionCategory> { newValue });
         }
 
         private void TransactionCategoryService_TransactionCategoryCreated(object? sender, TransactionCategory e)
         {
             TransactionCategories.Add(e);
-            if (string.IsNullOrEmpty(SearchText))
-            {
-                FilteredTransactionCategories.Add(e);
-            }
-            else
-            {
-                FilterTransactionCategories(SearchText);
-            }
+            FilteredTransactionCategories.Add(e);
         }
     }
 }

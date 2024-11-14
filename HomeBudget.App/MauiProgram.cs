@@ -4,8 +4,10 @@ using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.ViewModels;
 using HomeBudget.App.ViewModels.ContentViewModels.FullViews;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelper;
+using HomeBudget.App.ViewModels.Widgets;
 using HomeBudget.App.Views;
 using HomeBudget.App.Views.ContentViews.FullViews;
+using HomeBudget.App.Views.Widgets;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
@@ -53,6 +55,7 @@ namespace HomeBudget.App
             // SERVICES
 
             builder.Services.AddTransient<IAppSettingsService, AppSettingsService>();
+            builder.Services.AddTransient<IConfigurationService, ConfigurationService>();
             builder.Services.AddTransient<IApiClient, ApiClient>();
             builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddTransient<ITokenService, TokenService>();
@@ -80,7 +83,7 @@ namespace HomeBudget.App
             builder.Services.AddTransient<AddTransactionPageViewModel>();
             builder.Services.AddTransient<ManageTransactionCategoriesPageViewModel>();
 
-            builder.Services.AddTransient<ManageCurrentBudgetBalancePageViewModel>();
+            builder.Services.AddTransient<ManageFastBalancePageViewModel>();
             builder.Services.AddTransient<ManageCurrentBudgetPageViewModel>();
             builder.Services.AddTransient<ManageShortcutsPageViewModel>();
             builder.Services.AddTransient<ManageRegularTransactionsPageViewModel>();
@@ -104,7 +107,7 @@ namespace HomeBudget.App
             builder.Services.AddTransient<AddTransactionAndroidPageView>();
             builder.Services.AddTransient<ManageCategoriesAndroidPageView>();
 
-            builder.Services.AddTransient<ManageCurrentBudgetBalanceAndroidPageView>();
+            builder.Services.AddTransient<ManageFastBalanceAndroidPageView>();
             builder.Services.AddTransient<ManageCurrentBudgetAndroidPageView>();
             builder.Services.AddTransient<ManageShortcutsAndroidPageView>();
             builder.Services.AddTransient<ManageRegularTransactionsAndroidPageView>();

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using HomeBudget.App.Models;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
 {
@@ -35,8 +34,5 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
         {
 
         }
-
-        public abstract void ResetView();
-        public abstract void ReloadData(List<TransactionCategory> categories, List<Transaction> transactions);
     }
 }

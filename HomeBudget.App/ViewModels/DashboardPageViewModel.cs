@@ -4,6 +4,7 @@ using HomeBudget.App.Extensions;
 using HomeBudget.App.Resources.Icons;
 using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.ViewModels.ContentViewModels.HandViews;
+using HomeBudget.App.ViewModels.Widgets;
 using HomeBudget.App.Views;
 
 namespace HomeBudget.App.ViewModels
@@ -57,7 +58,7 @@ namespace HomeBudget.App.ViewModels
         private CurrentBudgetContentViewModel currentBudgetVM;
 
         [ObservableProperty]
-        private CurrentBudgetBalanceContentViewModel currentBudgetBalanceVM;
+        private FastBalanceContentViewModel _fastBalanceVM;
 
         [ObservableProperty]
         private ShortcutsContentViewModel shortcutsVM;
@@ -89,7 +90,7 @@ namespace HomeBudget.App.ViewModels
             _transactionCategoryService = transactionCategoryService;
 
             CurrentBudgetVM = new CurrentBudgetContentViewModel(_appSettingsService, _budgetService);
-            CurrentBudgetBalanceVM = new CurrentBudgetBalanceContentViewModel(_appSettingsService);
+            FastBalanceVM = new FastBalanceContentViewModel();
             ShortcutsVM = new ShortcutsContentViewModel();
             RegularTransactionsReminderVM = new RegularTransactionsReminderContentViewModel();
             LastTransactionsReminderVM = new LastTransactionsReminderContentViewModel(_appSettingsService);
@@ -110,16 +111,11 @@ namespace HomeBudget.App.ViewModels
                 }
                 else
                 {
-                    if (_isInitialized)
-                    {
-                        await ReloadData();
-                    }
-                    else
-                    {
-                        _isInitialized = true;
-                    }
-
-                    await ResetView();
+                    _ = Task.Run(() => FastBalanceVM.ReloadData());
+                    _ = Task.Run(() => LastTransactionsReminderVM.Reload(
+                        _budgetService.CurrentBudget.Transactions,
+                        _budgetService.CurrentBudget.TransactionCategories
+                    ));
                 }
             }
             catch (Exception ex)
@@ -132,17 +128,9 @@ namespace HomeBudget.App.ViewModels
             }
         }
 
-        public async Task ReloadData()
-        {
-            var categoryTask = _transactionCategoryService.GetAllTransactionCategoriesAsync(_budgetService.CurrentBudget);
-            var transactionTask = _transactionService.GetAllTransactionAsync(_budgetService.CurrentBudget);
-
-            await Task.WhenAll(categoryTask, transactionTask);
-        }
-
         public async Task ResetView()
         {
-            await CurrentBudgetBalanceVM.Reload(_budgetService.CurrentBudget.Transactions, _budgetService.CurrentBudget.TransactionCategories);
+            await FastBalanceVM.ReloadData();
             await LastTransactionsReminderVM.Reload(_budgetService.CurrentBudget.Transactions, _budgetService.CurrentBudget.TransactionCategories);
         }
 

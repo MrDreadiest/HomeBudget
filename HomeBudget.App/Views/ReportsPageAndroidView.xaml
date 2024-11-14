@@ -24,7 +24,7 @@
 
         <reportsModels:ReportCarouselItemTemplateSelector
             x:Key="ReportTemplateSelector"
-            ReportGraphDT="{StaticResource ReportGraph}"
+            ReportGraphBarDT="{StaticResource ReportGraph}"
             ReportTableDT="{StaticResource ReportTable}" />
     </ContentPage.Resources>
 
@@ -59,20 +59,9 @@
                 <CarouselView
                     Grid.Row="1"
                     IsSwipeEnabled="False"
-                    IndicatorView="{x:Reference indicatorView}"
                     ItemTemplate="{StaticResource ReportTemplateSelector}"
                     ItemsSource="{Binding ReportsCarouselVMs}"
                     Position="{Binding CarouselPosition, Mode=TwoWay}" />
-
-
-                <IndicatorView
-                    x:Name="indicatorView"
-                    Grid.Row="1"
-                    HorizontalOptions="Center"
-                    IndicatorColor="Gray"
-                    SelectedIndicatorColor="Black" />
-
-
 
                 <Grid
                     Grid.Row="2"
@@ -86,12 +75,12 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Start"
                                 Style="{StaticResource H2Label}"
-                                Text="Suma wydatków" />
+                                Text="Wydatki sumarycznie" />
                             <Label
                                 Grid.Column="1"
                                 HorizontalOptions="End"
                                 Style="{StaticResource H2Label}"
-                                Text="32223" />
+                                Text="{Binding AllTransactionsAmount, StringFormat='{0:C2}'}" />
                         </Grid>
 
                         <BoxView HeightRequest="1" Color="{StaticResource Gray200}" />
@@ -101,12 +90,12 @@
                                 Grid.Column="0"
                                 HorizontalOptions="Start"
                                 Style="{StaticResource H2Label}"
-                                Text="Średnio" />
+                                Text="Wydatki średnio" />
                             <Label
                                 Grid.Column="1"
                                 HorizontalOptions="End"
                                 Style="{StaticResource H2Label}"
-                                Text="12" />
+                                Text="{Binding AvgTransactionsAmount, StringFormat='{0:C2}'}" />
                         </Grid>
 
                     </VerticalStackLayout>

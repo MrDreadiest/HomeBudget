@@ -34,5 +34,46 @@ namespace HomeBudget.App.Models.Reports
                     return string.Empty;
             }
         }
+
+        public static (DateTime DateFrom, DateTime DateTo) GetDateRange(this ReportDateFilterType dateFilterType)
+        {
+            var today = DateTime.Today;
+
+            var _dateFrom = DateTime.Now;
+            var _dateTo = DateTime.Now;
+
+            switch (dateFilterType)
+            {
+                case ReportDateFilterType.ThisMonth:
+                    _dateFrom = new DateTime(today.Year, today.Month, 1);
+                    _dateTo = _dateFrom.AddMonths(1).AddDays(-1);
+                    break;
+
+                case ReportDateFilterType.ThreeMonths:
+                    _dateFrom = new DateTime(today.Year, today.Month, 1).AddMonths(-2);
+                    _dateTo = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
+                    break;
+
+                case ReportDateFilterType.SixMonths:
+                    _dateFrom = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
+                    _dateTo = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
+                    break;
+
+                case ReportDateFilterType.TwelveMonths:
+                    _dateFrom = new DateTime(today.Year, today.Month, 1).AddMonths(-11);
+                    _dateTo = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
+                    break;
+
+                case ReportDateFilterType.Own:
+                    _dateFrom = today;
+                    _dateTo = today;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return (_dateFrom, _dateTo);
+        }
     }
 }

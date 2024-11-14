@@ -3,16 +3,53 @@
     x:Class="HomeBudget.App.Views.SettingsPageAndroidView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:contentViewModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
-    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
     xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
-    xmlns:viewmodels="clr-namespace:HomeBudget.App.ViewModels"
-    xmlns:views="clr-namespace:HomeBudget.App.Views"
-    x:DataType="viewmodels:SettingsPageViewModel">
+    xmlns:local="clr-namespace:HomeBudget.App.ViewModels"
+    xmlns:widgetViews="clr-namespace:HomeBudget.App.Views.Widgets"
+    xmlns:widgets="clr-namespace:HomeBudget.App.ViewModels.Widgets"
+    x:DataType="local:SettingsPageViewModel">
 
-    <Grid BackgroundColor="{StaticResource Gray100}" RowDefinitions="9*,Auto">
-        <Button Command="{Binding LogoutCommand}" Text="Logout" />
+    <Grid BackgroundColor="{StaticResource White}" RowDefinitions="Auto,*">
+
+        <Grid Margin="20,20,20,20">
+
+            <Label
+                Style="{StaticResource H1Label}"
+                Text="{Binding Title}"
+                TextColor="{StaticResource Gray600}" />
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Padding="0"
+            BackgroundColor="{StaticResource Gray100}"
+            Stroke="{StaticResource Gray200}"
+            StrokeThickness="1">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15,15,0,0" />
+            </Border.StrokeShape>
+
+            <Grid Margin="10">
+                <VerticalStackLayout>
+
+
+                    <Button
+                        Command="{Binding GoToManageFastBalanceCommand}"
+                        Style="{StaticResource SettingsNavigationButton}"
+                        Text="Szybki bilans" />
+
+                    <Button
+                        Command="{Binding LogoutCommand}"
+                        Style="{StaticResource SettingsNavigationButton}"
+                        Text="Wyloguj" />
+
+                </VerticalStackLayout>
+            </Grid>
+
+
+        </Border>
 
         <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
 
