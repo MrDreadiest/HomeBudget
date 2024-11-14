@@ -8,7 +8,7 @@ using HomeBudget.Common.EntityDTOs.Account;
 
 namespace HomeBudget.App.ViewModels
 {
-    public partial class LoginPageViewModel : BaseViewModel
+    public partial class MainPageViewModel : BaseViewModel
     {
         [RelayCommand]
         public async Task GoToRegister()
@@ -145,7 +145,7 @@ namespace HomeBudget.App.ViewModels
         private readonly IAppSettingsService _appSettingsService;
         private readonly IBudgetService _budgetService;
 
-        public LoginPageViewModel(IAuthenticationService authenticationService, IUserService userService, IAppSettingsService appSettingsService, IBudgetService budgetService)
+        public MainPageViewModel(IAuthenticationService authenticationService, IUserService userService, IAppSettingsService appSettingsService, IBudgetService budgetService)
         {
             _authenticationService = authenticationService;
             _userService = userService;

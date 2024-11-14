@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="HomeBudget.App.Views.LoginPageAndroidView"
+    x:Class="HomeBudget.App.Views.MainPageAndroidView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
     xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
     xmlns:viewmodel="clr-namespace:HomeBudget.App.ViewModels"
-    Title="LoginPageAndroidView"
-    x:DataType="viewmodel:LoginPageViewModel">
+    x:DataType="viewmodel:MainPageViewModel">
 
     <Grid BackgroundColor="{StaticResource Gray100}">
         <Grid>

@@ -12,9 +12,9 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="LoginPageAndroidView"
-        ContentTemplate="{DataTemplate local:LoginPageAndroidView}"
-        Route="LoginPageAndroidView"
+        Title="MainPageAndroidView"
+        ContentTemplate="{DataTemplate local:MainPageAndroidView}"
+        Route="MainPageAndroidView"
         Shell.NavBarIsVisible="False" />
 
     <ShellContent

@@ -75,7 +75,7 @@ namespace HomeBudget.App
             builder.Services.AddSingleton<BudgetsPageViewModel>();
             builder.Services.AddSingleton<SettingsPageViewModel>();
 
-            builder.Services.AddSingleton<LoginPageViewModel>();
+            builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<RegisterPageViewModel>();
             builder.Services.AddSingleton<PasswordReminderViewModel>();
             builder.Services.AddSingleton<UserAccountSetupPageViewModel>();
@@ -99,7 +99,7 @@ namespace HomeBudget.App
             builder.Services.AddSingleton<BudgetsPageAndroidView>();
             builder.Services.AddSingleton<SettingsPageAndroidView>();
 
-            builder.Services.AddSingleton<LoginPageAndroidView>();
+            builder.Services.AddSingleton<MainPageAndroidView>();
             builder.Services.AddSingleton<RegisterPageAndroidView>();
             builder.Services.AddSingleton<PasswordReminderPageAndroidView>();
             builder.Services.AddSingleton<UserAccountSetupPageAndroidView>();

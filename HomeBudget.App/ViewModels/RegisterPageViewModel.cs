@@ -18,7 +18,7 @@ namespace HomeBudget.App.ViewModels
             try
             {
                 IsBusy = true;
-                await Shell.Current.GoToAsync($"//{nameof(LoginPageAndroidView)}");
+                await Shell.Current.GoToAsync($"//{nameof(MainPageAndroidView)}");
             }
             catch
             {
@@ -67,7 +67,7 @@ namespace HomeBudget.App.ViewModels
                     var result = await _registerService.RegisterAsync(RegisterModel);
                     if (result)
                     {
-                        await Shell.Current.GoToAsync($"//{nameof(LoginPageAndroidView)}");
+                        await Shell.Current.GoToAsync($"//{nameof(MainPageAndroidView)}");
                     }
                     else
                     {

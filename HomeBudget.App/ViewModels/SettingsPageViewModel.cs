@@ -18,7 +18,7 @@ namespace HomeBudget.App.ViewModels
                 IsBusy = true;
                 await _authenticationService.LogoutAsync();
                 await _settingsService.DeleteIsRememberedSwitchOnAsync();
-                await Shell.Current.GoToAsync($"//{nameof(LoginPageAndroidView)}");
+                await Shell.Current.GoToAsync($"//{nameof(MainPageAndroidView)}");
             }
             catch (Exception ex)
             {
