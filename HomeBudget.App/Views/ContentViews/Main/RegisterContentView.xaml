@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.Main.RegisterContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:main="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Main"
+    xmlns:mainViews="clr-namespace:HomeBudget.App.Views.ContentViews.Main"
+    x:DataType="main:RegisterContentViewModel">
+
+    <Grid>
+        <VerticalStackLayout Spacing="10">
+            <Frame Padding="10">
+                <VerticalStackLayout Spacing="10">
+                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                        <Entry
+                            Placeholder="Email"
+                            Style="{StaticResource DarkMediumEntry}"
+                            Text="{Binding RegisterModel.Email}" />
+                    </Frame>
+
+                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Entry
+                                IsPassword="{Binding IsPasswordVisible}"
+                                Placeholder="Hasło"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding RegisterModel.Password}" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding TogglePasswordVisibilityCommand}"
+                                Style="{StaticResource IconFlexButton}"
+                                Text="{Binding PasswordVisibleIcon}" />
+                        </Grid>
+                    </Frame>
+
+                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Entry
+                                IsPassword="{Binding IsRepeatPasswordVisible}"
+                                Placeholder="Hasło"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding RepeatedPassword}" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding ToggleRepeatPasswordVisibilityCommand}"
+                                Style="{StaticResource IconFlexButton}"
+                                Text="{Binding RepeatPasswordVisibleIcon}" />
+                        </Grid>
+                    </Frame>
+
+                    <VerticalStackLayout Spacing="5" VerticalOptions="Start">
+                        <Label
+                            Margin="0"
+                            HorizontalOptions="Start"
+                            Style="{StaticResource H3Label}"
+                            Text="Minimalna długość to 8 znaków" />
+                        <Label
+                            Margin="0"
+                            HorizontalOptions="Start"
+                            Style="{StaticResource H3Label}"
+                            Text="Zawiera cyfry, litery (duże i małe)" />
+                        <Label
+                            Margin="0"
+                            HorizontalOptions="Start"
+                            Style="{StaticResource H3Label}"
+                            Text="Zawiera znaki specjalne (no. ?!@#$%)" />
+                    </VerticalStackLayout>
+
+                    <Button
+                        Grid.Row="6"
+                        Command="{Binding RegisterCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Rejestruj" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+        <controls:ActivityIndicatorFullPageContentView BindingContext="{Binding}" />
+    </Grid>
+
+</ContentView>

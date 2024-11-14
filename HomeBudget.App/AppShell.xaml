@@ -17,12 +17,6 @@
         Route="MainPageAndroidView"
         Shell.NavBarIsVisible="False" />
 
-    <ShellContent
-        Title="RegisterPageAndroidView"
-        ContentTemplate="{DataTemplate local:RegisterPageAndroidView}"
-        Route="RegisterPageAndroidView"
-        Shell.NavBarIsVisible="False" />
-
     <TabBar>
         <ShellContent
             Title="Transakcje"

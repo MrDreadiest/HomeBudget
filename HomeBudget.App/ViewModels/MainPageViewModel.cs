@@ -1,193 +1,75 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HomeBudget.App.Extensions;
-using HomeBudget.App.Resources.Icons;
-using HomeBudget.App.Services.Interfaces;
-using HomeBudget.App.Views;
-using HomeBudget.Common.EntityDTOs.Account;
+using HomeBudget.App.Models.Main;
+using HomeBudget.App.ViewModels.ContentViewModels.Main;
+using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls;
+using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels
 {
     public partial class MainPageViewModel : BaseViewModel
     {
-        [RelayCommand]
-        public async Task GoToRegister()
+        public ObservableCollection<MainCarouselItemViewModelBase> MainCarouselVMs { get; }
+
+        [ObservableProperty]
+        private int _carouselPosition;
+
+        public SelectableButtonGroupViewModel SelectableButtonGroupVM { get; }
+
+        public MainPageViewModel()
         {
-            if (IsBusy)
-                return;
+            var registerVM = new RegisterContentViewModel();
+            registerVM.OnRegisterContent += RegisterVM_OnRegisterContent; ;
 
-            try
+            MainCarouselVMs = new ObservableCollection<MainCarouselItemViewModelBase>()
             {
-                IsBusy = true;
-                await Shell.Current.GoToAsync($"//{nameof(RegisterPageAndroidView)}");
-            }
-            catch
-            {
+                new LoginContentViewModel(),
+                registerVM
+            };
 
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-            await Task.CompletedTask;
+            SelectableButtonGroupVM = new SelectableButtonGroupViewModel(
+                new List<OptionItem> {
+                    new OptionItem(MainContentViewsType.Login.GetDescription(),MainContentViewsType.Login),
+                    new OptionItem(MainContentViewsType.Register.GetDescription(),MainContentViewsType.Register),
+                });
+            SelectableButtonGroupVM.SelectedChanged += SelectableButtonGroupVM_SelectedChanged; ;
         }
 
-        [RelayCommand]
-        public async Task Login()
+        private void RegisterVM_OnRegisterContent(object? sender, (string email, string password) e)
         {
-            if (IsBusy)
-                return;
+            SelectableButtonGroupVM.SelectWithNotify(0);
+        }
 
-            try
+        private void SelectableButtonGroupVM_SelectedChanged(object? sender, EventArgs e)
+        {
+            if (sender is SelectableButtonGroupViewModel selectableVM)
             {
-                IsBusy = true;
-                var result = await _authenticationService.LoginAsync(new LoginRequestModel() { Email = Email, Password = Password });
-                if (result)
+                if (selectableVM.SelectedType is MainContentViewsType reportType)
                 {
-                    if (IsRemembered)
+                    int targetPosition = reportType switch
                     {
-                        await _appSettingsService.SetRememberedUserEmailAsync(Email);
-                        await _appSettingsService.SetRememberedUserPasswordAsync(Password);
-                    }
-
-                    if (_userService.CurrentUser.IsAccountSetup)
-                    {
-
-                        if (_budgetService.CurrentBudget.IsNullOrEmpty())
-                        {
-                            await Shell.Current.GoToAsync($"//{nameof(BudgetsPageAndroidView)}");
-                        }
-                        else
-                        {
-                            await Shell.Current.GoToAsync($"//{nameof(DashboardPageAndroidView)}");
-                        }
-                    }
-                    else
-                    {
-                        await Shell.Current.GoToAsync($"//{nameof(UserAccountSetupPageAndroidView)}");
-                    }
+                        MainContentViewsType.Login => 0,
+                        MainContentViewsType.Register => 1,
+                        _ => CarouselPosition
+                    };
+                    CarouselPosition = targetPosition;
                 }
-
-
             }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-            await Task.CompletedTask;
-        }
-
-        [RelayCommand]
-        public async Task GoToPasswordReminder()
-        {
-            if (IsBusy)
-                return;
-
-            try
-            {
-                IsBusy = true;
-                await Shell.Current.GoToAsync($"//{nameof(PasswordReminderPageAndroidView)}");
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-            await Task.CompletedTask;
-        }
-
-        [RelayCommand]
-        public async Task TogglePasswordVisibility()
-        {
-            if (IsBusy)
-                return;
-
-            try
-            {
-                IsBusy = true;
-                IsPasswordVisible = !IsPasswordVisible;
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-            await Task.CompletedTask;
-        }
-
-        [ObservableProperty]
-        private string _password;
-
-        [ObservableProperty]
-        private string _email;
-
-        [ObservableProperty]
-        private bool isPasswordVisible;
-
-        [ObservableProperty]
-        private string passwordVisibleIcon;
-
-        [ObservableProperty]
-        private bool isRemembered;
-
-        private readonly IAuthenticationService _authenticationService;
-        private readonly IUserService _userService;
-        private readonly IAppSettingsService _appSettingsService;
-        private readonly IBudgetService _budgetService;
-
-        public MainPageViewModel(IAuthenticationService authenticationService, IUserService userService, IAppSettingsService appSettingsService, IBudgetService budgetService)
-        {
-            _authenticationService = authenticationService;
-            _userService = userService;
-            _appSettingsService = appSettingsService;
-            _budgetService = budgetService;
-
-            IsPasswordVisible = true;
         }
 
         public async override Task OnAppearingAsync()
         {
             IsVisible = true;
+            await Task.Delay(200);
 
-            IsRemembered = await _appSettingsService.GetIsRememberedSwitchOnAsync();
-
-            if (IsRemembered)
+            foreach (var itemVM in MainCarouselVMs)
             {
-                string rememberedPassword = await _appSettingsService.GetRememberedUserPasswordAsync();
-                string rememberedEmail = await _appSettingsService.GetRememberedUserEmailAsync();
-
-                if (!string.IsNullOrEmpty(rememberedEmail) && !string.IsNullOrEmpty(rememberedPassword))
-                {
-                    Password = rememberedPassword;
-                    Email = rememberedEmail;
-                }
+                _ = Task.Run(() => { itemVM.ResetView(); });
             }
         }
 
         public async override Task OnDisappearingAsync()
         {
             IsVisible = false;
-            await Task.CompletedTask;
-        }
-
-        partial void OnIsRememberedChanged(bool oldValue, bool newValue)
-        {
-            Task.Run(async () => { await _appSettingsService.SetIsRememberedSwitchOnAsync(newValue); });
-        }
-
-        partial void OnIsPasswordVisibleChanged(bool value)
-        {
-            PasswordVisibleIcon = value == true ? Icons.Visibility : Icons.VisibilityOff;
         }
     }
 }

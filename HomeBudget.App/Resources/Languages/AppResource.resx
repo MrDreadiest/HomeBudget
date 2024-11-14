@@ -228,4 +228,12 @@
   <data name="ReportType_GraphPie" xml:space="preserve">
     <value>Graficzny kołowy</value>
   </data>
+  <data name="MainContentViewsType_Login" xml:space="preserve">
+    <value>Logowanie</value>
+    <comment>Login</comment>
+  </data>
+  <data name="MainContentViewsType_Register" xml:space="preserve">
+    <value>Rejestracja</value>
+    <comment>Register</comment>
+  </data>
 </root>
