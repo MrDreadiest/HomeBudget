@@ -5,5 +5,6 @@
         void ToggleIsCollapsed();
         bool IsCollapsed { get; set; }
         string Title { get; set; }
+        string HeaderIcon { get; }
     }
 }

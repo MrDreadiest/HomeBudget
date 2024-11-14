@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Models;
 using HomeBudget.App.Services.Interfaces;
+using HomeBudget.App.ViewModels.Widgets;
 using HomeBudget.App.Views.ContentViews.FullViews;
-using HomeBudget.App.Views.ContentViews.HandViews;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
 {
-    public partial class CurrentBudgetContentViewModel : HandViewBaseModel, IHandViewBaseModel
+    public partial class CurrentBudgetContentViewModel : WidgetContentViewModelBase
     {
         [RelayCommand]
         public async Task GoToFullView()
@@ -39,7 +39,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
         {
             // TODO: Przeniesienie do zasobów
             Title = "Aktualny budżet";
-            Route = nameof(CurrentBudgetContentView);
             FullViewRoute = nameof(ManageCurrentBudgetAndroidPageView);
 
             Budget = budgetService.CurrentBudget;
@@ -53,6 +52,16 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.HandViews
         private void BudgetService_CurrentBudgetChanged(object? sender, EventArgs e)
         {
             Budget = _budgetService.CurrentBudget;
+        }
+
+        public override void LoadConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveConfiguration()
+        {
+            throw new NotImplementedException();
         }
     }
 }

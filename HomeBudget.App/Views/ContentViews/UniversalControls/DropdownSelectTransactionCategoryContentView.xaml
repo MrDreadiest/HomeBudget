@@ -50,9 +50,12 @@
             Grid.Row="1"
             Margin="10"
             RowDefinitions="Auto,*"
-            RowSpacing="10">
+            RowSpacing="0">
 
-            <controls:AddInlistCategoryContentView Grid.Row="0" BindingContext="{Binding AddInlistCategoryVM}" />
+            <controls:AddInlistCategoryContentView
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                BindingContext="{Binding AddInlistCategoryVM}" />
 
             <Frame Grid.Row="1" Padding="10">
                 <Grid RowDefinitions="Auto,*">

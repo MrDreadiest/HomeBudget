@@ -1,13 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Extensions;
 using HomeBudget.App.Models;
 using HomeBudget.App.Services.Interfaces;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls.CollapseHelper;
+using HomeBudget.App.ViewModels.Widgets;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
 {
-    public partial class AddInlistCategoryContentViewModel : ObservableObject, ICollapseContentViewModel
+    public partial class AddInlistCategoryContentViewModel : WidgetContentViewModelBase, ICollapseContentViewModel
     {
         [RelayCommand]
         public async Task AddCategory()
@@ -41,15 +41,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
         {
             IconSelectVM.ToggleVisibility();
         }
-
-        [ObservableProperty]
-        private bool _isCollapsed;
-
-        [ObservableProperty]
-        private string _title = string.Empty;
-
-        [ObservableProperty]
-        private bool _isBusy;
 
         public IconSelectContentViewModel IconSelectVM { get; }
         public TransactionCategory TemporaryCategory { get; set; }
@@ -116,6 +107,16 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.UniversalControls
         private void IconSelectVM_SelectedIconChanged(object? sender, EventArgs e)
         {
             TemporaryCategory.IconUnicode = IconSelectVM.SelectedIconItem.Unicode;
+        }
+
+        public override void LoadConfiguration()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveConfiguration()
+        {
+            throw new NotImplementedException();
         }
     }
 }

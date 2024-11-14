@@ -9,6 +9,8 @@ namespace HomeBudget.App.Services.Interfaces
         event EventHandler<TransactionCategory> TransactionCategoryUpdated;
 
         Task<bool> GetAllTransactionCategoriesAsync(Budget budget);
+        Task<List<TransactionCategory>> GetTopAmountTransactionCategoriesInDataRangeAsync(string budgetId, int count, DateTime startDate, DateTime endDate);
+        Task<List<TransactionCategory>> GetTopCountTransactionCategoriesInDataRangeAsync(string budgetId, int count, DateTime startDate, DateTime endDate);
         Task<TransactionCategory> GetTransactionCategoryByIdsAsync(string budgetId, string categoryId);
         Task<bool> CreateTransactionCategoryAsync(Budget budget, TransactionCategory transactionCategory);
         Task<bool> CreateTransactionCategoriesAsync(Budget budget, List<TransactionCategory> transactionCategories);

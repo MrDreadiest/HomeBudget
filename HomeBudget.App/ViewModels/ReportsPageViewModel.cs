@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HomeBudget.App.Factories.Reports;
+using HomeBudget.App.Models;
 using HomeBudget.App.Models.Reports;
 using HomeBudget.App.Resources.Icons;
 using HomeBudget.App.Services.Interfaces;
@@ -17,11 +19,19 @@ namespace HomeBudget.App.ViewModels
         private FilterReportContentViewModel _filterVM;
 
         [ObservableProperty]
+        private decimal _allTransactionsAmount;
+
+        [ObservableProperty]
+        private decimal _avgTransactionsAmount;
+
+        [ObservableProperty]
         private int _carouselPosition;
 
         private bool _isInternalCarouselPositionChange;
 
         public SelectableButtonGroupViewModel SelectableButtonGroupVM { get; }
+
+        private readonly ReportViewModel _reportViewModel;
 
         private readonly IBudgetService _budgetService;
         private readonly ITransactionCategoryService _transactionCategoryService;
@@ -33,6 +43,8 @@ namespace HomeBudget.App.ViewModels
             _transactionService = transactionService;
             _transactionCategoryService = transactionCategoryService;
 
+
+
             Route = nameof(ReportsPageAndroidView);
             //TODO : Zasoby
             Title = "Raporty";
@@ -41,28 +53,36 @@ namespace HomeBudget.App.ViewModels
             FilterVM = new FilterReportContentViewModel();
             FilterVM.FilterCommandRaised += FilterVM_FilterCommandRaised;
 
+            _reportViewModel = new ReportViewModel();
+
             ReportsCarouselVMs = new ObservableCollection<ReportCarouselItemBaseViewModel>()
             {
-                new ReportGraphViewModel(),
-                new ReportTableViewModel()
+                (ReportCarouselItemBaseViewModel)ReportFactoryProvider.GetFactory(ReportType.GraphBar).CreateReport(_reportViewModel),
+                (ReportCarouselItemBaseViewModel)ReportFactoryProvider.GetFactory(ReportType.Table).CreateReport(_reportViewModel)
             };
 
             SelectableButtonGroupVM = new SelectableButtonGroupViewModel(
                 new List<OptionItem> {
-                                new OptionItem(ReportType.Graph.GetDescription(),ReportType.Graph),
+                                new OptionItem(ReportType.GraphBar.GetDescription(),ReportType.GraphBar),
                                 new OptionItem(ReportType.Table.GetDescription(),ReportType.Table),
                 });
             SelectableButtonGroupVM.SelectedChanged += SelectableButtonGroupVM_SelectedChanged;
         }
 
-        private async void FilterVM_FilterCommandRaised(object? sender, Dictionary<string, Dictionary<string, decimal>> filteredData)
+        private async void FilterVM_FilterCommandRaised(object? sender, (List<Transaction> FilteredTeansactions, List<TransactionCategory> FilteredCategories) result)
         {
+            _reportViewModel.UpdateData(result.FilteredTeansactions, result.FilteredCategories);
+            _reportViewModel.GenerateCategoryColors();
+
+            AllTransactionsAmount = _reportViewModel.AllTransactionsAmount;
+            AvgTransactionsAmount = _reportViewModel.AvgTransactionsAmount;
+
             Task[] tasks = [];
             foreach (var item in ReportsCarouselVMs)
             {
                 if (item is IReport report)
                 {
-                    tasks.Append(report.DataPresentation(filteredData));
+                    tasks.Append(report.DataPresentation());
                 }
             }
             await Task.WhenAll(tasks);
@@ -129,8 +149,6 @@ namespace HomeBudget.App.ViewModels
             }
         }
 
-
-
         private async void SelectableButtonGroupVM_SelectedChanged(object? sender, EventArgs e)
         {
             if (sender is SelectableButtonGroupViewModel selectableVM)
@@ -139,7 +157,7 @@ namespace HomeBudget.App.ViewModels
                 {
                     int targetPosition = reportType switch
                     {
-                        ReportType.Graph => 0,
+                        ReportType.GraphBar => 0,
                         ReportType.Table => 1,
                         _ => CarouselPosition
                     };

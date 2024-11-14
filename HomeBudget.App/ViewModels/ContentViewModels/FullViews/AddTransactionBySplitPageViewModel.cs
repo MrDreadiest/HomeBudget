@@ -230,6 +230,8 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             CategorySelectVM.SelectedTransactionCategoryChanged += CategorySelectVM_SelectedTransactionCategoryChanged;
         }
 
+
+
         public async override Task OnAppearingAsync()
         {
             try
@@ -317,9 +319,14 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
         {
             if (sender is TransactionCategory transactionCategory)
             {
-                TemporaryTransaction.TransactionCategoryId = transactionCategory.Id;
-                TemporaryTransaction.Name = transactionCategory.Name;
+
             }
+        }
+
+        private void CategorySelectVM_SelectedTransactionCategoryChanged(object? sender, List<TransactionCategory> e)
+        {
+            TemporaryTransaction.TransactionCategoryId = e.First().Id;
+            TemporaryTransaction.Name = e.First().Name;
         }
 
         private void CalculatorPopupContentVM_CalculationCompleted(object? sender, decimal value)

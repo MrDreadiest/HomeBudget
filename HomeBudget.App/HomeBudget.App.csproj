@@ -89,6 +89,12 @@
 	  <Compile Update="Views\ContentViews\FullViews\AddTransactionAndroidPageView.xaml.cs">
 	    <DependentUpon>AddTransactionAndroidPageView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Widgets\ContentViews\FastBalanceContentView.xaml.cs">
+	    <DependentUpon>FastBalanceContentView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Widgets\ManageFastBalanceAndroidPageView.xaml.cs">
+	    <DependentUpon>ManageFastBalanceAndroidPageView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\ContentViews\Reports\FilterReportContentView.xaml.cs">
 	    <DependentUpon>FilterReportContentView.xaml</DependentUpon>
 	  </Compile>
@@ -123,7 +129,7 @@
 	  <MauiXaml Update="Views\ContentViews\FullViews\ManageCurrentBudgetAndroidPageView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\FullViews\ManageCurrentBudgetBalanceAndroidPageView.xaml">
+	  <MauiXaml Update="Views\Widgets\ManageFastBalanceAndroidPageView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\FullViews\ManageRegularTransactionsAndroidPageView.xaml">
@@ -138,7 +144,7 @@
 	  <MauiXaml Update="Views\ContentViews\FullViews\ManageTransactionsSplitAndroidPageView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\HandViews\CurrentBudgetBalanceContentView.xaml">
+	  <MauiXaml Update="Views\Widgets\ContentViews\FastBalanceContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\Reports\FilterReportContentView.xaml">
@@ -231,9 +237,5 @@
 	  <MauiXaml Update="Views\UserAccountSetupPageAndroidView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="ViewModels\Converters\" />
 	</ItemGroup>
 </Project>

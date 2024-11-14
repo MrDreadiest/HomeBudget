@@ -48,6 +48,70 @@ namespace HomeBudget.Api.Controllers
             }
         }
 
+        [HttpGet("TopAmount"), Authorize]
+        public async Task<ActionResult<IEnumerable<TransactionCategoryGetResponseModel>>> GetTopAmountTransactionCategoriesInDateRange(
+            string budgetId,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int count = 5)
+        {
+            var authorization = await IsAuthorizedUser();
+
+            if (!authorization.Result)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                var transactionCategories = await _transactionCategoryService.GetTopAmountTransactionCategoriesByBudgetIdInDateRangeAsync(authorization.User!.Id, budgetId, count, startDate, endDate);
+                return Ok(transactionCategories);
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                {
+                    return Unauthorized(ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
+        [HttpGet("TopCount"), Authorize]
+        public async Task<ActionResult<IEnumerable<TransactionCategoryGetResponseModel>>> GetTopCountTransactionCategoriesInDateRange(
+            string budgetId,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int count = 5)
+        {
+            var authorization = await IsAuthorizedUser();
+
+            if (!authorization.Result)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                var transactionCategories = await _transactionCategoryService.GetTopCountTransactionCategoriesByBudgetIdInDateRangeAsync(authorization.User!.Id, budgetId, count, startDate, endDate);
+                return Ok(transactionCategories);
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                {
+                    return Unauthorized(ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
         [HttpGet("{categoryId}"), Authorize]
         public async Task<ActionResult<TransactionCategoryGetResponseModel>> GetTransactionCategoryById(string budgetId, string categoryId)
         {

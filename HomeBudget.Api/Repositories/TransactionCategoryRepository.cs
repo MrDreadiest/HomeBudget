@@ -23,6 +23,44 @@ namespace HomeBudget.Api.Repositories
                 .Where(e => e.BudgetId.Equals(budgetId)).ToListAsync();
         }
 
+        public async Task<IEnumerable<TransactionCategory>> GetTopAmountTransactionCategoriesByBudgetIdInDateRangeAsync(string budgetId, int count, DateTime? startDate, DateTime? endDate)
+        {
+            var query = _context.TransactionCategories
+                .Include(e => e.Budget)
+                .Include(e => e.Transactions)
+                .Where(e => e.BudgetId.Equals(budgetId));
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                query = query.Where(e => e.Transactions.Any(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
+            }
+
+            query = query.OrderByDescending(e => e.Transactions
+            .Where(t => (!startDate.HasValue || t.Date >= startDate.Value) && (!endDate.HasValue || t.Date <= endDate.Value))
+            .Sum(t => t.TotalAmount));
+
+            return count > 0 ? await query.Take(count).ToListAsync() : await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionCategory>> GetTopCountTransactionCategoriesByBudgetIdInDateRangeAsync(string budgetId, int count, DateTime? startDate, DateTime? endDate)
+        {
+            var query = _context.TransactionCategories
+                .Include(e => e.Budget)
+                .Include(e => e.Transactions)
+                .Where(e => e.BudgetId.Equals(budgetId));
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                query = query.Where(e => e.Transactions.Any(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
+            }
+
+            query = query.OrderByDescending(e => e.Transactions
+            .Where(t => (!startDate.HasValue || t.Date >= startDate.Value) && (!endDate.HasValue || t.Date <= endDate.Value))
+            .Count());
+
+            return count > 0 ? await query.Take(count).ToListAsync() : await query.ToListAsync();
+        }
+
         public async Task<TransactionCategory?> GetTransactionCategoryByIdAsync(string categoryId)
         {
             return await _context.TransactionCategories.FindAsync(categoryId);
@@ -42,5 +80,7 @@ namespace HomeBudget.Api.Repositories
         {
             _context.TransactionCategories.Remove(transactionCategory);
         }
+
+
     }
 }

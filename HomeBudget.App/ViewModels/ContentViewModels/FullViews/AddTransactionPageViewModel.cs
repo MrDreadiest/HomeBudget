@@ -208,13 +208,11 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.FullViews
             TemporaryTransaction.Date = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, newValue.Hours, newValue.Minutes, newValue.Seconds);
         }
 
-        private void CategorySelectVM_SelectedTransactionCategoryChanged(object? sender, EventArgs e)
+
+        private void CategorySelectVM_SelectedTransactionCategoryChanged(object? sender, List<TransactionCategory> e)
         {
-            if (sender is TransactionCategory transactionCategory)
-            {
-                TemporaryTransaction.TransactionCategoryId = transactionCategory.Id;
-                TemporaryTransaction.Name = transactionCategory.Name;
-            }
+            TemporaryTransaction.TransactionCategoryId = e.First().Id;
+            TemporaryTransaction.Name = e.First().Name;
         }
 
         private void ActionTypeSelectGroupVM_SelectedChanged(object? sender, EventArgs e)

@@ -50,6 +50,7 @@
         public const string History = "\ue889";
         public const string Update = "\ue923";
 
+        public const string Sum = "\ue24a";
         public const string Categories = "\ue574";
         public const string Person = "\ue7fd";
         public const string AccountCircle = "\ue853";

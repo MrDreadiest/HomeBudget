@@ -1,6 +1,6 @@
 ﻿using HomeBudget.App.Models;
 
-namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
+namespace HomeBudget.App.Models.Helpers
 {
     public static class FilterDataHelper
     {
@@ -10,7 +10,7 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.Reports
                 .GroupBy(t => t.Date.ToString("MMMM yyyy"))
                 .ToDictionary(
                     g => g.Key,
-                    g => g.GroupBy(t => transactionCategories.Find(c => c.Id.Equals(t.TransactionCategoryId))!.Name)
+                    g => g.GroupBy(t => transactionCategories.Find(c => c.Id.Equals(t.TransactionCategoryId))!.Id)
                           .ToDictionary(
                               c => c.Key,
                               c => c.Sum(t => t.TotalAmount)

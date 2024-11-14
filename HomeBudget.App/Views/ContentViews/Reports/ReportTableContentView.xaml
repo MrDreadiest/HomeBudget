@@ -4,71 +4,105 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:converters="clr-namespace:HomeBudget.App.ViewModels.Converters"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
     xmlns:reportModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Reports"
     xmlns:reportViews="clr-namespace:HomeBudget.App.Views.ContentViews.Reports"
     x:DataType="reportModels:ReportTableViewModel">
 
-    <Grid Padding="10" RowDefinitions="Auto, *">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:SKColorToColorConverter x:Key="SKColorToColor" />
+        </ResourceDictionary>
+    </ContentView.Resources>
 
-        <Grid ColumnDefinitions="200,Auto">
-            <CollectionView Grid.Column="1" ItemsSource="{Binding Months}">
+    <ScrollView>
+        <Grid
+            Padding="10"
+            ColumnDefinitions="180,*"
+            RowDefinitions="35,*">
+
+            <CollectionView
+                Grid.Row="1"
+                Grid.Column="0"
+                ItemsSource="{Binding Categories}">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                    <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="0" WidthRequest="100">
+                    <DataTemplate x:DataType="reportModels:CategoryInfo">
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="5"
+                            HeightRequest="35">
+                            <Frame Padding="4" BackgroundColor="{Binding CategoryColor, Converter={StaticResource SKColorToColor}}">
+                                <Label Style="{StaticResource SeletedInnerIcon}" Text="{Binding IconUnicode}" />
+                            </Frame>
                             <Label
+                                Grid.Column="1"
                                 FontAttributes="Bold"
-                                HorizontalTextAlignment="Center"
+                                FontSize="{StaticResource MediumPlusFontSize}"
                                 LineBreakMode="TailTruncation"
                                 Style="{StaticResource H2Label}"
-                                Text="{Binding .}" />
+                                Text="{Binding Name}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </Grid>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Rows}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="reportModels:TransactionRow">
-                    <Grid ColumnDefinitions="Auto,*">
-                        <!--  Kategoria  -->
-                        <Grid Grid.Column="0" WidthRequest="200">
+            <CollectionView
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                ItemsSource="{Binding MonthColumns}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="reportModels:MonthColumn">
+                        <Grid Padding="0" RowDefinitions="35,*">
                             <Label
+                                Grid.Row="0"
                                 FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="TailTruncation"
                                 Style="{StaticResource H2Label}"
-                                Text="{Binding Category}" />
+                                Text="{Binding MonthLabel}" />
 
+                            <CollectionView Grid.Row="1" ItemsSource="{Binding Values}">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="reportModels:SumAndPercentage">
+                                        <Grid
+                                            Padding="0"
+                                            ColumnDefinitions="80,Auto"
+                                            ColumnSpacing="4"
+                                            HeightRequest="35"
+                                            VerticalOptions="Center">
+                                            <Label
+                                                Grid.Column="0"
+                                                FontSize="{StaticResource MediumPlusFontSize}"
+                                                HorizontalTextAlignment="End"
+                                                Style="{StaticResource H2Label}"
+                                                Text="{Binding Sum}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontAttributes="Italic"
+                                                HorizontalTextAlignment="Start"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type reportModels:ReportTableViewModel}}, Path=IsPercentageVisible}"
+                                                MinimumWidthRequest="50"
+                                                Style="{StaticResource H3Label}"
+                                                Text="{Binding Percentage, StringFormat='{0:N1}%'}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                        <!--  Wyświetlanie wartości  -->
-                        <CollectionView Grid.Column="1" ItemsSource="{Binding Values}">
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Padding="0" WidthRequest="100">
-                                        <Label
-                                            FontAttributes="Italic"
-                                            HorizontalTextAlignment="Center"
-                                            Style="{StaticResource H2Label}"
-                                            Text="{Binding .}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-    </Grid>
-
+        </Grid>
+    </ScrollView>
 </ContentView>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.Widgets.FastBalanceContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    xmlns:reportModels="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Reports"
+    xmlns:reportViews="clr-namespace:HomeBudget.App.Views.ContentViews.Reports"
+    xmlns:widgetViews="clr-namespace:HomeBudget.App.Views.Widgets"
+    xmlns:widgets="clr-namespace:HomeBudget.App.ViewModels.Widgets"
+    x:DataType="widgets:FastBalanceContentViewModel">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <Border
+            x:Name="Header"
+            BackgroundColor="{StaticResource Primary}"
+            Stroke="{StaticResource Primary}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10,10,0,0" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,*">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="15"
+                    Style="{StaticResource H2Label}"
+                    Text="{Binding Title}"
+                    TextColor="{StaticResource White}" />
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="0"
+                    Command="{Binding ToggleIsCollapsedCommand}"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{Binding HeaderIcon}"
+                    TextColor="{StaticResource White}" />
+            </Grid>
+        </Border>
+
+        <Border
+            x:Name="Body"
+            Grid.Row="1"
+            Padding="0"
+            BackgroundColor="White"
+            Stroke="White">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,10,10" />
+            </Border.StrokeShape>
+
+            <Grid RowDefinitions="Auto,*">
+                <lvc:PieChart
+                    HeightRequest="250"
+                    IsVisible="{Binding IsReportVisible}"
+                    Series="{Binding ReportGraphVM.Series}" />
+
+                <reportViews:ReportTableContentView
+                    Grid.Row="1"
+                    BindingContext="{Binding ReportTableVM}"
+                    IsVisible="{Binding IsReportVisible}" />
+
+                <Label
+                    Margin="10"
+                    IsVisible="{Binding IsReportNotVisible}"
+                    LineBreakMode="CharacterWrap"
+                    Style="{StaticResource H3Label}"
+                    Text="Widged szybkiego bilansu niedostępny. Błędna konfiguracja lub brak wprowadzonych wydatków. Dodaj wydatki lub skonfiguruj w ustawieniach." />
+
+                <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</ContentView>

@@ -22,9 +22,12 @@
         public static readonly string Address = "/Address";
         public static readonly string Budget = "/Budget";
         public static readonly string Transaction = "/Transaction";
+
         public static readonly string TransactionCategory = "/TransactionCategory";
 
         public static readonly string DateRange = "/DateRange";
         public static readonly string Filtered = "/Filtered";
+        public static readonly string TopAmount = "/TopAmount";
+        public static readonly string TopCount = "/TopCount";
     }
 }

@@ -16,10 +16,46 @@ namespace HomeBudget.Api.Services
 
         public async Task<IEnumerable<TransactionCategoryGetResponseModel>> GetTransactionCategoriesByBudgetIdAsync(string userId, string budgetId)
         {
-            if(await HasAccessToBudgetAsync(userId, budgetId))
+            if (await HasAccessToBudgetAsync(userId, budgetId))
             {
                 var transactionCategories = await _unitOfWork.TransactionCategories.GetTransactionCategoriesByBudgetIdAsync(budgetId);
-                return transactionCategories.Select( e => e.ToGetResponse());
+                return transactionCategories.Select(e => e.ToGetResponse());
+            }
+            else
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+
+        public async Task<IEnumerable<TransactionCategoryGetResponseModel>> GetTopAmountTransactionCategoriesByBudgetIdInDateRangeAsync(
+            string userId,
+            string budgetId,
+            int count,
+            DateTime? startDate,
+            DateTime? endDate)
+        {
+            if (await HasAccessToBudgetAsync(userId, budgetId))
+            {
+                var transactionCategories = await _unitOfWork.TransactionCategories.GetTopAmountTransactionCategoriesByBudgetIdInDateRangeAsync(budgetId, count, startDate, endDate);
+                return transactionCategories.Select(e => e.ToGetResponse());
+            }
+            else
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+
+        public async Task<IEnumerable<TransactionCategoryGetResponseModel>> GetTopCountTransactionCategoriesByBudgetIdInDateRangeAsync(
+            string userId,
+            string budgetId,
+            int count,
+            DateTime? startDate,
+            DateTime? endDate)
+        {
+            if (await HasAccessToBudgetAsync(userId, budgetId))
+            {
+                var transactionCategories = await _unitOfWork.TransactionCategories.GetTopCountTransactionCategoriesByBudgetIdInDateRangeAsync(budgetId, count, startDate, endDate);
+                return transactionCategories.Select(e => e.ToGetResponse());
             }
             else
             {
@@ -29,7 +65,7 @@ namespace HomeBudget.Api.Services
 
         public async Task<TransactionCategoryGetResponseModel?> GetTransactionCategoryByIdsAsync(string userId, string budgetId, string categoryId)
         {
-            if(await HasAccessToBudgetAsync(userId, budgetId))
+            if (await HasAccessToBudgetAsync(userId, budgetId))
             {
                 var transactionCategory = await _unitOfWork.TransactionCategories.GetTransactionCategoryByIdAsync(categoryId);
                 return transactionCategory == null ? null : transactionCategory.ToGetResponse();
@@ -47,21 +83,21 @@ namespace HomeBudget.Api.Services
                 var budget = await _unitOfWork.Budgets.GetBudgetByIdAsync(budgetId);
                 if (requestModel != null && budget != null)
                 {
-                    if(!await IsBudgetTransactionCategoryExistAsync(budgetId, requestModel.Name))
+                    if (!await IsBudgetTransactionCategoryExistAsync(budgetId, requestModel.Name))
                     {
                         var transactionCategory = requestModel.ToTransactionCategory(budget);
 
                         await _unitOfWork.TransactionCategories.AddAsync(transactionCategory);
                         await _unitOfWork.SaveChangesAsync();
-                    
+
                         return transactionCategory.ToCreateResponse();
                     }
                 }
                 return null;
             }
-            else 
-            { 
-                throw new UnauthorizedAccessException(); 
+            else
+            {
+                throw new UnauthorizedAccessException();
             }
         }
 
