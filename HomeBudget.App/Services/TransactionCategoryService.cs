@@ -42,6 +42,52 @@ namespace HomeBudget.App.Services
             return false;
         }
 
+        public async Task<List<TransactionCategory>> GetTopAmountTransactionCategoriesInDataRangeAsync(string budgetId, int count, DateTime startDate, DateTime endDate)
+        {
+            string url = $"" +
+                $"{ApiEndpoints.BaseAddress}" +
+                $"{ApiEndpoints.Api}" +
+                $"{ApiEndpoints.User}" +
+                $"{ApiEndpoints.Budget}" +
+                $"/{budgetId}" +
+                $"{ApiEndpoints.TransactionCategory}" +
+                $"{ApiEndpoints.TopAmount}" +
+                $"?startDate={startDate:yyyy-MM-dd}" +
+                $"&endDate={endDate:yyyy-MM-dd}" +
+                $"&count={count}";
+
+            var response = await _apiClient.GetAsync<List<TransactionCategoryGetResponseModel>>(url);
+
+            if (response != null)
+            {
+                return response.Select(r => r.FromGetResponse()).ToList();
+            }
+            return [];
+        }
+
+        public async Task<List<TransactionCategory>> GetTopCountTransactionCategoriesInDataRangeAsync(string budgetId, int count, DateTime startDate, DateTime endDate)
+        {
+            string url = $"" +
+                $"{ApiEndpoints.BaseAddress}" +
+                $"{ApiEndpoints.Api}" +
+                $"{ApiEndpoints.User}" +
+                $"{ApiEndpoints.Budget}" +
+                $"/{budgetId}" +
+                $"{ApiEndpoints.TransactionCategory}" +
+                $"{ApiEndpoints.TopCount}" +
+                $"?startDate={startDate:yyyy-MM-dd}" +
+                $"&endDate={endDate:yyyy-MM-dd}" +
+                $"&count={count}";
+
+            var response = await _apiClient.GetAsync<List<TransactionCategoryGetResponseModel>>(url);
+
+            if (response != null)
+            {
+                return response.Select(r => r.FromGetResponse()).ToList();
+            }
+            return [];
+        }
+
         public Task<TransactionCategory> GetTransactionCategoryByIdsAsync(string budgetId, string categoryId)
         {
             throw new NotImplementedException();
