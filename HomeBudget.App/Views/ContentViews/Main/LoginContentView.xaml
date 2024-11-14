@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.Main.LoginContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:main="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.Main"
+    xmlns:mainViews="clr-namespace:HomeBudget.App.Views.ContentViews.Main"
+    x:DataType="main:LoginContentViewModel">
+
+    <Grid>
+        <VerticalStackLayout Spacing="10">
+            <Frame Padding="10">
+                <VerticalStackLayout Spacing="10">
+                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                        <Entry
+                            Placeholder="Email"
+                            Style="{StaticResource DarkMediumEntry}"
+                            Text="{Binding Email}" />
+                    </Frame>
+
+                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Entry
+                                IsPassword="{Binding IsPasswordVisible}"
+                                Placeholder="Hasło"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding Password}" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding TogglePasswordVisibilityCommand}"
+                                Style="{StaticResource IconFlexButton}"
+                                Text="{Binding PasswordVisibleIcon}" />
+                        </Grid>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="Auto,*">
+                        <CheckBox
+                            Grid.Column="0"
+                            IsChecked="{Binding IsRemembered, Mode=TwoWay}"
+                            Scale="1.5" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource H2Label}"
+                            Text="Zapamiętaj mnie"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Button
+                        Command="{Binding LoginCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Zaloguj" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Grid ColumnDefinitions="*,Auto,*">
+                <BoxView
+                    Grid.Column="0"
+                    HeightRequest="1"
+                    Color="{StaticResource Gray300}" />
+                <Label
+                    Grid.Column="1"
+                    Margin="5,0,5,0"
+                    Style="{StaticResource H3Label}"
+                    Text="lub"
+                    VerticalOptions="Center" />
+                <BoxView
+                    Grid.Column="2"
+                    HeightRequest="1"
+                    Color="{StaticResource Gray300}" />
+            </Grid>
+
+            <Button
+                Command="{Binding GoToPasswordReminderCommand}"
+                Style="{StaticResource TransparentButton}"
+                Text="Zapomniałem hasła" />
+
+        </VerticalStackLayout>
+        <controls:ActivityIndicatorFullPageContentView BindingContext="{Binding}" />
+    </Grid>
+
+
+</ContentView>

@@ -28,7 +28,7 @@ namespace HomeBudget.App.ViewModels
                         var result = await _authenticationService.LogoutAsync();
                         if (result)
                         {
-                            await Shell.Current.GoToAsync($"//{nameof(LoginPageAndroidView)}");
+                            await Shell.Current.GoToAsync($"//{nameof(MainPageAndroidView)}");
                         }
                         break;
                     case ContentView.Budget:

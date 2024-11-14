@@ -89,6 +89,9 @@
 	  <Compile Update="Views\ContentViews\FullViews\AddTransactionAndroidPageView.xaml.cs">
 	    <DependentUpon>AddTransactionAndroidPageView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\MainPageAndroidView.xaml.cs">
+	    <DependentUpon>MainPageAndroidView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Widgets\ContentViews\FastBalanceContentView.xaml.cs">
 	    <DependentUpon>FastBalanceContentView.xaml</DependentUpon>
 	  </Compile>
@@ -127,6 +130,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\FullViews\ManageCurrentBudgetAndroidPageView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ContentViews\Main\LoginContentView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ContentViews\Main\RegisterContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Widgets\ManageFastBalanceAndroidPageView.xaml">
@@ -216,13 +225,10 @@
 	  <MauiXaml Update="Views\DashboardPageAndroidView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\LoginPageAndroidView.xaml">
+	  <MauiXaml Update="Views\MainPageAndroidView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PasswordReminderPageAndroidView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\RegisterPageAndroidView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ReportsPageAndroidView.xaml">

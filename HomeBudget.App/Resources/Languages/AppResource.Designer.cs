@@ -61,6 +61,24 @@ namespace HomeBudget.App.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logowanie.
+        /// </summary>
+        internal static string MainContentViewsType_Login {
+            get {
+                return ResourceManager.GetString("MainContentViewsType_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejestracja.
+        /// </summary>
+        internal static string MainContentViewsType_Register {
+            get {
+                return ResourceManager.GetString("MainContentViewsType_Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Własne.
         /// </summary>
         internal static string ReportDateFilterType_Own {
