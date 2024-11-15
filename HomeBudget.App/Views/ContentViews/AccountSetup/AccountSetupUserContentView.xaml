@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.AccountSetup.AccountSetupUserContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:accountSetup="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.AccountSetup"
+    xmlns:accountSetupViews="clr-namespace:HomeBudget.App.Views.ContentViews.AccountSetup"
+    xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    x:DataType="accountSetup:AccountSetupUserContentViewModel">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="10">
+                <Frame Padding="10">
+                    <VerticalStackLayout Spacing="10">
+
+                        <Label Style="{StaticResource H2Label}" Text="Dane personalne" />
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Imię"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryUser.FirstName}" />
+                        </Frame>
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Nazwisko"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryUser.LastName}" />
+                        </Frame>
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Keyboard="Telephone"
+                                Placeholder="Numer telefonu"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryUser.PhoneNumber}" />
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Grid ColumnDefinitions="*,Auto,*">
+                    <BoxView
+                        Grid.Column="0"
+                        HeightRequest="1"
+                        Color="{StaticResource Gray300}" />
+                    <Label
+                        Grid.Column="1"
+                        Margin="5,0,5,0"
+                        Style="{StaticResource H3Label}"
+                        Text="Pola dodatkowe (nieobowiązkowe)"
+                        VerticalOptions="Center" />
+                    <BoxView
+                        Grid.Column="2"
+                        HeightRequest="1"
+                        Color="{StaticResource Gray300}" />
+                </Grid>
+
+                <Frame Padding="10" IsEnabled="False">
+                    <VerticalStackLayout Spacing="10">
+
+                        <Label Style="{StaticResource H2Label}" Text="Adres" />
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Ulica"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryAddress.Street}" />
+                        </Frame>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Frame Grid.Column="0" Style="{StaticResource SecondaryEntryFrame}">
+                                <Entry
+                                    Placeholder="Numer domu"
+                                    Style="{StaticResource DarkMediumEntry}"
+                                    Text="{Binding TemporaryAddress.HouseNumber}" />
+                            </Frame>
+
+                            <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                                <Entry
+                                    Placeholder="Numer mieszkania"
+                                    Style="{StaticResource DarkMediumEntry}"
+                                    Text="{Binding TemporaryAddress.ApartmentNumber}" />
+                            </Frame>
+                        </Grid>
+
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Keyboard="Numeric"
+                                Placeholder="Kod"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryAddress.PostalCode}" />
+                        </Frame>
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Miasto"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryAddress.City}" />
+                        </Frame>
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Wprowadź region"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryAddress.Region}" />
+                        </Frame>
+
+                        <Frame Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Kraj"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryAddress.Country}" />
+                        </Frame>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentView>

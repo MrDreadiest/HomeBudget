@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.StateIconIndicatorContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.UniversalControls"
+    xmlns:controlViews="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    x:DataType="control:StateIconIndicatorContentViewModel">
+    <CollectionView
+        x:Name="StateIconIndicatorCollection"
+        Margin="8"
+        HorizontalOptions="Center"
+        ItemsSource="{Binding States}"
+        VerticalOptions="Center">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout Orientation="Vertical" Span="{Binding States.Count}" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="control:StateIconItem">
+                <Grid RowDefinitions="*,Auto">
+                    <Border
+                        HorizontalOptions="Center"
+                        MinimumHeightRequest="44"
+                        MinimumWidthRequest="44"
+                        StrokeThickness="3"
+                        VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="22" />
+                        </Border.StrokeShape>
+
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsPassed}"
+                                        TargetType="Border"
+                                        Value="True">
+                                        <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsPassed}"
+                                        TargetType="Border"
+                                        Value="False">
+                                        <Setter Property="Stroke" Value="{StaticResource Gray500}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Label Grid.Row="0" Text="{Binding IconUnicode}">
+                            <Label.Style>
+                                <Style BasedOn="{StaticResource SeletedInnerIcon}" TargetType="Label">
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsPassed}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsPassed}"
+                                            TargetType="Label"
+                                            Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource Gray500}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                    </Border>
+                    <Label
+                        Grid.Row="1"
+                        Margin="0"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource H3Label}"
+                        Text="{Binding Title}" />
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentView>

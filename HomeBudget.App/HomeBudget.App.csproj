@@ -83,7 +83,7 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>AppResource.resx</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\ContentViews\AccountSetupUserContentView.xaml.cs">
+	  <Compile Update="Views\ContentViews\AccountSetup\AccountSetupUserContentView.xaml.cs">
 	    <DependentUpon>AccountSetupUserContentView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ContentViews\FullViews\AddTransactionAndroidPageView.xaml.cs">
@@ -117,13 +117,13 @@
 	  <MauiXaml Update="Views\BudgetsPageAndroidView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\AccountSetupBudgetContentView.xaml">
+	  <MauiXaml Update="Views\ContentViews\AccountSetup\AccountSetupBudgetContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\AccountSetupCategoriesContentView.xaml">
+	  <MauiXaml Update="Views\ContentViews\AccountSetup\AccountSetupCategoriesContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContentViews\AccountSetupUserContentView.xaml">
+	  <MauiXaml Update="Views\ContentViews\AccountSetup\AccountSetupUserContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\FullViews\ManageCategoriesAndroidPageView.xaml">
@@ -136,6 +136,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ContentViews\Main\RegisterContentView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ContentViews\UniversalControls\IconSelectFramedContentView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ContentViews\UniversalControls\StateIconIndicatorContentView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Widgets\ManageFastBalanceAndroidPageView.xaml">

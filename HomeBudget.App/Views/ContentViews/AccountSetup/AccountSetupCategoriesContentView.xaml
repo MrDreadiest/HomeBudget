@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.AccountSetup.AccountSetupCategoriesContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:accountSetup="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.AccountSetup"
+    xmlns:accountSetupViews="clr-namespace:HomeBudget.App.Views.ContentViews.AccountSetup"
+    xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
+    xmlns:controlViews="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    x:DataType="accountSetup:AccountSetupCategoriesContentViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
+        <VerticalStackLayout
+            Grid.Row="0"
+            Spacing="10"
+            VerticalOptions="FillAndExpand">
+            <Frame Padding="10">
+                <VerticalStackLayout Spacing="10">
+
+                    <Label Style="{StaticResource H2Label}" Text="Tworzenie kategorii" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Button
+                            Grid.Column="0"
+                            Command="{Binding IconSelectVM.ToggleViewCommand}"
+                            Style="{StaticResource IconFramedFlexButton}"
+                            Text="{Binding TemporaryTransactionCategory.IconUnicode}" />
+
+                        <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Nazwa kategorii"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryTransactionCategory.Name}" />
+                        </Frame>
+                    </Grid>
+
+                    <Label Style="{StaticResource H3Label}" Text="Kliknij by wybrać przypisaną ikonę" />
+
+                    <Button
+                        Command="{Binding AddTransactionCategoryCommand}"
+                        Style="{StaticResource PrimaryButton}"
+                        Text="Dodaj" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
+            <BoxView
+                Grid.Column="0"
+                HeightRequest="1"
+                Color="{StaticResource Gray300}" />
+            <Label
+                Grid.Column="1"
+                Margin="5,0,5,0"
+                Style="{StaticResource H3Label}"
+                Text="Akualnie dodane kategorie w budżecie"
+                VerticalOptions="Center" />
+            <BoxView
+                Grid.Column="2"
+                HeightRequest="1"
+                Color="{StaticResource Gray300}" />
+        </Grid>
+
+        <Frame
+            Grid.Row="2"
+            Padding="10"
+            VerticalOptions="FillAndExpand">
+            <ScrollView>
+                <CollectionView ItemsSource="{Binding TransactionCategories}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:TransactionCategory">
+                            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="*,Auto">
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialIcon}"
+                                    Text="{Binding IconUnicode}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Style="{StaticResource H2Label}"
+                                    Text="{Binding Name}"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type accountSetup:AccountSetupCategoriesContentViewModel}}, Path=RemoveTransactionCategoryCommand}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource IconFlexButton}"
+                                    Text="{x:Static icons:Icons.Close}"
+                                    VerticalOptions="Center" />
+                                <BoxView
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="3"
+                                    HeightRequest="1"
+                                    Color="{StaticResource Gray200}" />
+                            </Grid>
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Frame>
+
+        <controlViews:IconSelectFramedContentView Grid.RowSpan="3" BindingContext="{Binding IconSelectVM}" />
+
+    </Grid>
+
+</ContentView>

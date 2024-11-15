@@ -41,21 +41,38 @@
 
             <Grid>
                 <VerticalStackLayout Spacing="10">
-                    <Image
-                        Grid.Row="0"
-                        Aspect="AspectFit"
-                        HorizontalOptions="Start"
-                        Source="logo.png"
-                        VerticalOptions="Start"
-                        WidthRequest="80" />
+                    <Grid
+                        ColumnDefinitions="*,4*"
+                        ColumnSpacing="10"
+                        RowDefinitions="Auto,*">
+                        <Image
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Start"
+                            Source="logo.png"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0"
+                            FontSize="{StaticResource ExtraLargeFontSize}"
+                            Style="{StaticResource H1Label}"
+                            Text="Witaj w BudgetHero"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0"
+                            Style="{StaticResource H2Label}"
+                            Text="Bądź bohaterem swoich finansów."
+                            VerticalOptions="Center" />
+
+                    </Grid>
                     <Label
-                        Style="{StaticResource H1Label}"
-                        Text="Witaj w home budget"
-                        VerticalOptions="Center" />
-                    <Label
-                        Grid.Row="1"
+                        Margin="0"
                         Style="{StaticResource H3Label}"
-                        Text="Zaloguj się do swojego konta"
+                        Text="Zaloguj się do swojego konta lub dołącz poprzez rejestrację."
                         VerticalOptions="Center" />
 
                     <controls:SelectableButtonGroupView BindingContext="{Binding SelectableButtonGroupVM}" />

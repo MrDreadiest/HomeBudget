@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.UniversalControls.IconSelectFramedContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    xmlns:model="clr-namespace:HomeBudget.App.Models"
+    xmlns:viewmodel="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
+    x:DataType="viewmodel:IconSelectContentViewModel">
+
+    <Grid
+        x:Name="Root"
+        BackgroundColor="{StaticResource Gray100}"
+        RowDefinitions="Auto,*"
+        RowSpacing="10">
+
+        <Border
+            Grid.Row="0"
+            Padding="20,20,20,20"
+            BackgroundColor="White"
+            Stroke="{StaticResource Gray100}"
+            StrokeThickness="1">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <Button
+                    Margin="0"
+                    Padding="0"
+                    Command="{Binding ToggleViewCommand}"
+                    FontSize="{StaticResource ExtraLargeFontSize}"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource NavigationIconButton}"
+                    Text="{x:Static icons:Icons.ArrowBackward}"
+                    TextColor="{StaticResource Secondary}" />
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource H1Label}"
+                    Text="Wybór ikony" />
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            BackgroundColor="Transparent"
+            Stroke="Transparent"
+            StrokeThickness="0">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15" />
+            </Border.StrokeShape>
+
+            <ScrollView>
+                <CollectionView ItemsSource="{Binding IconCategories}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:IconCategory">
+                            <Frame Padding="10">
+                                <VerticalStackLayout>
+                                    <Label Style="{StaticResource H2Label}" Text="{Binding CategoryName}" />
+                                    <CollectionView ItemsSource="{Binding Icons}">
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Vertical" Span="5" />
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:IconItem">
+                                                <Frame>
+                                                    <Frame.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IconSelectContentViewModel}}, Path=SelectIconCommand}" CommandParameter="{Binding}" />
+                                                    </Frame.GestureRecognizers>
+                                                    <Frame.Style>
+                                                        <Style BasedOn="{StaticResource RectangleSeletedBorderFrame}" TargetType="Frame">
+                                                            <Style.Triggers>
+                                                                <DataTrigger
+                                                                    Binding="{Binding IsSelected}"
+                                                                    TargetType="Frame"
+                                                                    Value="True">
+                                                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Frame.Style>
+                                                    <Frame InputTransparent="True" Style="{StaticResource RectangleSeletedInnerFrame}">
+                                                        <Label Text="{Binding Unicode}">
+                                                            <Label.Style>
+                                                                <Style BasedOn="{StaticResource SeletedInnerIcon}" TargetType="Label">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger
+                                                                            Binding="{Binding IsSelected}"
+                                                                            TargetType="Label"
+                                                                            Value="True">
+                                                                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Label.Style>
+                                                        </Label>
+                                                    </Frame>
+                                                </Frame>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </VerticalStackLayout>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Border>
+    </Grid>
+</ContentView>
