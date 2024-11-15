@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="HomeBudget.App.Views.ContentViews.AccountSetup.AccountSetupBudgetContentView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:accountSetup="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.AccountSetup"
+    xmlns:accountSetupViews="clr-namespace:HomeBudget.App.Views.ContentViews.AccountSetup"
+    xmlns:controlViews="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
+    xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
+    x:DataType="accountSetup:AccountSetupBudgetContentViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
+        <VerticalStackLayout
+            Grid.Row="0"
+            Spacing="10"
+            VerticalOptions="FillAndExpand">
+            <Frame Padding="10">
+                <VerticalStackLayout Spacing="10">
+
+                    <Label Style="{StaticResource H2Label}" Text="Tworzenie budżetu" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Button
+                            Grid.Column="0"
+                            Command="{Binding IconSelectVM.ToggleViewCommand}"
+                            Style="{StaticResource IconFramedFlexButton}"
+                            Text="{Binding TemporaryBudget.IconUnicode}" />
+
+                        <Frame Grid.Column="1" Style="{StaticResource SecondaryEntryFrame}">
+                            <Entry
+                                Placeholder="Nazwa budżetu"
+                                Style="{StaticResource DarkMediumEntry}"
+                                Text="{Binding TemporaryBudget.Name}" />
+                        </Frame>
+                    </Grid>
+
+                    <Label Style="{StaticResource H3Label}" Text="Kliknij by wybrać przypisaną ikonę" />
+
+                    <Frame Style="{StaticResource SecondaryEntryFrame}">
+                        <Entry
+                            Placeholder="Dodatkowy opis"
+                            Style="{StaticResource DarkMediumEntry}"
+                            Text="{Binding TemporaryBudget.Description}" />
+                    </Frame>
+
+
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
+            <BoxView
+                Grid.Column="0"
+                HeightRequest="1"
+                Color="{StaticResource Gray300}" />
+            <Label
+                Grid.Column="1"
+                Margin="5,0,5,0"
+                Style="{StaticResource H3Label}"
+                Text="Lub wybierz jeden z proponowanych poniżej"
+                VerticalOptions="Center" />
+            <BoxView
+                Grid.Column="2"
+                HeightRequest="1"
+                Color="{StaticResource Gray300}" />
+        </Grid>
+
+        <Frame
+            Grid.Row="2"
+            Padding="10"
+            IsEnabled="False"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                HorizontalOptions="Center"
+                Style="{StaticResource H1Label}"
+                Text="Dostępne wkróce"
+                VerticalOptions="Center" />
+        </Frame>
+
+        <controlViews:IconSelectFramedContentView Grid.RowSpan="3" BindingContext="{Binding IconSelectVM}" />
+
+    </Grid>
+
+</ContentView>

@@ -3,6 +3,8 @@
     x:Class="HomeBudget.App.Views.UserAccountSetupPageAndroidView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:accountSetup="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.AccountSetup"
+    xmlns:accountSetupViews="clr-namespace:HomeBudget.App.Views.ContentViews.AccountSetup"
     xmlns:contentViews="clr-namespace:HomeBudget.App.Views.ContentViews"
     xmlns:controls="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
@@ -10,215 +12,109 @@
     Title="UserAccountSetupPageAndroidView"
     x:DataType="viewmodel:UserAccountSetupPageViewModel">
 
-    <Grid BackgroundColor="{StaticResource Gray100}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ContentPage.Resources>
+        <DataTemplate x:Key="User">
+            <accountSetupViews:AccountSetupUserContentView />
+        </DataTemplate>
+
+        <DataTemplate x:Key="Budget">
+            <accountSetupViews:AccountSetupBudgetContentView />
+        </DataTemplate>
+
+        <DataTemplate x:Key="Categories">
+            <accountSetupViews:AccountSetupCategoriesContentView />
+        </DataTemplate>
+
+        <accountSetup:AccountSetupCarouselItemTemplateSelector
+            x:Key="AccountSetupTemplateSelector"
+            BudgetDT="{StaticResource Budget}"
+            CategoriesDT="{StaticResource Categories}"
+            UserDT="{StaticResource User}" />
+
+    </ContentPage.Resources>
+
+    <Grid BackgroundColor="{StaticResource Gray100}" RowDefinitions="Auto,*">
 
         <Border
             Grid.Row="0"
-            Padding="0"
+            Padding="20,20,20,20"
             BackgroundColor="White"
-            StrokeThickness="0">
+            Stroke="{StaticResource Gray100}"
+            StrokeThickness="1">
 
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="0,0,30,30" />
+                <RoundRectangle CornerRadius="0,0,15,15" />
             </Border.StrokeShape>
 
-            <Grid Margin="30,15,30,15" RowDefinitions="Auto,Auto,Auto">
-                <VerticalStackLayout Grid.Row="0">
-                    <Label
-                        Style="{StaticResource H1Label}"
-                        Text="Konfiguracja startowa"
-                        VerticalOptions="Center" />
-                    <Label
-                        Style="{StaticResource H3Label}"
-                        Text="Uzupełnij swoje dane i stwórz pierwszy budżet!"
-                        VerticalOptions="Center" />
+            <Grid>
+                <VerticalStackLayout Spacing="10">
+                    <Grid
+                        ColumnDefinitions="*,4*"
+                        ColumnSpacing="10"
+                        RowDefinitions="Auto,*">
+                        <Image
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Start"
+                            Source="logo.png"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0"
+                            FontSize="{StaticResource ExtraLargeFontSize}"
+                            Style="{StaticResource H1Label}"
+                            Text="Konfiguracja startowa"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0"
+                            Style="{StaticResource H2Label}"
+                            Text="Stwórz swój pierwszy budżet!"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <controls:StateIconIndicatorContentView BindingContext="{Binding StateIndicatorVM}" />
+
                 </VerticalStackLayout>
-
-                <Grid
-                    Grid.Row="1"
-                    Margin="0,5,0,0"
-                    ColumnDefinitions="*,*,*,*,*">
-                    <Frame Grid.Column="0">
-                        <Frame.Style>
-                            <Style BasedOn="{StaticResource CircleSeletedBorderFrame}" TargetType="Frame">
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding IsAccountSetupUserContentViewVisible}"
-                                        TargetType="Frame"
-                                        Value="True">
-                                        <Setter Property="Background" Value="{StaticResource Primary}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Frame.Style>
-                        <Frame>
-                            <Frame.Style>
-                                <Style BasedOn="{StaticResource CircleSeletedInnerFrame}" TargetType="Frame">
-                                    <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding IsAccountSetupUserContentViewVisible}"
-                                            TargetType="Frame"
-                                            Value="True">
-                                            <Setter Property="Background" Value="{StaticResource White}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Frame.Style>
-                            <Label Text="{x:Static icons:Icons.AccountCircle}">
-                                <Label.Style>
-                                    <Style BasedOn="{StaticResource SeletedInnerIcon}" TargetType="Label">
-                                        <Style.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding IsAccountSetupUserContentViewVisible}"
-                                                TargetType="Label"
-                                                Value="True">
-                                                <Setter Property="TextColor" Value="{StaticResource Primary}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Label.Style>
-                            </Label>
-                        </Frame>
-                    </Frame>
-
-                    <BoxView
-                        Grid.Column="1"
-                        BackgroundColor="{StaticResource Gray100}"
-                        HeightRequest="5"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="Center" />
-
-                    <Frame Grid.Column="2">
-                        <Frame.Style>
-                            <Style BasedOn="{StaticResource CircleSeletedBorderFrame}" TargetType="Frame">
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding IsAccountSetupBudgetContentViewVisible}"
-                                        TargetType="Frame"
-                                        Value="True">
-                                        <Setter Property="Background" Value="{StaticResource Primary}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Frame.Style>
-                        <Frame>
-                            <Frame.Style>
-                                <Style BasedOn="{StaticResource CircleSeletedInnerFrame}" TargetType="Frame">
-
-                                    <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding IsAccountSetupBudgetContentViewVisible}"
-                                            TargetType="Frame"
-                                            Value="True">
-                                            <Setter Property="Background" Value="{StaticResource White}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Frame.Style>
-                            <Label Text="{x:Static icons:Icons.Budget}">
-                                <Label.Style>
-                                    <Style BasedOn="{StaticResource SeletedInnerIcon}" TargetType="Label">
-                                        <Style.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding IsAccountSetupBudgetContentViewVisible}"
-                                                TargetType="Label"
-                                                Value="True">
-                                                <Setter Property="TextColor" Value="{StaticResource Primary}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Label.Style>
-                            </Label>
-                        </Frame>
-                    </Frame>
-
-                    <BoxView
-                        Grid.Column="3"
-                        BackgroundColor="{StaticResource Gray100}"
-                        HeightRequest="5"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="Center" />
-
-                    <Frame Grid.Column="4">
-                        <Frame.Style>
-                            <Style BasedOn="{StaticResource CircleSeletedBorderFrame}" TargetType="Frame">
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding IsAccountSetupCategoriesContentViewVisible}"
-                                        TargetType="Frame"
-                                        Value="True">
-                                        <Setter Property="Background" Value="{StaticResource Primary}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Frame.Style>
-                        <Frame>
-                            <Frame.Style>
-                                <Style BasedOn="{StaticResource CircleSeletedInnerFrame}" TargetType="Frame">
-                                    <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding IsAccountSetupCategoriesContentViewVisible}"
-                                            TargetType="Frame"
-                                            Value="True">
-                                            <Setter Property="Background" Value="{StaticResource White}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Frame.Style>
-                            <Label Text="{x:Static icons:Icons.Categories}">
-                                <Label.Style>
-                                    <Style BasedOn="{StaticResource SeletedInnerIcon}" TargetType="Label">
-                                        <Style.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding IsAccountSetupCategoriesContentViewVisible}"
-                                                TargetType="Label"
-                                                Value="True">
-                                                <Setter Property="TextColor" Value="{StaticResource Primary}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Label.Style>
-                            </Label>
-                        </Frame>
-                    </Frame>
-
-                </Grid>
-
-                <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*,*">
-                    <Label
-                        Grid.Column="0"
-                        Margin="0"
-                        HorizontalTextAlignment="Center"
-                        Style="{StaticResource H3Label}"
-                        Text="Profil" />
-
-                    <Label
-                        Grid.Column="2"
-                        Margin="0"
-                        HorizontalTextAlignment="Center"
-                        Style="{StaticResource H3Label}"
-                        Text="Budżet" />
-
-                    <Label
-                        Grid.Column="4"
-                        Margin="0"
-                        HorizontalTextAlignment="Center"
-                        Style="{StaticResource H3Label}"
-                        Text="Kategorie" />
-                </Grid>
             </Grid>
         </Border>
 
-        <contentViews:AccountSetupUserContentView Grid.Row="1" IsVisible="{Binding IsAccountSetupUserContentViewVisible}" />
+        <Grid
+            Grid.Row="1"
+            Margin="10"
+            RowDefinitions="*,Auto"
+            RowSpacing="10">
 
-        <contentViews:AccountSetupBudgetContentView Grid.Row="1" IsVisible="{Binding IsAccountSetupBudgetContentViewVisible}" />
+            <CarouselView
+                Grid.Row="0"
+                IsSwipeEnabled="False"
+                ItemTemplate="{StaticResource AccountSetupTemplateSelector}"
+                ItemsSource="{Binding AccountSetupCarouselVMs}"
+                Position="{Binding CarouselPosition, Mode=TwoWay}" />
 
-        <contentViews:AccountSetupCategoriesContentView Grid.Row="1" IsVisible="{Binding IsAccountSetupCategoriesContentViewVisible}" />
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="*,*"
+                ColumnSpacing="10">
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding BackCommand}"
+                    Style="{StaticResource SecondaryButton}"
+                    Text="Powrót" />
+
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding NextCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="Dalej" />
+            </Grid>
+
+        </Grid>
 
         <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
     </Grid>
+
 </ContentPage>

@@ -61,6 +61,33 @@ namespace HomeBudget.App.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budżet.
+        /// </summary>
+        internal static string AccountSetupContentViewsType_BudgetSetup {
+            get {
+                return ResourceManager.GetString("AccountSetupContentViewsType_BudgetSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kategorie.
+        /// </summary>
+        internal static string AccountSetupContentViewsType_CategoriesSetup {
+            get {
+                return ResourceManager.GetString("AccountSetupContentViewsType_CategoriesSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personalia.
+        /// </summary>
+        internal static string AccountSetupContentViewsType_UserSetup {
+            get {
+                return ResourceManager.GetString("AccountSetupContentViewsType_UserSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logowanie.
         /// </summary>
         internal static string MainContentViewsType_Login {

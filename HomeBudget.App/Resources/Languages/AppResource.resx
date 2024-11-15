@@ -236,4 +236,16 @@
     <value>Rejestracja</value>
     <comment>Register</comment>
   </data>
+  <data name="AccountSetupContentViewsType_UserSetup" xml:space="preserve">
+    <value>Personalia</value>
+    <comment>User</comment>
+  </data>
+  <data name="AccountSetupContentViewsType_BudgetSetup" xml:space="preserve">
+    <value>Budżet</value>
+    <comment>Budget</comment>
+  </data>
+  <data name="AccountSetupContentViewsType_CategoriesSetup" xml:space="preserve">
+    <value>Kategorie</value>
+    <comment>Categories</comment>
+  </data>
 </root>
