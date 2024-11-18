@@ -14,6 +14,9 @@
             });
 
             InitializeComponent();
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF1cX2hIf0x0Rnxbf1x0ZFJMY1VbQHJPMyBoS35RckRiWHled3dcQmRcUEdw");
+
             Services = services;
             MainPage = new AppShell();
         }

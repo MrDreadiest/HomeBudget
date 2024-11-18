@@ -225,9 +225,6 @@
     <value>Największa suma</value>
     <comment>Top amount</comment>
   </data>
-  <data name="ReportType_GraphPie" xml:space="preserve">
-    <value>Graficzny kołowy</value>
-  </data>
   <data name="MainContentViewsType_Login" xml:space="preserve">
     <value>Logowanie</value>
     <comment>Login</comment>
@@ -247,5 +244,9 @@
   <data name="AccountSetupContentViewsType_CategoriesSetup" xml:space="preserve">
     <value>Kategorie</value>
     <comment>Categories</comment>
+  </data>
+  <data name="ReportType_GraphPie" xml:space="preserve">
+    <value>Graficzny kołowy</value>
+    <comment>Pie chart</comment>
   </data>
 </root>

@@ -5,6 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
     xmlns:model="clr-namespace:HomeBudget.App.Models"
+    xmlns:sfData="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+    xmlns:sfDataExt="clr-namespace:Syncfusion.Maui.DataSource.Extensions;assembly=Syncfusion.Maui.DataSource"
+    xmlns:syncfusion="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
     xmlns:viewmodel="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels"
     x:DataType="viewmodel:IconSelectContentViewModel">
 
@@ -52,65 +55,53 @@
                 <RoundRectangle CornerRadius="15" />
             </Border.StrokeShape>
 
-            <ScrollView>
-                <CollectionView ItemsSource="{Binding IconCategories}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:IconCategory">
-                            <Frame Padding="10">
-                                <VerticalStackLayout>
-                                    <Label Style="{StaticResource H2Label}" Text="{Binding CategoryName}" />
-                                    <CollectionView ItemsSource="{Binding Icons}">
-                                        <CollectionView.ItemsLayout>
-                                            <GridItemsLayout Orientation="Vertical" Span="5" />
-                                        </CollectionView.ItemsLayout>
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate x:DataType="model:IconItem">
-                                                <Frame>
-                                                    <Frame.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IconSelectContentViewModel}}, Path=SelectIconCommand}" CommandParameter="{Binding}" />
-                                                    </Frame.GestureRecognizers>
-                                                    <Frame.Style>
-                                                        <Style BasedOn="{StaticResource RectangleSeletedBorderFrame}" TargetType="Frame">
-                                                            <Style.Triggers>
-                                                                <DataTrigger
-                                                                    Binding="{Binding IsSelected}"
-                                                                    TargetType="Frame"
-                                                                    Value="True">
-                                                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Frame.Style>
-                                                    <Frame InputTransparent="True" Style="{StaticResource RectangleSeletedInnerFrame}">
-                                                        <Label Text="{Binding Unicode}">
-                                                            <Label.Style>
-                                                                <Style BasedOn="{StaticResource SeletedInnerIcon}" TargetType="Label">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger
-                                                                            Binding="{Binding IsSelected}"
-                                                                            TargetType="Label"
-                                                                            Value="True">
-                                                                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Label.Style>
-                                                        </Label>
-                                                    </Frame>
-                                                </Frame>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
-                                </VerticalStackLayout>
+            <syncfusion:SfListView
+                x:Name="listView"
+                IsStickyGroupHeader="True"
+                ItemsSource="{Binding IconsCollection}">
+                <syncfusion:SfListView.ItemsLayout>
+                    <syncfusion:GridLayout SpanCount="4" />
+                </syncfusion:SfListView.ItemsLayout>
+                <syncfusion:SfListView.DataSource>
+                    <sfData:DataSource>
+                        <sfData:DataSource.GroupDescriptors>
+                            <sfData:GroupDescriptor PropertyName="Category" />
+                        </sfData:DataSource.GroupDescriptors>
+                    </sfData:DataSource>
+                </syncfusion:SfListView.DataSource>
 
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </ScrollView>
+                <syncfusion:SfListView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="sfDataExt:GroupResult">
+                        <StackLayout BackgroundColor="#E4E4E4">
+                            <Label
+                                Margin="20,0,0,0"
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                HorizontalOptions="Start"
+                                Text="{Binding Key}"
+                                VerticalOptions="Center" />
+                        </StackLayout>
+                    </DataTemplate>
+                </syncfusion:SfListView.GroupHeaderTemplate>
+
+
+                <syncfusion:SfListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:IconItem">
+                        <Frame
+                            Padding="10"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                            <Label
+                                Grid.Column="0"
+                                HorizontalOptions="Center"
+                                Style="{StaticResource MaterialIcon}"
+                                Text="{Binding Unicode}"
+                                VerticalOptions="Center" />
+                        </Frame>
+                    </DataTemplate>
+                </syncfusion:SfListView.ItemTemplate>
+            </syncfusion:SfListView>
+
         </Border>
     </Grid>
 </ContentView>

@@ -10,6 +10,7 @@ using HomeBudget.App.Views.ContentViews.FullViews;
 using HomeBudget.App.Views.Widgets;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace HomeBudget.App
 {
@@ -22,6 +23,7 @@ namespace HomeBudget.App
             builder
                 .UseSkiaSharp()
                 .UseMauiApp<App>()
+                .ConfigureSyncfusionCore()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {

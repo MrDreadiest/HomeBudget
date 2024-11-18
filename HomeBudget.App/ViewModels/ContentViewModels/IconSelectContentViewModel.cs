@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Models;
 using HomeBudget.App.Resources.Icons;
+using Syncfusion.Maui.DataSource.Extensions;
+using System.Collections.ObjectModel;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels
 {
@@ -10,25 +12,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels
         public event EventHandler? SelectedIconChanged;
 
         [RelayCommand]
-        public async Task ToggleView()
+        public void ToggleView()
         {
-            if (IsBusy)
-                return;
-
-            try
-            {
-                IsBusy = true;
-                ToggleVisibility();
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-            await Task.CompletedTask;
+            ToggleVisibility();
         }
 
         [RelayCommand]
@@ -57,6 +43,9 @@ namespace HomeBudget.App.ViewModels.ContentViewModels
         private List<IconCategory> iconCategories;
 
         [ObservableProperty]
+        private ObservableCollection<IconItem> _iconsCollection;
+
+        [ObservableProperty]
         private IconItem selectedIconItem;
 
         public bool IsPopulated => IconCategories.Count > 0;
@@ -66,6 +55,8 @@ namespace HomeBudget.App.ViewModels.ContentViewModels
             IsVisible = false;
             IconCategories = new List<IconCategory>();
             SelectedIconItem = new IconItem() { Name = "DEFAULT", Unicode = Icons.Budget };
+
+            IconsCollection = new ObservableCollection<IconItem>();
         }
 
         public void ResetView()
@@ -93,12 +84,21 @@ namespace HomeBudget.App.ViewModels.ContentViewModels
                 .Select(icon => new IconItem()
                 {
                     Name = icon.Name,
+                    Category = category.Key,
                     Unicode = icon.Unicode,
                     IsSelected = false
                 }).ToList()
             }).ToList();
 
             SelectIcon(IconCategories.FirstOrDefault()!.Icons.FirstOrDefault()!);
+
+            foreach (var iconCategory in IconCategories)
+            {
+                foreach (var icon in iconCategory.Icons)
+                {
+                    IconsCollection.Add(icon);
+                }
+            }
         }
 
         public override Task OnAppearingAsync()
