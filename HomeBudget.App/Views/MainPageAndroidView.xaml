@@ -90,8 +90,6 @@
                 Position="{Binding CarouselPosition, Mode=TwoWay}" />
 
         </Grid>
-
-        <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
     </Grid>
 
 </ContentPage>

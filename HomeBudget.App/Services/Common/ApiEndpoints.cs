@@ -4,7 +4,7 @@
     {
         //public static readonly string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5070" : "http://localhost:5070";
 
-        public static readonly string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "https://nzxn5zpt-7201.euw.devtunnels.ms" : "https://nzxn5zpt-7201.euw.devtunnels.ms";
+        public static readonly string BaseAddress = "https://npdxm779-7201.euw.devtunnels.ms";
 
         public static readonly string Login = "/login";
         public static readonly string Register = "/register";

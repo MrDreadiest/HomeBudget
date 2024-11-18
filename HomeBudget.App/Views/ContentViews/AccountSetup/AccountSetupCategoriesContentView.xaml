@@ -106,9 +106,6 @@
                 </CollectionView>
             </ScrollView>
         </Frame>
-
-        <controlViews:IconSelectFramedContentView Grid.RowSpan="3" BindingContext="{Binding IconSelectVM}" />
-
     </Grid>
 
 </ContentView>

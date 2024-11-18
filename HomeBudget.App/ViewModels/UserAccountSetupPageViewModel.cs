@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using HomeBudget.App.Models;
 using HomeBudget.App.Models.AccountSetup;
 using HomeBudget.App.Services.Interfaces;
+using HomeBudget.App.ViewModels.ContentViewModels;
 using HomeBudget.App.ViewModels.ContentViewModels.AccountSetup;
 using HomeBudget.App.ViewModels.ContentViewModels.UniversalControls;
 using HomeBudget.App.Views;
@@ -25,11 +26,7 @@ namespace HomeBudget.App.ViewModels
                 var currentVM = AccountSetupCarouselVMs[CarouselPosition];
                 if (currentVM.CanGoNext())
                 {
-                    if (CarouselPosition < AccountSetupCarouselVMs.Count - 1)
-                    {
-                        CarouselPosition++;
-                    }
-                    else
+                    if (!IncrementCarouselPosition())
                     {
                         //TODO: zasoby
                         var isConfirmed = await AskForConfirmation("Czy na pewno chcesz zakończyć konfigurację konta?");
@@ -64,11 +61,7 @@ namespace HomeBudget.App.ViewModels
             {
                 IsBusy = true;
 
-                if (CarouselPosition > 0)
-                {
-                    CarouselPosition--;
-                }
-                else
+                if (!DecrementCarouselPosition())
                 {
                     //TODO: zasoby
                     var isConfirmed = await AskForConfirmation("Czy na pewno chcesz opuścić konfigurację konta?");
@@ -93,8 +86,12 @@ namespace HomeBudget.App.ViewModels
 
         public StateIconIndicatorContentViewModel StateIndicatorVM { get; }
 
+        public IconSelectContentViewModel IconSelectVM { get; }
+
         [ObservableProperty]
         private int _carouselPosition;
+
+        private bool _isUpdatingPosition;
 
         private readonly IAuthenticationService _authenticationService;
         private readonly IAppSettingsService _appSettingsService;
@@ -116,11 +113,13 @@ namespace HomeBudget.App.ViewModels
                 .ToList());
             StateIndicatorVM.ProcessStateChanged += StateIndicatorVM_ProcessStateChanged;
 
+            IconSelectVM = new IconSelectContentViewModel();
+
             AccountSetupCarouselVMs = new ObservableCollection<AccountSetupCarouselItemViewModelBase>()
             {
                 new AccountSetupUserContentViewModel(),
-                new AccountSetupBudgetContentViewModel(),
-                new AccountSetupCategoriesContentViewModel(),
+                new AccountSetupBudgetContentViewModel(IconSelectVM),
+                new AccountSetupCategoriesContentViewModel(IconSelectVM),
             };
         }
 
@@ -138,6 +137,12 @@ namespace HomeBudget.App.ViewModels
                 IsBusy = true;
                 IsVisible = true;
 
+                await Task.Delay(200);
+
+                if (!IconSelectVM.IsPopulated)
+                {
+                    IconSelectVM.ReloadData();
+                }
 
                 await Task.Run(async () =>
                 {
@@ -145,7 +150,6 @@ namespace HomeBudget.App.ViewModels
                     await Task.WhenAll(tasks);
                 });
 
-                await Task.Delay(200);
             }
             catch (Exception ex)
             {
@@ -163,9 +167,43 @@ namespace HomeBudget.App.ViewModels
             await Task.CompletedTask;
         }
 
-        async partial void OnCarouselPositionChanged(int oldValue, int newValue)
+        private bool IncrementCarouselPosition()
+        {
+
+            if (CarouselPosition < AccountSetupCarouselVMs.Count - 1)
+            {
+                var oldValue = CarouselPosition;
+                var newValue = ++CarouselPosition;
+
+                NotifyVMs(oldValue, newValue);
+
+                return true;
+            }
+            return false;
+        }
+
+        private bool DecrementCarouselPosition()
+        {
+            if (CarouselPosition > 0)
+            {
+                var oldValue = CarouselPosition;
+                var newValue = --CarouselPosition;
+
+                NotifyVMs(oldValue, newValue);
+
+                return true;
+            }
+            return false;
+        }
+
+        private void NotifyVMs(int oldValue, int newValue)
         {
             StateIndicatorVM.SelectState(newValue);
+            if (oldValue != newValue)
+            {
+                AccountSetupCarouselVMs[oldValue].OnDisappearing();
+            }
+            AccountSetupCarouselVMs[newValue].OnAppearing();
         }
 
         private async Task<bool> AskForConfirmation(string message)

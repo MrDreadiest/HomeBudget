@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:accountSetup="clr-namespace:HomeBudget.App.ViewModels.ContentViewModels.AccountSetup"
     xmlns:accountSetupViews="clr-namespace:HomeBudget.App.Views.ContentViews.AccountSetup"
-    xmlns:controlViews="clr-namespace:HomeBudget.App.Views.ContentViews.UniversalControls"
     xmlns:icons="clr-namespace:HomeBudget.App.Resources.Icons"
     x:DataType="accountSetup:AccountSetupBudgetContentViewModel">
 
@@ -77,9 +76,6 @@
                 Text="Dostępne wkróce"
                 VerticalOptions="Center" />
         </Frame>
-
-        <controlViews:IconSelectFramedContentView Grid.RowSpan="3" BindingContext="{Binding IconSelectVM}" />
-
     </Grid>
 
 </ContentView>

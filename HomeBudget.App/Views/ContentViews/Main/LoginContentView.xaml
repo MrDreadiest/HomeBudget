@@ -8,18 +8,18 @@
     xmlns:mainViews="clr-namespace:HomeBudget.App.Views.ContentViews.Main"
     x:DataType="main:LoginContentViewModel">
 
-    <Grid>
+    <Grid IsEnabled="True" IsVisible="True">
         <VerticalStackLayout Spacing="10">
-            <Frame Padding="10">
+            <Border Padding="10">
                 <VerticalStackLayout Spacing="10">
-                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                    <Border Margin="0" Style="{StaticResource SecondaryEntryFrame}">
                         <Entry
                             Placeholder="Email"
                             Style="{StaticResource DarkMediumEntry}"
                             Text="{Binding Email}" />
-                    </Frame>
+                    </Border>
 
-                    <Frame Margin="0" Style="{StaticResource SecondaryEntryFrame}">
+                    <Border Margin="0" Style="{StaticResource SecondaryEntryFrame}">
                         <Grid ColumnDefinitions="*,Auto">
                             <Entry
                                 IsPassword="{Binding IsPasswordVisible}"
@@ -32,7 +32,7 @@
                                 Style="{StaticResource IconFlexButton}"
                                 Text="{Binding PasswordVisibleIcon}" />
                         </Grid>
-                    </Frame>
+                    </Border>
 
                     <Grid ColumnDefinitions="Auto,*">
                         <CheckBox
@@ -51,7 +51,7 @@
                         Style="{StaticResource PrimaryButton}"
                         Text="Zaloguj" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <Grid ColumnDefinitions="*,Auto,*">
                 <BoxView

@@ -45,20 +45,10 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.AccountSetup
 
         private readonly ITransactionCategoryService _transactionCategoryService;
 
-        public AccountSetupCategoriesContentViewModel() : this(App.Services.GetService<ITransactionCategoryService>()!)
+        public AccountSetupCategoriesContentViewModel(IconSelectContentViewModel iconSelectVM)
         {
-        }
-
-        public AccountSetupCategoriesContentViewModel(ITransactionCategoryService transactionCategoryService)
-        {
-            _transactionCategoryService = transactionCategoryService;
-
             TemporaryTransactionCategory = new TransactionCategory() { BudgetId = string.Empty, Id = string.Empty };
-
-            IconSelectVM = new IconSelectContentViewModel();
-            IconSelectVM.SelectedIconChanged += TransactionCategoryIconSelectVM_SelectedIconChanged;
-
-            TemporaryTransactionCategory.IconUnicode = IconSelectVM.SelectedIconItem.Unicode;
+            IconSelectVM = iconSelectVM;
         }
 
         private void TransactionCategoryIconSelectVM_SelectedIconChanged(object? sender, EventArgs e)
@@ -69,13 +59,25 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.AccountSetup
             }
         }
 
+        public override void OnAppearing()
+        {
+            IsVisible = true;
+            IconSelectVM.SelectedIconChanged += TransactionCategoryIconSelectVM_SelectedIconChanged;
+            IconSelectVM.ResetView();
+        }
+
+        public override void OnDisappearing()
+        {
+            IsVisible = false;
+            if (IconSelectVM.IsVisible)
+            {
+                IconSelectVM.ToggleView();
+            }
+            IconSelectVM.SelectedIconChanged -= TransactionCategoryIconSelectVM_SelectedIconChanged;
+        }
+
         public async override Task ResetView()
         {
-            if (!IconSelectVM.IsPopulated)
-            {
-                IconSelectVM.ReloadData();
-            }
-
             TransactionCategories.Clear();
 
             TemporaryTransactionCategory = new TransactionCategory() { BudgetId = string.Empty, Id = string.Empty };
