@@ -10,25 +10,29 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.AccountSetup
         [ObservableProperty]
         private Budget _temporaryBudget;
 
-        public IconSelectContentViewModel IconSelectVM { get; set; }
-
         private readonly IBudgetService _budgetService;
 
-        public AccountSetupBudgetContentViewModel() : this(App.Services.GetService<IBudgetService>()!)
+        public AccountSetupBudgetContentViewModel(IconSelectContentViewModel iconSelectVM)
         {
+            TemporaryBudget = new Budget() { Id = string.Empty, OwnerId = string.Empty };
+            IconSelectVM = iconSelectVM;
         }
 
-        public AccountSetupBudgetContentViewModel(IBudgetService budgetService)
+        public override void OnAppearing()
         {
-            _budgetService = budgetService;
-
-            TemporaryBudget = new Budget() { Id = string.Empty, OwnerId = string.Empty };
-
-            IconSelectVM = new IconSelectContentViewModel();
+            IsVisible = true;
             IconSelectVM.SelectedIconChanged += BudgetIconSelectVM_SelectedIconChanged;
+            IconSelectVM.ResetView();
+        }
 
-            TemporaryBudget.IconUnicode = IconSelectVM.SelectedIconItem.Unicode;
-
+        public override void OnDisappearing()
+        {
+            IsVisible = false;
+            if (IconSelectVM.IsVisible)
+            {
+                IconSelectVM.ToggleView();
+            }
+            IconSelectVM.SelectedIconChanged -= BudgetIconSelectVM_SelectedIconChanged;
         }
 
         private void BudgetIconSelectVM_SelectedIconChanged(object? sender, EventArgs e)
@@ -41,11 +45,6 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.AccountSetup
 
         public async override Task ResetView()
         {
-            if (!IconSelectVM.IsPopulated)
-            {
-                IconSelectVM.ReloadData();
-            }
-
             TemporaryBudget = new Budget() { Id = string.Empty, OwnerId = string.Empty };
             TemporaryBudget.IconUnicode = IconSelectVM.SelectedIconItem.Unicode;
 

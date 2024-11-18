@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HomeBudget.App.Extensions;
 using HomeBudget.App.Models;
-using HomeBudget.App.Services.Interfaces;
 
 namespace HomeBudget.App.ViewModels.ContentViewModels.AccountSetup
 {
@@ -13,18 +12,20 @@ namespace HomeBudget.App.ViewModels.ContentViewModels.AccountSetup
         [ObservableProperty]
         private Address _temporaryAddress;
 
-        private readonly IUserService _userService;
-
-        public AccountSetupUserContentViewModel(IUserService userService)
+        public AccountSetupUserContentViewModel()
         {
-            _userService = userService;
-
             TemporaryUser = new User() { Id = string.Empty };
             TemporaryAddress = new Address() { Id = string.Empty, UserId = string.Empty };
         }
 
-        public AccountSetupUserContentViewModel() : this(App.Services.GetService<IUserService>()!)
+        public override void OnAppearing()
         {
+            IsVisible = true;
+        }
+
+        public override void OnDisappearing()
+        {
+            IsVisible = false;
         }
 
         public async override Task ResetView()

@@ -112,6 +112,8 @@
                     Text="Dalej" />
             </Grid>
 
+            <controls:IconSelectFramedContentView BindingContext="{Binding IconSelectVM}" />
+
         </Grid>
 
         <controls:ActivityIndicatorFullPageContentView Grid.RowSpan="2" BindingContext="{Binding}" />
